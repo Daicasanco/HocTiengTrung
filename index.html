@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChineseWriter - Nền tảng học chữ Hán hiệu quả</title>
+    <meta name="description" content="ChineseWriter - Từ điển Trung Việt với 11,000+ từ vựng HSK 1-7, tập viết chữ Hán, phân tách bộ thủ, nghĩa tiếng Việt từ CVDICT.">
+    <meta name="keywords" content="luyện viết chữ Trung Quốc, luyện viết online chữ Hán, ôn tập chữ Hán theo cấp độ HSK, vở tập viết chữ Hán, từ điển Trung Việt">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="jspdf.umd.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: { DEFAULT: '#2563eb', light: '#dbeafe', dark: '#1d4ed8', '50': '#eff6ff' },
+              hanzi: '#dc2626',
+            },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+              cn: ['Noto Sans SC', 'Microsoft YaHei', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      .page { display: none; } .page.active { display: block; }
+      .hsk-chip { padding: 6px 16px; border-radius: 9999px; font-size: 13px; font-weight: 500; border: 2px solid #e2e8f0; background: #fff; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+      .hsk-chip:hover { border-color: #2563eb; color: #2563eb; }
+      .hsk-chip.active { background: #2563eb; color: #fff; border-color: #2563eb; box-shadow: 0 2px 8px rgba(37,99,235,0.3); }
+      .scrollbar-hide::-webkit-scrollbar { display: none; } .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+      .tab-btn.active { color: #2563eb; border-bottom-color: #2563eb; }
+      .tab-panel { display: none; } .tab-panel.active { display: block; }
+      .stroke-dot.done { background: #1e293b; } .stroke-dot.act { background: #dc2626; width: 11px; height: 11px; }
+      #stroke-canvas { aspect-ratio: 1; }
+      .nav-dropdown { opacity: 0; visibility: hidden; transition: all 0.2s; }
+      .nav-group:hover .nav-dropdown { opacity: 1; visibility: visible; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .spinner { animation: spin 0.7s linear infinite; }
+    </style>
+</head>
+<body class="font-sans bg-white text-slate-900 min-h-screen">
+
+<!-- ===== HEADER (giống xiehanzi) ===== -->
+<header class="sticky top-0 z-50 bg-white shadow-md">
+  <div class="container mx-auto px-4 h-16 md:h-20 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="#" onclick="showPage('home')" class="flex items-center gap-2">
+      <span class="text-2xl font-cn font-bold text-hanzi">中</span>
+      <span class="text-xl font-extrabold text-primary">ChineseWriter</span>
+    </a>
+    
+    <!-- Desktop Nav -->
+    <nav class="hidden md:flex items-center space-x-1">
+      <div class="relative nav-group">
+        <button class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
+          <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+          Thư viện HSK
+          <svg class="ml-1 w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <ul class="nav-dropdown absolute left-0 top-full mt-1 w-56 bg-white shadow-lg rounded-lg border z-50 py-1">
+          <li><a href="#" onclick="showPage('library');filterHsk(0)" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors">📚 Tất cả từ vựng</a></li>
+          <li><a href="#" onclick="showPage('library');filterHsk(1)" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors">🌱 HSK 1 - Sơ cấp</a></li>
+          <li><a href="#" onclick="showPage('library');filterHsk(2)" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors">📖 HSK 2</a></li>
+          <li><a href="#" onclick="showPage('library');filterHsk(3)" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors">📝 HSK 3</a></li>
+          <li><a href="#" onclick="showPage('library');filterHsk(4)" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors">📗 HSK 4-5</a></li>
+          <li><a href="#" onclick="showPage('library');filterHsk(6)" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors">🎓 HSK 6-7 Cao cấp</a></li>
+        </ul>
+      </div>
+      <a href="#" onclick="showPage('stroke')" class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
+        <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+        Học viết chữ
+      </a>
+      <a href="#" onclick="showPage('bookmarks')" class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
+        <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        Hồ sơ học
+      </a>
+      <a href="#" onclick="showPage('pdf')" class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
+        <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Xuất PDF tập viết
+      </a>
+    </nav>
+
+    <!-- Mobile menu btn -->
+    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden p-2 border rounded-md hover:bg-slate-50">
+      <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+    </button>
+  </div>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden border-t bg-white">
+    <a href="#" onclick="showPage('library');filterHsk(0);closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">📚 Thư viện HSK</a>
+    <a href="#" onclick="showPage('stroke');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">✏️ Học viết chữ</a>
+    <a href="#" onclick="showPage('bookmarks');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">🔖 Hồ sơ học</a>
+    <a href="#" onclick="showPage('pdf');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">📄 Xuất PDF tập viết</a>
+  </div>
+</header>
+
+<!-- ===== PAGE: HOME (Landing) ===== -->
+<div id="page-home" class="page active">
+  <!-- Hero -->
+  <section class="py-16 md:py-24 px-4 bg-gradient-to-b from-blue-50 to-white">
+    <div class="container mx-auto max-w-5xl text-center space-y-6">
+      <div class="inline-flex items-center rounded-full bg-blue-100 text-primary px-4 py-1 text-sm font-semibold">✨ Huỳnh Văn Sơn</div>
+      <h1 class="text-4xl md:text-6xl font-bold tracking-tight leading-tight">Nền tảng học chữ Hán<br><span class="text-primary">hiệu quả nhất</span></h1>
+      <p class="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto">Được phát triển để dùng cá nhân - phi lợi nhuận.</p>
+      <div class="flex gap-4 justify-center flex-wrap">
+        <a href="#" onclick="showPage('library');filterHsk(0)" class="inline-flex items-center bg-primary text-white font-medium px-8 py-3 rounded-lg shadow hover:bg-primary-dark transition-colors">
+          Khám phá ngay
+          <svg class="ml-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="#" onclick="showPage('stroke')" class="inline-flex items-center border border-slate-300 px-8 py-3 rounded-lg hover:bg-slate-50 transition-colors font-medium">Tập viết chữ Hán</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="py-16 md:py-20 px-4 bg-slate-50/50">
+    <div class="container mx-auto max-w-6xl">
+      <div class="text-center mb-12">
+        <div class="inline-flex items-center rounded-full bg-blue-100 text-primary px-3 py-0.5 text-xs font-semibold mb-4">Tính năng nổi bật</div>
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Công cụ toàn diện cho việc học chữ Hán</h2>
+        <p class="text-slate-500 max-w-2xl mx-auto">Trải nghiệm học tập hiện đại với dữ liệu chất lượng cao.</p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Card 1: Thư viện -->
+        <div class="rounded-xl bg-white shadow hover:shadow-lg transition-all duration-300 border-2 border-primary relative">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+            <span class="bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full shadow">⭐ Phổ biến nhất</span>
+          </div>
+          <div class="p-6 space-y-4">
+            <div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center">
+              <svg class="w-7 h-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+            </div>
+            <h3 class="font-semibold text-xl">Thư viện HSK 7 cấp độ</h3>
+            <p class="text-slate-500">Hơn <strong>11,000 từ vựng</strong> theo chuẩn HSK mới, kèm nghĩa tiếng Việt chuẩn từ CVDICT.</p>
+            <div class="space-y-3 pt-2">
+              <div class="flex items-start gap-3"><svg class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><div><h4 class="text-sm font-medium">Tra cứu thông minh</h4><p class="text-xs text-slate-400">Tìm theo chữ Hán, pinyin, nghĩa Việt</p></div></div>
+              <div class="flex items-start gap-3"><svg class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><div><h4 class="text-sm font-medium">Nghĩa Việt từ CVDICT</h4><p class="text-xs text-slate-400">Dữ liệu chính xác, chi tiết</p></div></div>
+              <div class="flex items-start gap-3"><svg class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><div><h4 class="text-sm font-medium">Phân loại HSK 1-7</h4><p class="text-xs text-slate-400">Lộ trình rõ ràng, dễ theo dõi</p></div></div>
+            </div>
+          </div>
+          <div class="px-6 pb-6">
+            <a href="#" onclick="showPage('library');filterHsk(0)" class="block text-center text-sm font-medium text-primary hover:underline py-2">Khám phá thư viện →</a>
+          </div>
+        </div>
+
+        <!-- Card 2: Bút thuận -->
+        <div class="rounded-xl bg-white shadow hover:shadow-lg transition-all duration-300 border-2 border-transparent">
+          <div class="p-6 space-y-4">
+            <div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center">
+              <svg class="w-7 h-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+            </div>
+            <h3 class="font-semibold text-xl">Học Viết Chữ</h3>
+            <p class="text-slate-500">Hiển thị thứ tự nét, animation viết từng nét với dữ liệu từ <strong>makemeahanzi</strong>.</p>
+            <div class="space-y-3 pt-2">
+              <div class="flex items-start gap-3"><svg class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><div><h4 class="text-sm font-medium">3,000+ ký tự</h4><p class="text-xs text-slate-400">Dữ liệu stroke đầy đủ</p></div></div>
+              <div class="flex items-start gap-3"><svg class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><div><h4 class="text-sm font-medium">Animation mượt mà</h4><p class="text-xs text-slate-400">Từng nét hiện lần lượt</p></div></div>
+              <div class="flex items-start gap-3"><svg class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><div><h4 class="text-sm font-medium">Phân tách bộ thủ</h4><p class="text-xs text-slate-400">Hiểu cấu trúc chữ Hán</p></div></div>
+            </div>
+          </div>
+          <div class="px-6 pb-6">
+            <a href="#" onclick="showPage('stroke')" class="block text-center text-sm font-medium text-primary hover:underline py-2">Thử bút thuận →</a>
+          </div>
+        </div>
+
+        <!-- Card 3: Nghĩa Việt -->
+        <div class="rounded-xl bg-white shadow hover:shadow-lg transition-all duration-300 border-2 border-transparent">
+          <div class="p-6 space-y-4">
+            <div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center">
+              <svg class="w-7 h-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m2 12 20 0"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <h3 class="font-semibold text-xl">Nghĩa Trung - Việt</h3>
+            <p class="text-slate-500">Nghĩa tiếng Việt chính xác từ <strong>CVDICT</strong>, kết hợp nghĩa tiếng Anh.</p>
+            <div class="space-y-3 pt-2">
+              <div class="flex items-start gap-3"><svg class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><div><h4 class="text-sm font-medium">Song ngữ Việt-Anh</h4><p class="text-xs text-slate-400">Hiểu nghĩa toàn diện</p></div></div>
+              <div class="flex items-start gap-3"><svg class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><div><h4 class="text-sm font-medium">Phát âm TTS</h4><p class="text-xs text-slate-400">Nghe phát âm chuẩn</p></div></div>
+              <div class="flex items-start gap-3"><svg class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><div><h4 class="text-sm font-medium">Hoàn toàn miễn phí</h4><p class="text-xs text-slate-400">Không cần đăng ký</p></div></div>
+            </div>
+          </div>
+          <div class="px-6 pb-6">
+            <a href="#" onclick="showPage('library');filterHsk(1)" class="block text-center text-sm font-medium text-primary hover:underline py-2">Bắt đầu học →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="py-16 px-4 bg-blue-50/50">
+    <div class="container mx-auto max-w-5xl">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-md">
+          <svg class="w-6 h-6 text-primary mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+          <div class="text-3xl font-bold text-primary mb-1" id="stat-words">11,470+</div>
+          <div class="text-slate-500 text-sm">Từ vựng HSK</div>
+        </div>
+        <div class="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-md">
+          <svg class="w-6 h-6 text-primary mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+          <div class="text-3xl font-bold text-primary mb-1">3,034</div>
+          <div class="text-slate-500 text-sm">Ký tự có bút thuận</div>
+        </div>
+        <div class="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-md">
+          <svg class="w-6 h-6 text-primary mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
+          <div class="text-3xl font-bold text-primary mb-1">7</div>
+          <div class="text-slate-500 text-sm">Cấp độ HSK</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 md:py-20 px-4 bg-gradient-to-b from-blue-100/50 to-white">
+    <div class="container mx-auto max-w-4xl text-center">
+      <h2 class="text-3xl font-bold mb-4">Bắt đầu hành trình học chữ Hán ngay!</h2>
+      <p class="text-lg text-slate-500 mb-8 max-w-2xl mx-auto">Khám phá kho từ vựng khổng lồ với nghĩa tiếng Việt chuẩn và tập viết chữ Hán trực quan.</p>
+      <a href="#" onclick="showPage('library');filterHsk(1)" class="inline-flex items-center bg-primary text-white font-medium px-8 py-3.5 rounded-lg text-lg shadow hover:bg-primary-dark transition-colors">
+        Bắt đầu miễn phí
+        <svg class="ml-2 h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+</div>
+
+<!-- ===== PAGE: LIBRARY (Thư viện HSK) ===== -->
+<div id="page-library" class="page">
+  <div class="container mx-auto max-w-5xl px-4 py-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl font-bold">📚 Thư viện HSK</h2>
+      <span class="text-sm text-slate-400" id="lib-count"></span>
+    </div>
+    <!-- Search -->
+    <div class="relative mb-4">
+      <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="lib-search" placeholder="Tìm chữ Hán, pinyin, nghĩa Việt..." class="w-full pl-12 pr-10 py-3 border-2 border-slate-200 rounded-xl focus:border-primary focus:ring-2 focus:ring-blue-100 outline-none text-sm transition-all" autocomplete="off">
+      <button onclick="document.getElementById('lib-search').value='';doSearch()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-hanzi text-xl hidden" id="lib-clear">&times;</button>
+    </div>
+    <!-- HSK chips -->
+    <div class="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-hide" id="lib-chips"></div>
+    <!-- Word list -->
+    <div id="lib-list" class="space-y-0 divide-y divide-slate-100"></div>
+    <div id="lib-empty" class="hidden text-center py-16 text-slate-400">
+      <div class="text-5xl mb-3">📚</div>
+      <p>Không tìm thấy từ vựng</p>
+    </div>
+    <div id="lib-loading" class="flex flex-col items-center py-16 text-slate-400">
+      <div class="w-8 h-8 border-3 border-slate-200 border-t-primary rounded-full spinner mb-3" style="border-width:3px"></div>
+      <p>Đang tải dữ liệu...</p>
+    </div>
+    <button id="lib-more" class="hidden w-full py-3 text-sm font-medium text-primary border-2 border-primary-light rounded-lg hover:bg-blue-50 transition-colors mt-4" onclick="renderMore()">Xem thêm</button>
+  </div>
+</div>
+
+<!-- ===== PAGE: STROKE (Bút thuận) ===== -->
+<div id="page-stroke" class="page">
+  <div class="container mx-auto max-w-3xl px-4 py-6">
+    <h2 class="text-2xl font-bold mb-4">✏️ Học Viết Chữ</h2>
+    <!-- Input -->
+    <div class="flex gap-3 mb-6">
+      <input type="text" id="stroke-input" placeholder="Nhập chữ Hán (VD: 学, 中国, 你好)" class="flex-1 px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-primary outline-none font-cn text-xl" maxlength="10">
+      <button onclick="doStrokeLookup()" class="bg-primary text-white px-6 py-3 rounded-xl font-medium hover:bg-primary-dark transition-colors">Xem bút thuận</button>
+    </div>
+    <!-- Quick examples -->
+    <div class="flex flex-wrap gap-2 mb-6">
+      <span class="text-sm text-slate-400 mr-1">Thử:</span>
+      <button onclick="strokeQuick('学')" class="px-3 py-1 bg-slate-100 rounded-lg text-sm font-cn hover:bg-blue-100 hover:text-primary transition-colors">学</button>
+      <button onclick="strokeQuick('中国')" class="px-3 py-1 bg-slate-100 rounded-lg text-sm font-cn hover:bg-blue-100 hover:text-primary transition-colors">中国</button>
+      <button onclick="strokeQuick('你好')" class="px-3 py-1 bg-slate-100 rounded-lg text-sm font-cn hover:bg-blue-100 hover:text-primary transition-colors">你好</button>
+      <button onclick="strokeQuick('龙')" class="px-3 py-1 bg-slate-100 rounded-lg text-sm font-cn hover:bg-blue-100 hover:text-primary transition-colors">龙</button>
+      <button onclick="strokeQuick('爱')" class="px-3 py-1 bg-slate-100 rounded-lg text-sm font-cn hover:bg-blue-100 hover:text-primary transition-colors">爱</button>
+    </div>
+    <!-- Stroke display area -->
+    <div id="stroke-area" class="hidden">
+      <!-- Tabs for each char -->
+      <div id="stroke-char-tabs" class="flex gap-2 mb-4 flex-wrap"></div>
+      <!-- Canvas + info -->
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <div class="bg-amber-50/50 border-2 border-amber-200/60 rounded-xl p-2 mb-3">
+            <canvas id="stroke-canvas" width="400" height="400" class="w-full max-w-sm mx-auto"></canvas>
+          </div>
+          <div class="flex items-center justify-between">
+            <div id="stroke-dots" class="flex gap-1 flex-wrap"></div>
+            <button onclick="replayStroke()" class="text-sm font-medium text-primary border border-primary px-4 py-1.5 rounded-lg hover:bg-blue-50 transition-colors">🔄 Viết lại</button>
+          </div>
+        </div>
+        <div>
+          <!-- Char info -->
+          <div id="stroke-info" class="space-y-4"></div>
+        </div>
+      </div>
+    </div>
+    <div id="stroke-empty" class="text-center py-16 text-slate-400">
+      <div class="text-5xl mb-3">✍️</div>
+      <p>Nhập chữ Hán bên trên để xem bút thuận</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: DETAIL (Word detail modal) ===== -->
+<div id="page-detail" class="page">
+  <div class="container mx-auto max-w-3xl px-4 py-6">
+    <button onclick="showPage('library')" class="flex items-center gap-2 text-sm text-slate-500 hover:text-primary mb-4 transition-colors">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      Quay lại thư viện
+    </button>
+    <div id="detail-content"></div>
+  </div>
+</div>
+
+<!-- ===== PAGE: BOOKMARKS (Hồ sơ học) ===== -->
+<div id="page-bookmarks" class="page">
+  <div class="container mx-auto max-w-5xl px-4 py-6">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold">🔖 Hồ sơ học</h2>
+      <button onclick="createBookmarkSet()" class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        Tạo bộ mới
+      </button>
+    </div>
+    <p class="text-sm text-slate-500 mb-6">Tạo các bộ từ vựng để theo dõi quá trình học. Mỗi bộ có thể chứa nhiều từ và xuất ra PDF tập viết.</p>
+    <!-- Bookmark sets list -->
+    <div id="bm-sets-list" class="space-y-4"></div>
+    <div id="bm-empty" class="hidden text-center py-16 text-slate-400">
+      <div class="text-5xl mb-3">🔖</div>
+      <p>Chưa có bộ từ vựng nào. Hãy tạo bộ mới!</p>
+      <p class="text-xs mt-2">Bạn có thể thêm từ vào bộ từ trang Thư viện, Chi tiết hoặc Bút thuận.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: PDF (Xuất PDF tập viết) ===== -->
+<div id="page-pdf" class="page">
+  <div class="container mx-auto max-w-4xl px-4 py-6">
+    <h2 class="text-2xl font-bold mb-2">📄 Xuất PDF tập viết chữ Hán</h2>
+    <p class="text-sm text-slate-500 mb-6">Tạo file PDF khổ A4 với ô mễ tự để in ra luyện viết tay. Chữ Hán in mờ bên trong ô, pinyin phía trên.</p>
+
+    <!-- Mode tabs -->
+    <div class="flex gap-2 mb-6 border-b">
+      <button onclick="setPdfMode('hsk')" class="pdf-mode-tab px-4 py-2 text-sm font-medium border-b-2 border-primary text-primary" data-mode="hsk">Theo cấp HSK</button>
+      <button onclick="setPdfMode('custom')" class="pdf-mode-tab px-4 py-2 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-primary" data-mode="custom">Nhập tùy chọn</button>
+    </div>
+
+    <!-- HSK mode -->
+    <div id="pdf-hsk-mode">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+        <label class="flex items-center gap-2 p-3 bg-white border-2 rounded-lg cursor-pointer hover:border-primary transition-colors pdf-hsk-check">
+          <input type="checkbox" value="1" class="accent-primary w-4 h-4" checked> <span class="text-sm font-medium">HSK 1</span>
+        </label>
+        <label class="flex items-center gap-2 p-3 bg-white border-2 rounded-lg cursor-pointer hover:border-primary transition-colors pdf-hsk-check">
+          <input type="checkbox" value="2" class="accent-primary w-4 h-4"> <span class="text-sm font-medium">HSK 2</span>
+        </label>
+        <label class="flex items-center gap-2 p-3 bg-white border-2 rounded-lg cursor-pointer hover:border-primary transition-colors pdf-hsk-check">
+          <input type="checkbox" value="3" class="accent-primary w-4 h-4"> <span class="text-sm font-medium">HSK 3</span>
+        </label>
+        <label class="flex items-center gap-2 p-3 bg-white border-2 rounded-lg cursor-pointer hover:border-primary transition-colors pdf-hsk-check">
+          <input type="checkbox" value="4" class="accent-primary w-4 h-4"> <span class="text-sm font-medium">HSK 4</span>
+        </label>
+        <label class="flex items-center gap-2 p-3 bg-white border-2 rounded-lg cursor-pointer hover:border-primary transition-colors pdf-hsk-check">
+          <input type="checkbox" value="5" class="accent-primary w-4 h-4"> <span class="text-sm font-medium">HSK 5</span>
+        </label>
+        <label class="flex items-center gap-2 p-3 bg-white border-2 rounded-lg cursor-pointer hover:border-primary transition-colors pdf-hsk-check">
+          <input type="checkbox" value="6" class="accent-primary w-4 h-4"> <span class="text-sm font-medium">HSK 6</span>
+        </label>
+        <label class="flex items-center gap-2 p-3 bg-white border-2 rounded-lg cursor-pointer hover:border-primary transition-colors pdf-hsk-check">
+          <input type="checkbox" value="7" class="accent-primary w-4 h-4"> <span class="text-sm font-medium">HSK 7+</span>
+        </label>
+      </div>
+      <div class="flex items-center gap-4 mb-4">
+        <label class="text-sm text-slate-600">Số từ tối đa mỗi cấp:</label>
+        <input type="number" id="pdf-max-words" value="20" min="1" max="500" class="w-24 px-3 py-2 border-2 border-slate-200 rounded-lg text-sm focus:border-primary outline-none">
+      </div>
+    </div>
+
+    <!-- Custom mode -->
+    <div id="pdf-custom-mode" class="hidden">
+      <textarea id="pdf-custom-input" rows="4" class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-primary outline-none text-sm font-cn" placeholder="Nhập các từ cách nhau bởi dấu phẩy hoặc xuống dòng. VD: 你好, 谢谢, 学习, 中国"></textarea>
+      <p class="text-xs text-slate-400 mt-1">Mỗi từ sẽ được tách thành từng chữ riêng để viết vào ô.</p>
+    </div>
+
+    <!-- Options -->
+    <div class="bg-slate-50 rounded-xl p-4 mt-4 mb-6 space-y-3">
+      <h3 class="text-sm font-bold text-slate-700">⚙️ Tùy chọn PDF</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="text-xs text-slate-500 mb-1 block">Số chữ gợi ý (opacity giảm dần)</label>
+          <input type="number" id="pdf-repeat" value="10" min="1" max="1000" class="w-full px-3 py-2 border-2 border-slate-200 rounded-lg text-sm focus:border-primary outline-none">
+        </div>
+        <div>
+          <label class="text-xs text-slate-500 mb-1 block">Số dòng luyện tập</label>
+          <input type="number" id="pdf-practice-rows" value="2" min="1" max="50" class="w-full px-3 py-2 border-2 border-slate-200 rounded-lg text-sm focus:border-primary outline-none">
+        </div>
+        <div>
+          <label class="text-xs text-slate-500 mb-1 block">Kích thước ô (mm)</label>
+          <input type="number" id="pdf-cell-size" value="10" min="10" max="30" class="w-full px-3 py-2 border-2 border-slate-200 rounded-lg text-sm focus:border-primary outline-none">
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="pdf-show-pinyin" checked class="accent-primary w-4 h-4">
+          <label for="pdf-show-pinyin" class="text-sm text-slate-600">Hiển thị Pinyin</label>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="pdf-show-guide" checked class="accent-primary w-4 h-4">
+          <label for="pdf-show-guide" class="text-sm text-slate-600">Hiển thị chữ mờ trong ô</label>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="pdf-show-meaning" checked class="accent-primary w-4 h-4">
+          <label for="pdf-show-meaning" class="text-sm text-slate-600">Hiển thị nghĩa Việt/Anh</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview info + Generate -->
+    <div id="pdf-preview-info" class="text-sm text-slate-500 mb-4"></div>
+    <div class="flex gap-3">
+      <button onclick="generatePdf()" class="flex-1 bg-primary text-white font-medium py-3 px-6 rounded-xl hover:bg-primary-dark transition-colors flex items-center justify-center gap-2">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+        Tạo & Tải PDF
+      </button>
+      <button onclick="previewPdfInfo()" class="px-6 py-3 border-2 border-slate-200 rounded-xl text-sm font-medium hover:bg-slate-50 transition-colors">Xem trước thông tin</button>
+    </div>
+
+    <!-- Status -->
+    <div id="pdf-status" class="hidden mt-4 p-4 bg-green-50 border border-green-200 rounded-xl text-sm text-green-700"></div>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
