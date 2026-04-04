@@ -1160,6 +1160,43 @@
     }
   };
 
+  // ===== VISITOR COUNTER =====
+  function initVisitorCounter() {
+    const el = document.getElementById('stat-visitors');
+    if (!el) return;
+
+    // Use CountAPI alternative: counterapi.dev (free, no signup needed)
+    // Namespace = your GitHub username, Key = your repo name
+    // Change these when you deploy!
+    const namespace = 'HigherVn';
+    const key = 'visits';
+
+    // Method 1: Use counterapi.dev (works on GitHub Pages)
+    fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
+      .then(r => r.json())
+      .then(data => {
+        if (data && data.count !== undefined) {
+          el.textContent = data.count.toLocaleString();
+          el.classList.add('transition-all');
+        }
+      })
+      .catch(() => {
+        // Fallback: localStorage counter (works offline/local)
+        const VISIT_KEY = 'cw_visit_count';
+        const VISITED_KEY = 'cw_visited_today';
+        const today = new Date().toDateString();
+        let count = parseInt(localStorage.getItem(VISIT_KEY) || '0');
+        
+        if (localStorage.getItem(VISITED_KEY) !== today) {
+          count++;
+          localStorage.setItem(VISIT_KEY, count.toString());
+          localStorage.setItem(VISITED_KEY, today);
+        }
+        el.textContent = count.toLocaleString();
+      });
+  }
+
   // ===== START =====
   init();
+  initVisitorCounter();
 })();
