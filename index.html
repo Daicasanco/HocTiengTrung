@@ -74,6 +74,18 @@
         <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
         Học viết chữ
       </a>
+      <a href="#" onclick="showPage('radicals')" class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
+        <span class="mr-2 text-base">部</span>
+        Bộ thủ
+      </a>
+      <a href="#" onclick="showPage('flashcard')" class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
+        <span class="mr-2">🃏</span>
+        Flashcard
+      </a>
+      <a href="#" onclick="showPage('quiz')" class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
+        <span class="mr-2">🧩</span>
+        Quiz
+      </a>
       <a href="#" onclick="showPage('bookmarks')" class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
         <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
         Hồ sơ học
@@ -93,6 +105,9 @@
   <div id="mobile-menu" class="hidden md:hidden border-t bg-white">
     <a href="#" onclick="showPage('library');filterHsk(0);closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">📚 Thư viện HSK</a>
     <a href="#" onclick="showPage('stroke');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">✏️ Học viết chữ</a>
+    <a href="#" onclick="showPage('radicals');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">部 Bộ thủ</a>
+    <a href="#" onclick="showPage('flashcard');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">🃏 Flashcard</a>
+    <a href="#" onclick="showPage('quiz');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">🧩 Quiz</a>
     <a href="#" onclick="showPage('bookmarks');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">🔖 Hồ sơ học</a>
     <a href="#" onclick="showPage('pdf');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">📄 Xuất PDF tập viết</a>
   </div>
@@ -332,6 +347,327 @@
       <div class="text-5xl mb-3">🔖</div>
       <p>Chưa có bộ từ vựng nào. Hãy tạo bộ mới!</p>
       <p class="text-xs mt-2">Bạn có thể thêm từ vào bộ từ trang Thư viện, Chi tiết hoặc Bút thuận.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: RADICALS (214 Bộ thủ) ===== -->
+<div id="page-radicals" class="page">
+  <div class="container mx-auto max-w-6xl px-4 py-6">
+    <div class="flex items-center justify-between mb-2">
+      <h2 class="text-2xl font-bold">部 214 Bộ thủ Khang Hy</h2>
+      <span class="text-sm text-slate-400" id="rad-count"></span>
+    </div>
+    <p class="text-sm text-slate-500 mb-4">Bấm vào bộ thủ để xem tất cả chữ Hán và từ vựng HSK chứa bộ đó. Có thể xuất PDF luyện viết theo bộ.</p>
+    <!-- Search -->
+    <div class="relative mb-4">
+      <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="rad-search" placeholder="Tìm bộ thủ (VD: tâm, nhân, water, 心...)" class="w-full pl-12 pr-10 py-3 border-2 border-slate-200 rounded-xl focus:border-primary outline-none text-sm" autocomplete="off" oninput="filterRadicalsPage()">
+    </div>
+    <!-- Stroke filter chips -->
+    <div class="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-hide" id="rad-stroke-chips"></div>
+    <!-- Radicals grid -->
+    <div id="rad-grid" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2"></div>
+  </div>
+</div>
+
+<!-- ===== PAGE: FLASHCARD ===== -->
+<div id="page-flashcard" class="page">
+  <!-- SUB: Setup -->
+  <div id="fc-setup" class="container mx-auto max-w-3xl px-4 py-6">
+    <h2 class="text-2xl font-bold mb-2">🃏 Flashcard Ôn Luyện</h2>
+    <p class="text-sm text-slate-500 mb-6">Chọn nguồn từ vựng và chế độ học, rồi bắt đầu ôn tập.</p>
+
+    <!-- Source selection -->
+    <h3 class="text-sm font-bold text-slate-700 mb-3">📂 Chọn nguồn từ vựng</h3>
+    <div class="grid grid-cols-2 gap-3 mb-6">
+      <button onclick="fcSelectSource('hsk')" class="fc-src-btn border-2 rounded-xl p-4 text-left hover:border-primary hover:shadow-md transition-all" data-src="hsk">
+        <div class="text-2xl mb-1">📚</div>
+        <div class="font-bold text-sm">Theo HSK</div>
+        <div class="text-xs text-slate-400">Chọn cấp HSK 1-7</div>
+      </button>
+      <button onclick="fcSelectSource('bookmark')" class="fc-src-btn border-2 rounded-xl p-4 text-left hover:border-primary hover:shadow-md transition-all" data-src="bookmark">
+        <div class="text-2xl mb-1">🔖</div>
+        <div class="font-bold text-sm">Từ Bookmark</div>
+        <div class="text-xs text-slate-400">Bộ từ đã lưu</div>
+      </button>
+      <button onclick="fcSelectSource('radical')" class="fc-src-btn border-2 rounded-xl p-4 text-left hover:border-primary hover:shadow-md transition-all" data-src="radical">
+        <div class="text-2xl mb-1">部</div>
+        <div class="font-bold text-sm">Theo Bộ thủ</div>
+        <div class="text-xs text-slate-400">Từ chứa bộ thủ</div>
+      </button>
+      <button onclick="fcSelectSource('custom')" class="fc-src-btn border-2 rounded-xl p-4 text-left hover:border-primary hover:shadow-md transition-all" data-src="custom">
+        <div class="text-2xl mb-1">✏️</div>
+        <div class="font-bold text-sm">Nhập tùy chọn</div>
+        <div class="text-xs text-slate-400">Nhập danh sách từ</div>
+      </button>
+    </div>
+
+    <!-- Source options (dynamic) -->
+    <div id="fc-source-options" class="mb-6 hidden"></div>
+
+    <!-- Mode selection -->
+    <h3 class="text-sm font-bold text-slate-700 mb-3">🎯 Chế độ học</h3>
+    <div class="flex gap-3 mb-6">
+      <button onclick="fcSelectMode('browse')" class="fc-mode-btn flex-1 border-2 rounded-xl p-3 text-center hover:border-primary transition-all" data-mode="browse">
+        <div class="text-xl mb-1">📖</div>
+        <div class="font-bold text-sm">Lướt xem</div>
+        <div class="text-[10px] text-slate-400">Xem lần lượt</div>
+      </button>
+      <button onclick="fcSelectMode('review')" class="fc-mode-btn flex-1 border-2 rounded-xl p-3 text-center hover:border-primary transition-all border-primary bg-blue-50" data-mode="review">
+        <div class="text-xl mb-1">🧠</div>
+        <div class="font-bold text-sm">Ôn tập</div>
+        <div class="text-[10px] text-slate-400">Leitner 3 hộp</div>
+      </button>
+    </div>
+
+    <!-- Display options -->
+    <h3 class="text-sm font-bold text-slate-700 mb-3">⚙️ Tùy chọn hiển thị</h3>
+    <div class="bg-slate-50 rounded-xl p-4 mb-6 space-y-3">
+      <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" id="fc-hide-pinyin" class="accent-primary w-4 h-4"><span class="text-sm">Ẩn Pinyin ở mặt trước (buộc nhớ)</span></label>
+      <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" id="fc-shuffle" checked class="accent-primary w-4 h-4"><span class="text-sm">Trộn ngẫu nhiên thứ tự</span></label>
+      <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" id="fc-reverse" class="accent-primary w-4 h-4"><span class="text-sm">Đảo thẻ (Nghĩa Việt → Chữ Hán)</span></label>
+    </div>
+
+    <!-- Start button -->
+    <div id="fc-start-info" class="text-sm text-slate-500 mb-3"></div>
+    <button onclick="fcStart()" id="fc-start-btn" class="w-full bg-primary text-white font-bold py-4 rounded-xl text-lg hover:bg-primary-dark transition-colors disabled:opacity-40 disabled:cursor-not-allowed" disabled>Bắt đầu ôn tập</button>
+  </div>
+
+  <!-- SUB: Play -->
+  <div id="fc-play" class="hidden">
+    <!-- Top bar -->
+    <div class="sticky top-16 md:top-20 z-40 bg-white border-b px-4 py-2">
+      <div class="container mx-auto max-w-lg flex items-center justify-between">
+        <button onclick="fcStop()" class="text-sm text-slate-400 hover:text-hanzi transition-colors">✕ Dừng</button>
+        <div class="text-sm font-medium"><span id="fc-progress-cur">0</span> / <span id="fc-progress-total">0</span></div>
+        <div id="fc-timer" class="text-xs text-slate-400 font-mono">0:00</div>
+      </div>
+      <div class="container mx-auto max-w-lg mt-1.5">
+        <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden"><div id="fc-progress-bar" class="h-full bg-primary rounded-full transition-all" style="width:0%"></div></div>
+      </div>
+    </div>
+    <!-- Card area -->
+    <div class="container mx-auto max-w-lg px-4 py-8 flex flex-col items-center min-h-[60vh] justify-center" id="fc-card-area">
+      <div id="fc-card-wrapper" class="w-full max-w-sm" style="perspective:1200px">
+        <div id="fc-card" class="relative w-full cursor-pointer transition-transform duration-500" style="transform-style:preserve-3d" onclick="fcFlip()">
+          <!-- Front -->
+          <div id="fc-front" class="rounded-2xl border-2 shadow-lg p-8 text-center bg-white" style="backface-visibility:hidden">
+            <div id="fc-front-content"></div>
+          </div>
+          <!-- Back -->
+          <div id="fc-back" class="rounded-2xl border-2 shadow-lg p-6 bg-gradient-to-br from-blue-50 to-amber-50 absolute inset-0 overflow-y-auto" style="backface-visibility:hidden;transform:rotateY(180deg)">
+            <div id="fc-back-content"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Leitner boxes indicator (review mode) -->
+      <div id="fc-boxes" class="hidden flex gap-4 mt-6 text-xs text-slate-400">
+        <span>📥 Hộp 1: <strong id="fc-box1">0</strong></span>
+        <span>📦 Hộp 2: <strong id="fc-box2">0</strong></span>
+        <span>✅ Hộp 3: <strong id="fc-box3">0</strong></span>
+      </div>
+    </div>
+    <!-- Bottom controls -->
+    <div class="sticky bottom-0 bg-white border-t px-4 py-4">
+      <div class="container mx-auto max-w-lg">
+        <!-- Browse controls -->
+        <div id="fc-ctrl-browse" class="hidden flex items-center justify-between">
+          <button onclick="fcPrev()" class="px-6 py-3 border-2 rounded-xl text-sm font-medium hover:bg-slate-50 transition-colors">← Trước</button>
+          <button onclick="fcFlip()" class="px-6 py-3 border-2 border-primary text-primary rounded-xl text-sm font-medium hover:bg-blue-50 transition-colors">🔄 Lật thẻ</button>
+          <button onclick="fcNext()" class="px-6 py-3 bg-primary text-white rounded-xl text-sm font-medium hover:bg-primary-dark transition-colors">Tiếp →</button>
+        </div>
+        <!-- Review controls -->
+        <div id="fc-ctrl-review" class="hidden flex items-center gap-3">
+          <button onclick="fcAnswer(false)" class="flex-1 py-3 border-2 border-red-300 text-red-600 rounded-xl font-bold text-sm hover:bg-red-50 transition-colors">❌ Chưa nhớ</button>
+          <button onclick="fcFlip()" class="px-5 py-3 border-2 border-slate-200 rounded-xl text-sm font-medium hover:bg-slate-50 transition-colors">🔄 Lật</button>
+          <button onclick="fcAnswer(true)" class="flex-1 py-3 border-2 border-green-300 text-green-600 rounded-xl font-bold text-sm hover:bg-green-50 transition-colors">✅ Đã nhớ</button>
+        </div>
+        <!-- Speaker -->
+        <div class="flex justify-center mt-2">
+          <button onclick="fcSpeak()" class="text-primary hover:bg-blue-50 px-4 py-1.5 rounded-lg text-sm transition-colors">🔊 Phát âm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUB: Result -->
+  <div id="fc-result" class="hidden container mx-auto max-w-lg px-4 py-12 text-center">
+    <div class="text-6xl mb-4">🎉</div>
+    <h2 class="text-2xl font-bold mb-2">Hoàn thành!</h2>
+    <div id="fc-result-stats" class="bg-white border-2 rounded-xl p-6 mb-6 text-left space-y-3"></div>
+    <div class="flex flex-col gap-3">
+      <button onclick="fcReplayWrong()" id="fc-replay-wrong-btn" class="w-full py-3 border-2 border-red-300 text-red-600 rounded-xl font-medium text-sm hover:bg-red-50 transition-colors hidden">🔄 Ôn lại từ chưa nhớ</button>
+      <button onclick="fcReplayAll()" class="w-full py-3 border-2 border-primary text-primary rounded-xl font-medium text-sm hover:bg-blue-50 transition-colors">📖 Ôn lại tất cả</button>
+      <button onclick="fcExportPdf()" class="w-full py-3 border-2 border-green-400 text-green-700 rounded-xl font-medium text-sm hover:bg-green-50 transition-colors">📄 Xuất Flashcard PDF</button>
+      <button onclick="fcBackToSetup()" class="w-full py-3 bg-slate-100 rounded-xl font-medium text-sm text-slate-600 hover:bg-slate-200 transition-colors">🏠 Quay lại thiết lập</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: QUIZ ===== -->
+<div id="page-quiz" class="page">
+  <!-- SUB: Setup -->
+  <div id="qz-setup" class="container mx-auto max-w-3xl px-4 py-6">
+    <h2 class="text-2xl font-bold mb-2">🧩 Quiz Kiểm Tra</h2>
+    <p class="text-sm text-slate-500 mb-6">Kiểm tra kiến thức với nhiều dạng câu hỏi trắc nghiệm được tạo tự động từ kho dữ liệu 11,000+ từ.</p>
+
+    <!-- Source selection -->
+    <h3 class="text-sm font-bold text-slate-700 mb-3">📂 Chọn nguồn từ vựng</h3>
+    <div class="grid grid-cols-2 gap-3 mb-6">
+      <button onclick="qzSelectSource('hsk')" class="qz-src-btn border-2 rounded-xl p-4 text-left hover:border-primary hover:shadow-md transition-all" data-src="hsk">
+        <div class="text-2xl mb-1">📚</div>
+        <div class="font-bold text-sm">Theo HSK</div>
+        <div class="text-xs text-slate-400">Chọn cấp HSK 1-7</div>
+      </button>
+      <button onclick="qzSelectSource('bookmark')" class="qz-src-btn border-2 rounded-xl p-4 text-left hover:border-primary hover:shadow-md transition-all" data-src="bookmark">
+        <div class="text-2xl mb-1">🔖</div>
+        <div class="font-bold text-sm">Từ Bookmark</div>
+        <div class="text-xs text-slate-400">Bộ từ đã lưu</div>
+      </button>
+      <button onclick="qzSelectSource('radical')" class="qz-src-btn border-2 rounded-xl p-4 text-left hover:border-primary hover:shadow-md transition-all" data-src="radical">
+        <div class="text-2xl mb-1">部</div>
+        <div class="font-bold text-sm">Theo Bộ thủ</div>
+        <div class="text-xs text-slate-400">Từ chứa bộ thủ</div>
+      </button>
+      <button onclick="qzSelectSource('custom')" class="qz-src-btn border-2 rounded-xl p-4 text-left hover:border-primary hover:shadow-md transition-all" data-src="custom">
+        <div class="text-2xl mb-1">✏️</div>
+        <div class="font-bold text-sm">Nhập tùy chọn</div>
+        <div class="text-xs text-slate-400">Nhập danh sách từ</div>
+      </button>
+    </div>
+    <div id="qz-source-options" class="mb-6 hidden"></div>
+
+    <!-- Quiz type selection -->
+    <h3 class="text-sm font-bold text-slate-700 mb-3">🎮 Chọn dạng Quiz</h3>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+      <label class="qz-type-label border-2 rounded-xl p-3 text-center cursor-pointer hover:border-primary hover:shadow-sm transition-all border-primary bg-blue-50">
+        <input type="checkbox" class="qz-type-cb hidden" value="hanzi_to_viet" checked>
+        <div class="text-2xl mb-1">🀄→🇻🇳</div>
+        <div class="font-bold text-xs">Hán → Nghĩa Việt</div>
+      </label>
+      <label class="qz-type-label border-2 rounded-xl p-3 text-center cursor-pointer hover:border-primary hover:shadow-sm transition-all">
+        <input type="checkbox" class="qz-type-cb hidden" value="viet_to_hanzi">
+        <div class="text-2xl mb-1">🇻🇳→🀄</div>
+        <div class="font-bold text-xs">Nghĩa Việt → Hán</div>
+      </label>
+      <label class="qz-type-label border-2 rounded-xl p-3 text-center cursor-pointer hover:border-primary hover:shadow-sm transition-all">
+        <input type="checkbox" class="qz-type-cb hidden" value="listen_to_hanzi">
+        <div class="text-2xl mb-1">🔊→🀄</div>
+        <div class="font-bold text-xs">Nghe → Chọn Hán</div>
+      </label>
+      <label class="qz-type-label border-2 rounded-xl p-3 text-center cursor-pointer hover:border-primary hover:shadow-sm transition-all">
+        <input type="checkbox" class="qz-type-cb hidden" value="hanzi_to_pinyin">
+        <div class="text-2xl mb-1">🀄→拼</div>
+        <div class="font-bold text-xs">Hán → Pinyin</div>
+      </label>
+      <label class="qz-type-label border-2 rounded-xl p-3 text-center cursor-pointer hover:border-primary hover:shadow-sm transition-all">
+        <input type="checkbox" class="qz-type-cb hidden" value="guess_radical">
+        <div class="text-2xl mb-1">🀄→部</div>
+        <div class="font-bold text-xs">Đoán Bộ thủ</div>
+      </label>
+      <label class="qz-type-label border-2 rounded-xl p-3 text-center cursor-pointer hover:border-primary hover:shadow-sm transition-all">
+        <input type="checkbox" class="qz-type-cb hidden" value="fill_blank">
+        <div class="text-2xl mb-1">📝___</div>
+        <div class="font-bold text-xs">Điền chữ thiếu</div>
+      </label>
+      <label class="qz-type-label border-2 rounded-xl p-3 text-center cursor-pointer hover:border-primary hover:shadow-sm transition-all">
+        <input type="checkbox" class="qz-type-cb hidden" value="context_fill">
+        <div class="text-2xl mb-1">📖✍️</div>
+        <div class="font-bold text-xs">Điền từ vào câu</div>
+      </label>
+    </div>
+
+    <!-- Options -->
+    <h3 class="text-sm font-bold text-slate-700 mb-3">⚙️ Tùy chọn</h3>
+    <div class="bg-slate-50 rounded-xl p-4 mb-6 space-y-3">
+      <div class="flex items-center gap-4">
+        <label class="text-sm text-slate-600">Số câu hỏi:</label>
+        <select id="qz-count" class="px-3 py-1.5 border rounded-lg text-sm">
+          <option value="10">10 câu</option>
+          <option value="20" selected>20 câu</option>
+          <option value="30">30 câu</option>
+          <option value="50">50 câu</option>
+        </select>
+      </div>
+      <div class="flex items-center gap-4">
+        <label class="text-sm text-slate-600">Thời gian mỗi câu:</label>
+        <select id="qz-time-limit" class="px-3 py-1.5 border rounded-lg text-sm">
+          <option value="0" selected>Không giới hạn</option>
+          <option value="10">10 giây</option>
+          <option value="15">15 giây</option>
+          <option value="30">30 giây</option>
+        </select>
+      </div>
+      <label class="flex items-center gap-3 cursor-pointer">
+        <input type="checkbox" id="qz-show-answer" checked class="accent-primary w-4 h-4">
+        <span class="text-sm">Hiện đáp án đúng khi trả lời sai</span>
+      </label>
+    </div>
+
+    <!-- Start -->
+    <div id="qz-start-info" class="text-sm text-slate-500 mb-3"></div>
+    <button onclick="qzStart()" id="qz-start-btn" class="w-full bg-primary text-white font-bold py-4 rounded-xl text-lg hover:bg-primary-dark transition-colors disabled:opacity-40 disabled:cursor-not-allowed" disabled>🧩 Bắt đầu Quiz</button>
+  </div>
+
+  <!-- SUB: Play -->
+  <div id="qz-play" class="hidden">
+    <!-- Top bar -->
+    <div class="sticky top-16 md:top-20 z-40 bg-white border-b px-4 py-2">
+      <div class="container mx-auto max-w-lg flex items-center justify-between">
+        <button onclick="qzStop()" class="text-sm text-slate-400 hover:text-hanzi transition-colors">✕ Dừng</button>
+        <div class="text-sm font-medium">Câu <span id="qz-cur">1</span> / <span id="qz-total">20</span></div>
+        <div class="flex items-center gap-3">
+          <span id="qz-streak-badge" class="hidden text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">🔥 0</span>
+          <span id="qz-timer" class="text-xs text-slate-400 font-mono">0:00</span>
+        </div>
+      </div>
+      <div class="container mx-auto max-w-lg mt-1.5">
+        <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden"><div id="qz-progress-bar" class="h-full bg-primary rounded-full transition-all" style="width:0%"></div></div>
+      </div>
+      <!-- Per-question timer bar -->
+      <div id="qz-q-timer-bar" class="hidden container mx-auto max-w-lg mt-1">
+        <div class="h-1 bg-slate-100 rounded-full overflow-hidden"><div id="qz-q-timer-fill" class="h-full bg-amber-400 rounded-full transition-all" style="width:100%"></div></div>
+      </div>
+    </div>
+
+    <!-- Question area -->
+    <div class="container mx-auto max-w-lg px-4 py-6 min-h-[65vh]">
+      <!-- Question card -->
+      <div id="qz-question-card" class="bg-gradient-to-br from-blue-50 to-amber-50 rounded-2xl border-2 p-6 mb-6 text-center">
+        <div id="qz-q-type-label" class="text-xs font-bold text-primary uppercase tracking-wider mb-3"></div>
+        <div id="qz-q-content" class="mb-3"></div>
+        <div id="qz-q-hint" class="text-sm text-slate-400"></div>
+      </div>
+
+      <!-- Options -->
+      <div id="qz-options" class="space-y-3"></div>
+
+      <!-- Feedback -->
+      <div id="qz-feedback" class="hidden mt-4 p-4 rounded-xl border-2 text-sm">
+        <div id="qz-feedback-content"></div>
+      </div>
+
+      <!-- Next button (shown after answering) -->
+      <button id="qz-next-btn" onclick="qzNext()" class="hidden w-full mt-4 py-3 bg-primary text-white rounded-xl font-medium text-sm hover:bg-primary-dark transition-colors">Câu tiếp theo →</button>
+    </div>
+  </div>
+
+  <!-- SUB: Result -->
+  <div id="qz-result" class="hidden container mx-auto max-w-lg px-4 py-12 text-center">
+    <div id="qz-result-emoji" class="text-6xl mb-4">🎉</div>
+    <h2 class="text-2xl font-bold mb-2">Kết quả Quiz</h2>
+    <div id="qz-result-badge" class="inline-flex items-center rounded-full px-4 py-1 text-sm font-bold mb-4"></div>
+    <div id="qz-result-stats" class="bg-white border-2 rounded-xl p-6 mb-6 text-left space-y-3"></div>
+    <!-- Wrong answers detail -->
+    <div id="qz-result-wrong" class="hidden bg-red-50 border-2 border-red-200 rounded-xl p-4 mb-6 text-left">
+      <h3 class="font-bold text-sm text-red-700 mb-3">❌ Câu trả lời sai</h3>
+      <div id="qz-wrong-list" class="space-y-2 max-h-64 overflow-y-auto"></div>
+    </div>
+    <div class="flex flex-col gap-3">
+      <button onclick="qzReplayWrong()" id="qz-replay-wrong-btn" class="hidden w-full py-3 border-2 border-red-300 text-red-600 rounded-xl font-medium text-sm hover:bg-red-50 transition-colors">🔄 Quiz lại từ sai</button>
+      <button onclick="qzReplayAll()" class="w-full py-3 border-2 border-primary text-primary rounded-xl font-medium text-sm hover:bg-blue-50 transition-colors">🔄 Làm lại Quiz</button>
+      <button onclick="qzBackToSetup()" class="w-full py-3 bg-slate-100 rounded-xl font-medium text-sm text-slate-600 hover:bg-slate-200 transition-colors">🏠 Quay lại thiết lập</button>
     </div>
   </div>
 </div>
