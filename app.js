@@ -190,16 +190,18 @@
     }
   };
 
-  // Simple toast notification
-  function showToast(msg) {
+  // Enhanced toast notification with animation
+  function showToast(msg, type) {
     const old = document.getElementById('cw-toast');
-    if (old) old.remove();
+    if (old) { old.classList.add('hiding'); setTimeout(() => old.remove(), 300); }
+    const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+    const icon = icons[type] || '';
     const t = document.createElement('div');
     t.id = 'cw-toast';
-    t.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-5 py-3 rounded-xl text-sm font-medium shadow-lg z-[200] transition-opacity';
-    t.textContent = msg;
+    t.className = 'cw-toast fixed bottom-20 md:bottom-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-5 py-3 rounded-xl text-sm font-medium shadow-2xl z-[200] flex items-center gap-2 max-w-[90vw]';
+    t.innerHTML = (icon ? `<span>${icon}</span>` : '') + `<span>${msg}</span>`;
     document.body.appendChild(t);
-    setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2000);
+    setTimeout(() => { t.classList.add('hiding'); setTimeout(() => t.remove(), 300); }, 2500);
   }
 
   // Render bookmarks page
@@ -269,9 +271,23 @@
   let _skipPushState = false; // Flag to avoid pushing state during popstate handling
 
   function _doShowPage(name) {
-    $$('.page').forEach(p => p.classList.remove('active'));
+    // Fade out current page
+    const currentEl = $(`.page.active`);
+    if (currentEl) {
+      currentEl.style.opacity = '0';
+      setTimeout(() => currentEl.classList.remove('active'), 150);
+    }
+    // Fade in new page
     const el = $(`#page-${name}`);
-    if (el) el.classList.add('active');
+    if (el) {
+      setTimeout(() => {
+        $$('.page').forEach(p => { if (p !== el) p.classList.remove('active'); });
+        el.classList.add('active');
+        // Force reflow then fade in
+        el.offsetHeight;
+        el.style.opacity = '1';
+      }, currentEl ? 150 : 0);
+    }
     window.scrollTo(0, 0);
     _currentPage = name;
     if (name === 'library' && allWords.length && !rendered) {
@@ -280,6 +296,19 @@
     if (name === 'bookmarks') {
       renderBookmarksPage();
     }
+    // Sync bottom tab bar
+    _syncBottomTabs(name);
+  }
+
+  function _syncBottomTabs(pageName) {
+    const tabs = document.querySelectorAll('#bottom-tab-bar .btab');
+    tabs.forEach(tab => {
+      const tabPage = tab.getAttribute('data-page');
+      const isActive = tabPage === pageName || 
+        (tabPage === 'library' && pageName === 'detail') ||
+        (tabPage === 'bookmarks' && pageName === 'srs');
+      tab.classList.toggle('active', isActive);
+    });
   }
 
   window.showPage = function (name) {
@@ -329,8 +358,30 @@
     history.replaceState({ page: initialPage }, '', '#' + initialPage);
   })();
 
+  window.toggleMobileMenu = function () {
+    const menu = $('#mobile-menu');
+    const backdrop = $('#mobile-backdrop');
+    if (menu.classList.contains('open')) {
+      closeMobile();
+    } else {
+      menu.classList.remove('hidden');
+      backdrop.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        menu.classList.add('open');
+        backdrop.classList.add('open');
+      });
+    }
+  };
+
   window.closeMobile = function () {
-    $('#mobile-menu').classList.add('hidden');
+    const menu = $('#mobile-menu');
+    const backdrop = $('#mobile-backdrop');
+    menu.classList.remove('open');
+    backdrop.classList.remove('open');
+    setTimeout(() => {
+      menu.classList.add('hidden');
+      backdrop.classList.add('hidden');
+    }, 300);
   };
 
   // ===== DATA LOADING =====
@@ -414,21 +465,26 @@
 
   function createWordRow(w) {
     const div = document.createElement('div');
-    div.className = 'flex items-center gap-4 py-3 px-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors group';
+    div.className = 'word-card flex items-center gap-3 cursor-pointer group';
     const def = w.vietnamese || w.english || '';
+    const hskLv = Math.min(w.hsk || 1, 7);
     div.innerHTML = `
-      <span class="font-cn text-2xl font-bold text-hanzi min-w-[64px] text-center">${w.hanzi}</span>
+      <span class="font-cn text-2xl font-bold text-hanzi min-w-[56px] text-center leading-tight">${w.hanzi}</span>
       <div class="flex-1 min-w-0">
-        <div class="text-sm text-primary font-medium">${w.pinyin}</div>
-        <div class="text-xs text-slate-500 truncate">${def}</div>
+        <div class="flex items-center gap-2">
+          <span class="text-sm text-primary font-medium">${w.pinyin}</span>
+          <span class="hsk-badge hsk-badge-${hskLv}">HSK${w.hsk}</span>
+        </div>
+        <div class="text-xs text-slate-500 truncate mt-0.5">${def}</div>
       </div>
-      <span class="text-xs font-bold px-2 py-1 rounded bg-amber-50 text-amber-700 flex-shrink-0">HSK${w.hsk}</span>
-      <button class="bm-btn w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center hover:bg-amber-50 hover:border-amber-300 transition-colors flex-shrink-0 opacity-0 group-hover:opacity-100" title="Thêm vào hồ sơ học">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      </button>
-      <button class="speak-btn w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-primary hover:bg-primary hover:text-white hover:border-primary transition-colors flex-shrink-0 opacity-0 group-hover:opacity-100" title="Phát âm">
-        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 8.5v7a4.47 4.47 0 002.5-3.5z" fill="currentColor"/></svg>
-      </button>`;
+      <div class="quick-actions flex items-center gap-1 flex-shrink-0">
+        <button class="speak-btn w-8 h-8 rounded-lg flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors" title="Phát âm">
+          <svg viewBox="0 0 24 24" width="16" height="16"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 8.5v7a4.47 4.47 0 002.5-3.5z" fill="currentColor"/></svg>
+        </button>
+        <button class="bm-btn w-8 h-8 rounded-lg flex items-center justify-center hover:bg-amber-50 text-slate-400 hover:text-amber-600 transition-colors" title="Lưu">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </button>
+      </div>`;
     div.addEventListener('click', e => {
       if (e.target.closest('.speak-btn')) { e.stopPropagation(); speakText(w.hanzi); return; }
       if (e.target.closest('.bm-btn')) { e.stopPropagation(); addToBookmark(w.hanzi); return; }
@@ -458,17 +514,37 @@
   // ===== AUDIO PLAYBACK (MP3 first, TTS fallback) =====
   let currentAudio = null;
   let speakId = 0;
+  let audioManifest = null; // Set of available audio file keys
+
+  // Load audio manifest (list of available MP3 files)
+  async function loadAudioManifest() {
+    try {
+      const data = await fetch('sounds/manifest.json').then(r => r.json());
+      audioManifest = new Set(data);
+      console.log('[Audio] Manifest loaded:', audioManifest.size, 'files');
+    } catch (e) {
+      console.warn('[Audio] Manifest not found, will try loading MP3 directly');
+      audioManifest = null;
+    }
+  }
 
   function speakText(text) {
     // Stop any currently playing audio/TTS
     if (currentAudio) { currentAudio.pause(); currentAudio = null; }
     if ('speechSynthesis' in window) speechSynthesis.cancel();
 
+    // If manifest loaded and this text is NOT in manifest, skip MP3 entirely
+    if (audioManifest && !audioManifest.has(text)) {
+      fallbackTTS(text);
+      return;
+    }
+
     const thisId = ++speakId;
     let resolved = false;
 
-    // Try MP3: sounds/cmn-{hanzi}.mp3
-    const audio = new Audio('sounds/cmn-' + text + '.mp3');
+    // Try MP3: sounds/cmn-{hanzi}.mp3 with proper URL encoding
+    const audioUrl = 'sounds/cmn-' + encodeURIComponent(text) + '.mp3';
+    const audio = new Audio(audioUrl);
     currentAudio = audio;
 
     audio.oncanplaythrough = function () {
@@ -481,13 +557,14 @@
       resolved = true;
       fallbackTTS(text);
     };
-    // Timeout fallback
+    // Timeout fallback - 8s for slow connections (GitHub Pages CDN)
     setTimeout(function () {
       if (resolved || thisId !== speakId) return;
       resolved = true;
       audio.pause();
+      currentAudio = null;
       fallbackTTS(text);
-    }, 3000);
+    }, 8000);
   }
 
   function fallbackTTS(text) {
@@ -3785,5 +3862,6 @@
 
   // ===== START =====
   init().then(() => { initWotd(); });
+  loadAudioManifest(); // Pre-load audio manifest for fast MP3 lookup
   initVisitorCounter();
 })();
