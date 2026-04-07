@@ -143,7 +143,7 @@
     const overlay = document.createElement('div');
     overlay.id = 'bm-picker-overlay';
     overlay.className = 'fixed inset-0 bg-black/30 z-[100] flex items-center justify-center p-4';
-    overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+    overlay.onclick = e => { if (e.target === overlay) { overlay.remove(); history.back(); } };
     overlay.innerHTML = `<div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
       <div class="px-5 py-4 border-b bg-slate-50">
         <h3 class="font-bold text-lg">🔖 Thêm <span class="font-cn text-hanzi">${hanzi}</span> vào bộ</h3>
@@ -154,6 +154,8 @@
       </div>
     </div>`;
     document.body.appendChild(overlay);
+    // Push modal state to history so Back button closes picker
+    history.pushState({ page: _currentPage, modal: 'bookmark-picker' }, '');
   }
 
   window.pickBookmarkSet = function (setId, hanzi) {
@@ -171,12 +173,12 @@
       showToast('Đã xóa ' + hanzi + ' khỏi "' + s.name + '"');
     }
     const overlay = document.getElementById('bm-picker-overlay');
-    if (overlay) overlay.remove();
+    if (overlay) { overlay.remove(); history.back(); }
   };
 
   window.pickerCreateNew = function (hanzi) {
     const overlay = document.getElementById('bm-picker-overlay');
-    if (overlay) overlay.remove();
+    if (overlay) { overlay.remove(); history.back(); }
     const id = createBookmarkSet();
     if (!id) return;
     const sets = loadBookmarks();
@@ -262,19 +264,70 @@
     showToast('Đã điền ' + s.words.length + ' từ từ "' + s.name + '" vào trang PDF');
   };
 
-  // ===== PAGE ROUTING =====
-  window.showPage = function (name) {
+  // ===== PAGE ROUTING with History API =====
+  let _currentPage = 'home';
+  let _skipPushState = false; // Flag to avoid pushing state during popstate handling
+
+  function _doShowPage(name) {
     $$('.page').forEach(p => p.classList.remove('active'));
     const el = $(`#page-${name}`);
     if (el) el.classList.add('active');
     window.scrollTo(0, 0);
+    _currentPage = name;
     if (name === 'library' && allWords.length && !rendered) {
       applyFilters();
     }
     if (name === 'bookmarks') {
       renderBookmarksPage();
     }
+  }
+
+  window.showPage = function (name) {
+    // Close any open modals first
+    const radModal = document.getElementById('radical-modal-overlay');
+    if (radModal) radModal.remove();
+    const bmPicker = document.getElementById('bm-picker-overlay');
+    if (bmPicker) bmPicker.remove();
+
+    _doShowPage(name);
+
+    // Push to browser history (unless we're handling popstate)
+    if (!_skipPushState) {
+      history.pushState({ page: name }, '', '#' + name);
+    }
   };
+
+  // Handle browser Back/Forward buttons
+  window.addEventListener('popstate', function (e) {
+    // First check if there's a modal open — close it instead of navigating
+    const radModal = document.getElementById('radical-modal-overlay');
+    if (radModal) { radModal.remove(); return; }
+    const bmPicker = document.getElementById('bm-picker-overlay');
+    if (bmPicker) { bmPicker.remove(); return; }
+    const fcPdfModal = document.getElementById('fc-pdf-modal');
+    if (fcPdfModal) { fcPdfModal.remove(); return; }
+
+    // Navigate to the page from history state
+    _skipPushState = true;
+    if (e.state && e.state.page) {
+      _doShowPage(e.state.page);
+      // Trigger extra page logic (radicals, flashcard, quiz)
+      if (e.state.page === 'radicals') renderRadicalsPage();
+    } else {
+      // No state = initial page (home), or parse from hash
+      const hash = location.hash.replace('#', '') || 'home';
+      _doShowPage(hash);
+      if (hash === 'radicals') renderRadicalsPage();
+    }
+    _skipPushState = false;
+  });
+
+  // Set initial history state
+  (function initHistory() {
+    const hash = location.hash.replace('#', '');
+    const initialPage = hash || 'home';
+    history.replaceState({ page: initialPage }, '', '#' + initialPage);
+  })();
 
   window.closeMobile = function () {
     $('#mobile-menu').classList.add('hidden');
@@ -1384,7 +1437,7 @@
     const overlay = document.createElement('div');
     overlay.id = 'radical-modal-overlay';
     overlay.className = 'fixed inset-0 bg-black/40 z-[150] flex items-center justify-center p-4';
-    overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+    overlay.onclick = e => { if (e.target === overlay) closeRadicalModal(); };
     overlay.innerHTML = `
       <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[85vh] overflow-hidden flex flex-col animate-in">
         <div class="flex items-center justify-between px-5 py-3 border-b bg-gradient-to-r from-red-50 to-amber-50">
@@ -1395,6 +1448,9 @@
         <div class="rm-content overflow-y-auto p-5 flex-1">${buildTabContent('info')}</div>
       </div>`;
     document.body.appendChild(overlay);
+
+    // Push modal state to history so Back button closes modal
+    history.pushState({ page: _currentPage, modal: 'radical' }, '');
 
     // Style
     if (!document.getElementById('radical-modal-style')) {
@@ -1592,7 +1648,7 @@
 
   window.closeRadicalModal = function () {
     const el = document.getElementById('radical-modal-overlay');
-    if (el) el.remove();
+    if (el) { el.remove(); history.back(); }
   };
 
   // ===== RADICALS PAGE =====
@@ -2610,28 +2666,67 @@
   };
 
   // --- Generate questions ---
+  // Each word can have multiple questions with different quiz types.
+  // "count" = total number of questions to generate (can exceed word count).
   function qzGenerateQuestions(words, types, count) {
     const questions = [];
     const shuffledWords = qzShuffle(words);
+    const usedCombos = new Set(); // Track "word+type" combos to prefer variety
     let attempts = 0;
-    const maxAttempts = count * 3;
+    const maxAttempts = count * 5;
+
+    // Round-robin: cycle through words, for each word try different types
     let wordIdx = 0;
+    let round = 0; // how many full cycles through all words
+
     while (questions.length < count && attempts < maxAttempts) {
       const word = shuffledWords[wordIdx % shuffledWords.length];
+
+      // Try to pick a type not yet used for this word
+      const shuffledTypes = qzShuffle(types);
+      let generated = false;
+      for (const type of shuffledTypes) {
+        const comboKey = word.hanzi + '|' + type;
+        // In first rounds, prefer unused combos; later allow repeats
+        if (round < types.length && usedCombos.has(comboKey)) continue;
+
+        const gen = qzGenerators[type];
+        if (!gen) continue;
+        const q = gen(word, words);
+        if (!q) continue;
+        const uniqueOpts = [...new Set(q.options)];
+        if (uniqueOpts.length < 4) continue;
+        q.options = uniqueOpts.slice(0, 4);
+        q.userAnswer = null;
+        q.isCorrect = null;
+        q.timeSpent = 0;
+        questions.push(q);
+        usedCombos.add(comboKey);
+        generated = true;
+        break;
+      }
+
+      if (!generated) {
+        // Fallback: try any type (allow repeats)
+        const type = types[Math.floor(Math.random() * types.length)];
+        const gen = qzGenerators[type];
+        if (gen) {
+          const q = gen(word, words);
+          if (q) {
+            const uniqueOpts = [...new Set(q.options)];
+            if (uniqueOpts.length >= 4) {
+              q.options = uniqueOpts.slice(0, 4);
+              q.userAnswer = null;
+              q.isCorrect = null;
+              q.timeSpent = 0;
+              questions.push(q);
+            }
+          }
+        }
+      }
+
       wordIdx++;
-      const type = types[Math.floor(Math.random() * types.length)];
-      const gen = qzGenerators[type];
-      if (!gen) { attempts++; continue; }
-      const q = gen(word, words);
-      if (!q) { attempts++; continue; }
-      // Ensure no duplicate options
-      const uniqueOpts = [...new Set(q.options)];
-      if (uniqueOpts.length < 4) { attempts++; continue; }
-      q.options = uniqueOpts.slice(0, 4);
-      q.userAnswer = null;
-      q.isCorrect = null;
-      q.timeSpent = 0;
-      questions.push(q);
+      if (wordIdx % shuffledWords.length === 0) round++;
       attempts++;
     }
     return questions;
@@ -2646,7 +2741,7 @@
     const count = parseInt($('#qz-count')?.value) || 20;
     qzTimeLimit = parseInt($('#qz-time-limit')?.value) || 0;
     qzSourceWords = words;
-    qzQuestions = qzGenerateQuestions(words, qzSelectedTypes, Math.min(count, words.length));
+    qzQuestions = qzGenerateQuestions(words, qzSelectedTypes, count);
     if (!qzQuestions.length) { showToast('Không tạo được câu hỏi. Thử đổi dạng quiz.'); return; }
     qzIdx = 0; qzScore = 0; qzStreak = 0; qzMaxStreak = 0; qzWrongList = []; qzAnswered = false;
     qzSettings = { count, types: [...qzSelectedTypes], source: qzSource, timeLimit: qzTimeLimit };
@@ -2923,7 +3018,7 @@
     if (words.length < 4) { qzBackToSetup(); return; }
     const count = parseInt($('#qz-count')?.value) || 20;
     qzSourceWords = words;
-    qzQuestions = qzGenerateQuestions(words, qzSelectedTypes, Math.min(count, words.length));
+    qzQuestions = qzGenerateQuestions(words, qzSelectedTypes, count);
     if (!qzQuestions.length) { qzBackToSetup(); return; }
     qzIdx = 0; qzScore = 0; qzStreak = 0; qzMaxStreak = 0; qzWrongList = []; qzAnswered = false;
     $('#qz-result').classList.add('hidden'); $('#qz-play').classList.remove('hidden');
@@ -2942,23 +3037,772 @@
   window.showPage = function (name) {
     _origShowPage(name);
     if (name === 'radicals') renderRadicalsPage();
+    if (name === 'home') initWotd();
     if (name === 'flashcard') {
-      // Reset to setup view
       const setup = $('#fc-setup'), play = $('#fc-play'), result = $('#fc-result');
-      if (setup && play && result && play.classList.contains('hidden') && result.classList.contains('hidden')) {
-        // Already on setup, do nothing
-      }
+      if (setup && play && result && play.classList.contains('hidden') && result.classList.contains('hidden')) {}
     }
     if (name === 'quiz') {
-      // Reset to setup view if not playing
       const setup = $('#qz-setup'), play = $('#qz-play'), result = $('#qz-result');
-      if (setup && play && result && play.classList.contains('hidden') && result.classList.contains('hidden')) {
-        // Already on setup
+      if (setup && play && result && play.classList.contains('hidden') && result.classList.contains('hidden')) {}
+    }
+    if (name === 'srs') srsLoadDashboard();
+  };
+
+  // ====================================================================
+  // ===== FEATURE: WORD OF THE DAY (Từ của ngày) =====
+  // ====================================================================
+  let wotdWord = null;
+  let wotdRandom = false;
+
+  function getWotdIndex(dateStr) {
+    // Simple hash of date string to get a stable index
+    let h = 0;
+    for (let i = 0; i < dateStr.length; i++) h = ((h << 5) - h + dateStr.charCodeAt(i)) | 0;
+    return Math.abs(h);
+  }
+
+  function initWotd() {
+    if (!allWords.length) return;
+    const sec = $('#wotd-section');
+    if (!sec) return;
+
+    if (!wotdRandom) {
+      const today = new Date();
+      const dateStr = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+      const idx = getWotdIndex(dateStr) % allWords.length;
+      wotdWord = allWords[idx];
+      const el = $('#wotd-date');
+      if (el) el.textContent = today.toLocaleDateString('vi-VN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    }
+
+    sec.classList.remove('hidden');
+    const w = wotdWord;
+    $('#wotd-hanzi').textContent = w.hanzi;
+    $('#wotd-pinyin').textContent = w.pinyin;
+    const viDef = (w.vietnamese || '').split(/[;；]/)[0].trim();
+    $('#wotd-vi').textContent = viDef ? '🇻🇳 ' + viDef : '';
+    const enDef = (w.english || '').split(/[;；]/)[0].trim();
+    $('#wotd-en').textContent = enDef ? '🇬🇧 ' + enDef : '';
+
+    // SRS info
+    const srs = getSrsData(w.hanzi);
+    const srsEl = $('#wotd-srs-info');
+    if (srs && srsEl) {
+      srsEl.classList.remove('hidden');
+      const lvLabels = ['Mới','Đang học','Ôn tập','Quen thuộc','Nhớ lâu','Thành thạo'];
+      srsEl.textContent = '📊 SRS: ' + (lvLabels[srs.level]||'Mới') + ' · Ôn lại: ' + srs.nextReview;
+    } else if (srsEl) {
+      srsEl.classList.add('hidden');
+    }
+
+    // Mini stroke canvas
+    const canvas = $('#wotd-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, 160, 160);
+      // Draw grid
+      ctx.strokeStyle = '#fde68a'; ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.moveTo(80, 0); ctx.lineTo(80, 160); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, 80); ctx.lineTo(160, 80); ctx.stroke();
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(160, 160); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(160, 0); ctx.lineTo(0, 160); ctx.stroke();
+      ctx.setLineDash([]);
+      // Draw first character
+      const firstChar = w.hanzi[0];
+      if (characters[firstChar] && characters[firstChar].strokes) {
+        const strokes = characters[firstChar].strokes;
+        ctx.save();
+        // Transform from 1024x1024 to 160x160, flip Y
+        ctx.translate(10, 150);
+        ctx.scale(140/1024, -140/1024);
+        strokes.forEach(s => {
+          const p = new Path2D(s);
+          ctx.fillStyle = '#1e293b';
+          ctx.fill(p);
+        });
+        ctx.restore();
+      } else {
+        ctx.font = 'bold 100px "Noto Sans SC", sans-serif';
+        ctx.fillStyle = '#dc2626';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(firstChar, 80, 85);
       }
+    }
+
+    // Related words
+    const related = findRelatedWords(w.hanzi, 8);
+    const relSec = $('#wotd-related');
+    const relList = $('#wotd-related-list');
+    if (related.length && relSec && relList) {
+      relSec.classList.remove('hidden');
+      relList.innerHTML = related.map(r => 
+        `<span class="inline-flex items-center gap-1 bg-white border rounded-lg px-2 py-1 text-sm cursor-pointer hover:border-primary hover:shadow transition-all" onclick="openDetailByHanzi('${r.hanzi.replace(/'/g,"\\'")}')">
+          <span class="font-cn font-bold text-hanzi">${r.hanzi}</span>
+          <span class="text-xs text-slate-400">${(r.vietnamese||r.english||'').split(/[;；]/)[0].trim().substring(0,15)}</span>
+        </span>`
+      ).join('');
+    } else if (relSec) {
+      relSec.classList.add('hidden');
+    }
+  }
+
+  window.wotdSpeak = function() { if (wotdWord) speakText(wotdWord.hanzi); };
+  window.wotdStroke = function() { if (wotdWord) { showPage('stroke'); strokeQuick(wotdWord.hanzi); } };
+  window.wotdBookmark = function() { if (wotdWord) showBookmarkPicker(wotdWord.hanzi); };
+  window.wotdNext = function() {
+    if (!allWords.length) return;
+    wotdRandom = true;
+    wotdWord = allWords[Math.floor(Math.random() * allWords.length)];
+    initWotd();
+  };
+
+  // ====================================================================
+  // ===== FEATURE: RELATED WORDS (Từ liên quan) =====
+  // ====================================================================
+  function findRelatedWords(hanzi, limit) {
+    if (!allWords.length) return [];
+    limit = limit || 12;
+    const chars = [...new Set(hanzi.split(''))];
+    const results = [];
+    const seen = new Set([hanzi]);
+
+    // 1. Words sharing characters (highest priority)
+    for (const w of allWords) {
+      if (seen.has(w.hanzi)) continue;
+      let matchCount = 0;
+      for (const ch of chars) { if (w.hanzi.includes(ch)) matchCount++; }
+      if (matchCount > 0) {
+        results.push({ word: w, score: matchCount * 10 + (w.hanzi.length <= 2 ? 3 : 0) });
+        seen.add(w.hanzi);
+      }
+    }
+
+    // 2. Sort by score desc, then HSK asc
+    results.sort((a, b) => b.score - a.score || a.word.hsk - b.word.hsk);
+    return results.slice(0, limit).map(r => r.word);
+  }
+
+  // Expose for detail page
+  window.getRelatedWordsHtml = function(hanzi) {
+    const related = findRelatedWords(hanzi, 15);
+    if (!related.length) return '';
+    const chips = related.map(r => {
+      const vi = (r.vietnamese || r.english || '').split(/[;；]/)[0].trim().substring(0, 20);
+      return `<span class="inline-flex items-center gap-1 bg-white border rounded-lg px-2.5 py-1.5 text-sm cursor-pointer hover:border-primary hover:shadow-md transition-all" onclick="openDetailByHanzi('${r.hanzi.replace(/'/g,"\\'")}')">
+        <span class="font-cn font-bold text-hanzi">${r.hanzi}</span>
+        <span class="text-xs text-slate-400">${vi}</span>
+        <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-50 text-primary font-bold">HSK${r.hsk}</span>
+      </span>`;
+    }).join('');
+    return `<div class="bg-white rounded-xl border p-4 shadow-sm mt-4">
+      <h3 class="text-sm font-bold text-primary mb-3 pb-2 border-b">🔗 Từ liên quan</h3>
+      <div class="flex flex-wrap gap-1.5">${chips}</div>
+    </div>`;
+  };
+
+  // ====================================================================
+  // ===== FEATURE: SPACED REPETITION SYSTEM (SRS) =====
+  // ====================================================================
+  const SRS_KEY = 'cw_srs';
+
+  function loadSrs() {
+    try { return JSON.parse(localStorage.getItem(SRS_KEY)) || {}; } catch(e) { return {}; }
+  }
+  function saveSrs(data) { localStorage.setItem(SRS_KEY, JSON.stringify(data)); }
+
+  function getSrsData(hanzi) {
+    const d = loadSrs();
+    return d[hanzi] || null;
+  }
+
+  function updateSrs(hanzi, correct) {
+    const d = loadSrs();
+    if (!d[hanzi]) {
+      d[hanzi] = { level: 0, interval: 1, easeFactor: 2.5, correct: 0, wrong: 0, nextReview: todayStr(), lastReview: todayStr() };
+    }
+    const card = d[hanzi];
+    card.lastReview = todayStr();
+    if (correct) {
+      card.correct++;
+      if (card.level < 5) card.level++;
+      // SM-2 simplified intervals: 1, 3, 7, 14, 30, 60
+      const intervals = [1, 3, 7, 14, 30, 60];
+      card.interval = intervals[Math.min(card.level, 5)];
+      card.easeFactor = Math.max(1.3, card.easeFactor + 0.1);
+    } else {
+      card.wrong++;
+      card.level = 0;
+      card.interval = 1;
+      card.easeFactor = Math.max(1.3, card.easeFactor - 0.2);
+    }
+    // Calculate next review date
+    const next = new Date();
+    next.setDate(next.getDate() + card.interval);
+    card.nextReview = next.getFullYear() + '-' + String(next.getMonth()+1).padStart(2,'0') + '-' + String(next.getDate()).padStart(2,'0');
+    d[hanzi] = card;
+    saveSrs(d);
+    return card;
+  }
+
+  function todayStr() {
+    const t = new Date();
+    return t.getFullYear() + '-' + String(t.getMonth()+1).padStart(2,'0') + '-' + String(t.getDate()).padStart(2,'0');
+  }
+
+  function getDueWords() {
+    const d = loadSrs();
+    const today = todayStr();
+    const due = [];
+    for (const [hanzi, card] of Object.entries(d)) {
+      if (card.nextReview <= today) {
+        const w = allWords.find(x => x.hanzi === hanzi);
+        if (w) due.push(w);
+      }
+    }
+    return due;
+  }
+
+  // Hook into flashcard answer to update SRS
+  const _origFcAnswer = window.fcAnswer;
+  if (typeof _origFcAnswer === 'function') {
+    window.fcAnswer = function(correct) {
+      // Get current card hanzi before advancing
+      if (window._fcCurrentCards && window._fcCurrentIdx !== undefined) {
+        const card = window._fcCurrentCards[window._fcCurrentIdx];
+        if (card) updateSrs(card.hanzi, correct);
+      }
+      _origFcAnswer(correct);
+    };
+  }
+
+  // Expose SRS due count for UI
+  window.getSrsDueCount = function() { return getDueWords().length; };
+  window.getSrsDueWords = function() { return getDueWords(); };
+  window.updateSrs = updateSrs;
+  window.getSrsData = getSrsData;
+
+  // ===== SRS DASHBOARD =====
+  const SRS_HISTORY_KEY = 'cw_srs_history';
+  const SRS_STREAK_KEY = 'cw_srs_streak';
+
+  function srsLoadHistory() { try { return JSON.parse(localStorage.getItem(SRS_HISTORY_KEY)) || []; } catch(e) { return []; } }
+  function srsSaveHistory(h) { localStorage.setItem(SRS_HISTORY_KEY, JSON.stringify(h)); }
+  function srsLoadStreak() { try { return JSON.parse(localStorage.getItem(SRS_STREAK_KEY)) || { count: 0, lastDate: '' }; } catch(e) { return { count: 0, lastDate: '' }; } }
+  function srsSaveStreak(s) { localStorage.setItem(SRS_STREAK_KEY, JSON.stringify(s)); }
+
+  function srsUpdateStreak() {
+    const s = srsLoadStreak();
+    const today = todayStr();
+    if (s.lastDate === today) return s; // already updated today
+    const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+    const yStr = yesterday.getFullYear() + '-' + String(yesterday.getMonth()+1).padStart(2,'0') + '-' + String(yesterday.getDate()).padStart(2,'0');
+    if (s.lastDate === yStr) { s.count++; } else if (s.lastDate !== today) { s.count = 1; }
+    s.lastDate = today;
+    srsSaveStreak(s);
+    return s;
+  }
+
+  function srsLoadDashboard() {
+    const d = loadSrs();
+    const today = todayStr();
+    const entries = Object.entries(d);
+    const total = entries.length;
+    const due = getDueWords();
+    const dueCount = due.length;
+    const mastered = entries.filter(([,c]) => c.level >= 5).length;
+    const streak = srsLoadStreak();
+
+    // Overview cards
+    const dueEl = document.getElementById('srs-due-count');
+    const totalEl = document.getElementById('srs-total-count');
+    const masteredEl = document.getElementById('srs-mastered-count');
+    const streakEl = document.getElementById('srs-streak-days');
+    if (dueEl) dueEl.textContent = dueCount;
+    if (totalEl) totalEl.textContent = total;
+    if (masteredEl) masteredEl.textContent = mastered;
+    if (streakEl) streakEl.textContent = streak.count;
+
+    // Start area
+    const startArea = document.getElementById('srs-start-area');
+    const noDue = document.getElementById('srs-no-due');
+    const dueLabel = document.getElementById('srs-due-label');
+    if (dueCount > 0) {
+      if (startArea) startArea.classList.remove('hidden');
+      if (noDue) noDue.classList.add('hidden');
+      if (dueLabel) dueLabel.textContent = dueCount;
+    } else {
+      if (startArea) startArea.classList.add('hidden');
+      if (noDue) noDue.classList.toggle('hidden', total === 0);
+    }
+
+    // Level distribution bars
+    const lvLabels = ['Mới', 'Đang học', 'Ôn tập', 'Quen thuộc', 'Nhớ lâu', 'Thành thạo'];
+    const lvColors = ['bg-red-400', 'bg-orange-400', 'bg-yellow-400', 'bg-green-400', 'bg-blue-400', 'bg-purple-400'];
+    const lvEmoji = ['🔴', '🟠', '🟡', '🟢', '🔵', '🟣'];
+    const lvCounts = [0, 0, 0, 0, 0, 0];
+    for (const [, card] of entries) { lvCounts[Math.min(card.level || 0, 5)]++; }
+    const barsEl = document.getElementById('srs-level-bars');
+    if (barsEl) {
+      if (total === 0) {
+        barsEl.innerHTML = '<p class="text-sm text-slate-400 text-center py-4">Chưa có dữ liệu. Ôn tập Flashcard/Quiz để bắt đầu.</p>';
+      } else {
+        barsEl.innerHTML = lvCounts.map((cnt, i) => {
+          const pct = total > 0 ? Math.round((cnt / total) * 100) : 0;
+          return `<div class="flex items-center gap-3">
+            <span class="text-sm w-24 flex-shrink-0">${lvEmoji[i]} ${lvLabels[i]}</span>
+            <div class="flex-1 bg-slate-100 rounded-full h-5 overflow-hidden">
+              <div class="${lvColors[i]} h-full rounded-full transition-all flex items-center justify-end pr-1" style="width:${Math.max(pct, 2)}%">
+                ${pct >= 10 ? `<span class="text-white text-[10px] font-bold">${cnt}</span>` : ''}
+              </div>
+            </div>
+            <span class="text-xs text-slate-400 w-12 text-right">${cnt} (${pct}%)</span>
+          </div>`;
+        }).join('');
+      }
+    }
+
+    // Due words list
+    const dueListEl = document.getElementById('srs-due-list');
+    if (dueListEl) {
+      if (!due.length) {
+        dueListEl.innerHTML = '<p class="text-sm text-slate-400 text-center py-4">Không có từ nào cần ôn</p>';
+      } else {
+        const shown = due.slice(0, 30);
+        dueListEl.innerHTML = '<div class="flex flex-wrap gap-1.5">' + shown.map(w => {
+          const srsCard = d[w.hanzi];
+          const lvIdx = srsCard ? Math.min(srsCard.level || 0, 5) : 0;
+          const vi = (w.vietnamese || w.english || '').split(/[;；]/)[0].trim().substring(0, 15);
+          return `<span class="inline-flex items-center gap-1 bg-white border rounded-lg px-2 py-1.5 text-sm cursor-pointer hover:border-primary hover:shadow transition-all" onclick="openDetailByHanzi('${w.hanzi.replace(/'/g,"\\'")}')">
+            <span class="text-[10px]">${lvEmoji[lvIdx]}</span>
+            <span class="font-cn font-bold text-hanzi">${w.hanzi}</span>
+            <span class="text-xs text-slate-400">${vi}</span>
+          </span>`;
+        }).join('') + '</div>' + (due.length > 30 ? `<p class="text-xs text-slate-400 mt-2">+${due.length - 30} từ nữa</p>` : '');
+      }
+    }
+
+    // History
+    const histEl = document.getElementById('srs-history');
+    const hist = srsLoadHistory();
+    if (histEl) {
+      if (!hist.length) {
+        histEl.innerHTML = '<p class="text-sm text-slate-400 text-center py-4">Chưa có dữ liệu</p>';
+      } else {
+        const recent = hist.slice(-10).reverse();
+        histEl.innerHTML = '<div class="space-y-2">' + recent.map(h => {
+          const d = new Date(h.date);
+          const dateStr = d.toLocaleDateString('vi-VN', { day: 'numeric', month: 'short' });
+          const timeStr = d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+          return `<div class="flex items-center justify-between text-sm py-1.5 border-b border-slate-50 last:border-0">
+            <span class="text-slate-500">${dateStr} ${timeStr}</span>
+            <span>✅ ${h.correct || 0} · ❌ ${h.wrong || 0} · <span class="text-slate-400">${h.total || 0} từ</span></span>
+          </div>`;
+        }).join('') + '</div>';
+      }
+    }
+  }
+
+  window.srsStartReview = function() {
+    const due = getDueWords();
+    if (!due.length) { showToast('Không có từ cần ôn!'); return; }
+    // Use flashcard system with SRS source
+    fcSource = 'custom'; // we'll manually set deck
+    fcMode = 'review';
+    fcDeck = due;
+    // Shuffle
+    for (let i = fcDeck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [fcDeck[i], fcDeck[j]] = [fcDeck[j], fcDeck[i]];
+    }
+    fcIdx = 0; fcFlipped = false; fcCorrect = 0; fcWrong = 0; fcReviewed = 0;
+    fcWrongList = []; fcTotalCards = fcDeck.length; fcCorrectSet = new Set();
+    fcBoxes = { 1: fcDeck.map(w => ({ word: w, wrongCount: 0 })), 2: [], 3: [] };
+    fcQueue = [...fcBoxes[1]];
+
+    // Switch to flashcard page play mode
+    showPage('flashcard');
+    $('#fc-setup').classList.add('hidden');
+    $('#fc-play').classList.remove('hidden');
+    $('#fc-result').classList.add('hidden');
+    $('#fc-progress-total').textContent = fcTotalCards;
+    $('#fc-ctrl-browse').classList.add('hidden');
+    $('#fc-ctrl-review').classList.remove('hidden');
+    $('#fc-boxes').classList.remove('hidden');
+    fcTimerStart = Date.now();
+    if (fcTimerId) clearInterval(fcTimerId);
+    fcTimerId = setInterval(fcUpdateTimer, 1000);
+    fcNextReviewCard();
+    fcUpdateProgress();
+    fcUpdateBoxCounts();
+    fcSetupSwipe();
+
+    // Update SRS after each answer via hooking
+    const origAnswer = window.fcAnswer;
+    window.fcAnswer = function(correct) {
+      const entry = window._fcCurrentEntry;
+      if (entry && entry.word) {
+        updateSrs(entry.word.hanzi, correct);
+      }
+      origAnswer(correct);
+    };
+
+    // Record to history when done
+    const origShowResult = fcShowResult;
+    const _checkDone = setInterval(() => {
+      if ($('#fc-result') && !$('#fc-result').classList.contains('hidden')) {
+        clearInterval(_checkDone);
+        // Record history
+        const hist = srsLoadHistory();
+        hist.push({
+          date: new Date().toISOString(),
+          total: fcTotalCards,
+          correct: fcCorrect,
+          wrong: fcWrongList.length
+        });
+        if (hist.length > 100) hist.splice(0, hist.length - 100);
+        srsSaveHistory(hist);
+        // Update streak
+        srsUpdateStreak();
+      }
+    }, 500);
+  };
+
+  window.srsReset = function() {
+    if (!confirm('Xóa toàn bộ dữ liệu SRS? Hành động không thể hoàn tác.')) return;
+    localStorage.removeItem(SRS_KEY);
+    localStorage.removeItem(SRS_HISTORY_KEY);
+    localStorage.removeItem(SRS_STREAK_KEY);
+    showToast('Đã xóa dữ liệu SRS');
+    srsLoadDashboard();
+  };
+
+  // ====================================================================
+  // ===== FEATURE: READER MODE (Đọc hiểu văn bản) =====
+  // ====================================================================
+  let readerTokens = [];
+  let readerPinyinVisible = false;
+  let readerOrigText = '';
+
+  // Build a dictionary lookup for fast tokenization
+  function buildDict() {
+    const dict = new Set();
+    for (const w of allWords) dict.add(w.hanzi);
+    return dict;
+  }
+
+  // Greedy max-match tokenizer (left-to-right, longest match first)
+  function readerTokenize(text) {
+    const dict = buildDict();
+    const maxLen = 6; // max word length to try
+    const tokens = [];
+    let i = 0;
+    while (i < text.length) {
+      const ch = text[i];
+      // If not a CJK character, group non-CJK together
+      if (!isCJK(ch)) {
+        let j = i + 1;
+        while (j < text.length && !isCJK(text[j])) j++;
+        tokens.push({ text: text.substring(i, j), type: 'other' });
+        i = j;
+        continue;
+      }
+      // Try longest match first
+      let matched = false;
+      for (let len = Math.min(maxLen, text.length - i); len > 1; len--) {
+        const candidate = text.substring(i, i + len);
+        if (dict.has(candidate)) {
+          tokens.push({ text: candidate, type: 'word' });
+          i += len;
+          matched = true;
+          break;
+        }
+      }
+      if (!matched) {
+        // Single character
+        const w = allWords.find(x => x.hanzi === ch);
+        tokens.push({ text: ch, type: w ? 'word' : 'char' });
+        i++;
+      }
+    }
+    return tokens;
+  }
+
+  function isCJK(ch) {
+    const code = ch.charCodeAt(0);
+    return (code >= 0x4E00 && code <= 0x9FFF) || (code >= 0x3400 && code <= 0x4DBF) || (code >= 0x2E80 && code <= 0x2EFF);
+  }
+
+  function getHskColor(level) {
+    if (!level) return { bg: 'bg-slate-50', text: 'text-slate-500', border: 'border-slate-200', label: 'Ngoài HSK' };
+    if (level <= 2) return { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200', label: 'HSK ' + level };
+    if (level <= 4) return { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200', label: 'HSK ' + level };
+    if (level <= 6) return { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200', label: 'HSK ' + level };
+    return { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200', label: 'HSK ' + level };
+  }
+
+  window.readerAnalyze = function() {
+    const input = $('#reader-input').value.trim();
+    if (!input) return;
+    readerOrigText = input;
+    readerPinyinVisible = false;
+    readerTokens = readerTokenize(input);
+
+    // Stats
+    const wordTokens = readerTokens.filter(t => t.type === 'word');
+    const uniqueWords = [...new Set(wordTokens.map(t => t.text))];
+    const unknownTokens = readerTokens.filter(t => t.type === 'char');
+    const uniqueUnknown = [...new Set(unknownTokens.map(t => t.text))];
+
+    $('#reader-stat-total').textContent = wordTokens.length;
+    $('#reader-stat-unique').textContent = uniqueWords.length;
+    $('#reader-stat-unknown').textContent = uniqueUnknown.length;
+
+    // HSK distribution
+    const hskDist = {};
+    for (const tok of wordTokens) {
+      const w = allWords.find(x => x.hanzi === tok.text);
+      const lv = w ? w.hsk : 0;
+      const key = lv || 'N/A';
+      hskDist[key] = (hskDist[key] || 0) + 1;
+    }
+    const distEl = $('#reader-hsk-dist');
+    distEl.innerHTML = Object.entries(hskDist).sort((a,b) => {
+      const na = parseInt(a[0]) || 99, nb = parseInt(b[0]) || 99;
+      return na - nb;
+    }).map(([k, v]) => {
+      const c = getHskColor(parseInt(k) || 0);
+      return `<span class="text-xs px-2 py-0.5 rounded ${c.bg} ${c.text}">HSK${k}: ${v}</span>`;
+    }).join('');
+
+    // Render annotated text
+    renderReaderText();
+
+    $('#reader-input-area').classList.add('hidden');
+    $('#reader-results').classList.remove('hidden');
+  };
+
+  function renderReaderText() {
+    const el = $('#reader-text');
+    el.innerHTML = readerTokens.map((tok, idx) => {
+      if (tok.type === 'other') {
+        return `<span>${tok.text.replace(/\n/g, '<br>')}</span>`;
+      }
+      const w = allWords.find(x => x.hanzi === tok.text);
+      const hsk = w ? w.hsk : 0;
+      const c = getHskColor(hsk);
+      const pinyin = w ? w.pinyin : '';
+      const pinyinHtml = readerPinyinVisible && pinyin ? `<span class="text-[10px] ${c.text} block leading-tight">${pinyin}</span>` : '';
+      const cls = tok.type === 'char' ? 'underline decoration-dotted decoration-red-300' : '';
+      return `<ruby class="inline-block cursor-pointer px-0.5 py-0.5 rounded ${c.bg} border ${c.border} hover:shadow-md transition-all ${cls}" onclick="readerShowPopup(event, ${idx})">${pinyinHtml ? `<span class="flex flex-col items-center">${pinyinHtml}<span class="font-cn font-bold">${tok.text}</span></span>` : `<span class="font-cn font-bold">${tok.text}</span>`}</ruby>`;
+    }).join('');
+  }
+
+  window.readerClosePopup = function() {
+    const p = document.getElementById('reader-popup');
+    if (p) p.classList.add('hidden');
+  };
+
+  window.readerShowPopup = function(e, idx) {
+    const tok = readerTokens[idx];
+    if (!tok) return;
+    const popup = $('#reader-popup');
+    const content = $('#reader-popup-content');
+    const w = allWords.find(x => x.hanzi === tok.text);
+    const tokEsc = tok.text.replace(/'/g, "\\'");
+
+    let html = `<div class="flex items-center justify-between mb-2">
+      <span class="font-cn text-3xl font-bold text-hanzi">${tok.text}</span>
+      <button onclick="readerClosePopup()" class="text-slate-400 hover:text-red-500 text-xl">✕</button>
+    </div>`;
+
+    if (w) {
+      html += `<div class="text-sm text-primary font-medium mb-1">${w.pinyin}</div>`;
+      html += `<div class="text-xs px-2 py-0.5 rounded-full inline-block mb-2 ${getHskColor(w.hsk).bg} ${getHskColor(w.hsk).text} font-bold">HSK ${w.hsk}</div>`;
+      if (w.vietnamese) html += `<div class="text-sm mb-1">🇻🇳 ${w.vietnamese.split(/[;；]/).slice(0,3).join('; ')}</div>`;
+      if (w.english) html += `<div class="text-xs text-slate-400 mb-2">🇬🇧 ${w.english.split(/[;；]/).slice(0,3).join('; ')}</div>`;
+      html += `<div class="flex flex-wrap gap-2 mt-2">
+        <button onclick="speakText('${tokEsc}')" class="text-xs px-3 py-1.5 bg-primary text-white rounded-lg hover:bg-primary-dark">🔊 Phát âm</button>
+        <button onclick="readerClosePopup();openDetailByHanzi('${tokEsc}')" class="text-xs px-3 py-1.5 border border-primary text-primary rounded-lg hover:bg-blue-50">📖 Chi tiết</button>
+        <button onclick="addToBookmark('${tokEsc}')" class="text-xs px-3 py-1.5 border border-amber-300 text-amber-700 rounded-lg hover:bg-amber-50">🔖 Lưu</button>
+        <button onclick="readerClosePopup();strokeQuick('${tokEsc}')" class="text-xs px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50">✏️ Bút thuận</button>
+      </div>`;
+    } else {
+      html += `<div class="text-sm text-slate-400 mt-2">Không tìm thấy trong từ điển HSK</div>`;
+      html += `<div class="text-xs text-slate-300 mt-1">Ký tự này nằm ngoài danh sách HSK 1-7</div>`;
+      // Still offer speak and stroke
+      html += `<div class="flex gap-2 mt-2">
+        <button onclick="speakText('${tokEsc}')" class="text-xs px-3 py-1.5 bg-primary text-white rounded-lg hover:bg-primary-dark">🔊 Phát âm</button>
+        <button onclick="readerClosePopup();strokeQuick('${tokEsc}')" class="text-xs px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50">✏️ Bút thuận</button>
+      </div>`;
+    }
+    content.innerHTML = html;
+    popup.classList.remove('hidden');
+
+    // Position near click - smart positioning
+    const rect = e.target.getBoundingClientRect();
+    const popW = 288; // w-72 = 18rem = 288px
+    let leftPos = Math.max(8, Math.min(rect.left, window.innerWidth - popW - 8));
+    let topPos = rect.bottom + 8;
+    // If popup would go below viewport, show above instead
+    if (rect.bottom + 300 > window.innerHeight) {
+      topPos = rect.top - 8 - 200;
+      if (topPos < 0) topPos = rect.bottom + 8;
+    }
+    popup.style.left = leftPos + 'px';
+    popup.style.top = topPos + 'px';
+  };
+
+  // Close popup when clicking outside
+  document.addEventListener('click', function(e) {
+    const popup = $('#reader-popup');
+    if (popup && !popup.classList.contains('hidden') && !popup.contains(e.target) && !e.target.closest('#reader-text ruby')) {
+      popup.classList.add('hidden');
+    }
+  });
+
+  window.readerTogglePinyin = function() {
+    readerPinyinVisible = !readerPinyinVisible;
+    const btn = $('#reader-pinyin-btn');
+    btn.textContent = readerPinyinVisible ? '拼 Ẩn Pinyin' : '拼 Hiện Pinyin';
+    renderReaderText();
+  };
+
+  window.readerSaveUnknown = function() {
+    const unknowns = [...new Set(readerTokens.filter(t => t.type === 'char').map(t => t.text))];
+    if (!unknowns.length) { showToast('Không có từ chưa biết!'); return; }
+    const sets = loadBookmarks();
+    let targetSet = sets.find(s => s.name === 'Reader - Từ chưa biết');
+    if (!targetSet) {
+      targetSet = { id: Date.now().toString(), name: 'Reader - Từ chưa biết', words: [], created: new Date().toISOString() };
+      sets.push(targetSet);
+    }
+    let added = 0;
+    for (const ch of unknowns) {
+      if (!targetSet.words.includes(ch)) { targetSet.words.push(ch); added++; }
+    }
+    saveBookmarks(sets);
+    showToast(`Đã lưu ${added} từ vào "Reader - Từ chưa biết"`);
+  };
+
+  // Expose these functions globally so inline onclick in reader popup works
+  window.speakText = speakText;
+  window.showBookmarkPicker = showBookmarkPicker;
+
+  window.readerSpeakAll = function() {
+    const text = readerOrigText;
+    if (!text) return;
+    if ('speechSynthesis' in window) {
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'zh-CN'; u.rate = 0.7;
+      const v = speechSynthesis.getVoices().find(v => v.lang.startsWith('zh'));
+      if (v) u.voice = v;
+      speechSynthesis.speak(u);
     }
   };
 
+  window.readerTranslateVi = function() {
+    if (!readerOrigText) return;
+    const transEl = document.getElementById('reader-translation');
+    const contentEl = document.getElementById('reader-translation-content');
+    const btn = document.getElementById('reader-translate-btn');
+    if (!transEl || !contentEl) return;
+
+    // If already visible, hide it (toggle behavior)
+    if (!transEl.classList.contains('hidden')) {
+      transEl.classList.add('hidden');
+      if (btn) btn.textContent = '🇻🇳 Dịch Việt';
+      return;
+    }
+
+    // Show loading state
+    contentEl.innerHTML = '<div class="flex items-center gap-2 text-slate-400"><div class="w-4 h-4 border-2 border-slate-300 border-t-primary rounded-full spinner"></div> Đang dịch bằng Google Translate...</div>';
+    transEl.classList.remove('hidden');
+    if (btn) btn.textContent = '🇻🇳 Ẩn dịch';
+
+    // Use Google Translate free API
+    const text = readerOrigText.substring(0, 5000); // limit length
+    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=zh-CN&tl=vi&dt=t&q=' + encodeURIComponent(text);
+
+    fetch(url)
+      .then(r => r.json())
+      .then(data => {
+        // Google returns array: data[0] = array of [translated, original, ...]
+        let translated = '';
+        if (data && data[0]) {
+          for (const segment of data[0]) {
+            if (segment && segment[0]) translated += segment[0];
+          }
+        }
+        if (translated) {
+          contentEl.innerHTML = `<div class="text-base leading-relaxed">${translated.replace(/\n/g, '<br>')}</div>`;
+        } else {
+          contentEl.innerHTML = '<span class="text-red-500">Không thể dịch. Hãy thử lại.</span>';
+        }
+      })
+      .catch(err => {
+        contentEl.innerHTML = `<span class="text-red-500">Lỗi kết nối: ${err.message}. Kiểm tra internet.</span>`;
+      });
+  };
+
+  window.readerHideTranslation = function() {
+    const transEl = document.getElementById('reader-translation');
+    const btn = document.getElementById('reader-translate-btn');
+    if (transEl) transEl.classList.add('hidden');
+    if (btn) btn.textContent = '🇻🇳 Dịch Việt';
+  };
+
+  window.readerReset = function() {
+    $('#reader-input-area').classList.remove('hidden');
+    $('#reader-results').classList.add('hidden');
+    $('#reader-popup').classList.add('hidden');
+    readerTokens = [];
+    readerOrigText = '';
+  };
+
+  window.readerLoadSample = function() {
+    const samples = [
+      '今天天气很好，我和朋友一起去公园散步。我们看到了很多美丽的花，还有一些小鸟在树上唱歌。公园里有很多人在锻炼身体，有的人在跑步，有的人在打太极拳。',
+      '学习中文需要很多时间和耐心。每天我都会花两个小时练习听力和阅读。虽然汉字很难写，但是我觉得很有意思。我的老师说，只要坚持学习，一定能学好中文。',
+      '中国有很长的历史和丰富的文化。从古代的四大发明到现代的高速铁路，中国人一直在创新和发展。中国的美食也非常有名，每个地方都有自己的特色菜。',
+      '上个周末我去了一家中国餐厅吃饭。我点了宫保鸡丁、麻婆豆腐和一碗米饭。服务员很友好，用中文跟我说话。虽然我听不太懂，但是我很高兴能练习中文。',
+      '北京是中国的首都，也是一个非常古老的城市。这里有很多名胜古迹，比如长城、故宫和天坛。每年都有很多游客从世界各地来北京旅游。北京的冬天很冷，但是夏天很热。'
+    ];
+    $('#reader-input').value = samples[Math.floor(Math.random() * samples.length)];
+  };
+
+  // ====================================================================
+  // ===== INJECT RELATED WORDS INTO DETAIL PAGE =====
+  // ====================================================================
+  // Monkey-patch openDetail to add related words section
+  const _origOpenDetail = window.openDetailByHanzi ? null : undefined;
+  // We'll inject via a MutationObserver on detail-content
+  const detailObserver = new MutationObserver(function() {
+    const el = $('#detail-content');
+    if (!el || !el.children.length) return;
+    // Check if related section already exists
+    if (el.querySelector('.related-words-section')) return;
+    // Find the current word from detail content
+    const hanziEl = el.querySelector('.font-cn.text-hanzi');
+    if (!hanziEl) return;
+    const hanzi = hanziEl.textContent.trim();
+    const relHtml = window.getRelatedWordsHtml(hanzi);
+    if (relHtml) {
+      const div = document.createElement('div');
+      div.className = 'related-words-section';
+      div.innerHTML = relHtml;
+      el.appendChild(div);
+    }
+  });
+  // Start observing when DOM ready
+  setTimeout(() => {
+    const dc = $('#detail-content');
+    if (dc) detailObserver.observe(dc, { childList: true });
+  }, 100);
+
   // ===== START =====
-  init();
+  init().then(() => { initWotd(); });
   initVisitorCounter();
 })();
