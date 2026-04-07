@@ -2004,6 +2004,8 @@
   window.fcAnswer = function(correct) {
     const entry = window._fcCurrentEntry; if (!entry) return;
     fcReviewed++;
+    // Update SRS for this word
+    updateSrs(entry.word.hanzi, correct);
     const stats = fcLoadStats();
     const key = entry.word.hanzi;
     if (!stats[key]) stats[key] = { correct: 0, wrong: 0, lastReview: '' };
@@ -2069,6 +2071,14 @@
     sessions.push({ date: new Date().toISOString(), mode: fcMode, source: fcSource, total: fcTotalCards, correct: fcCorrect, wrong: fcWrongList.length, time: elapsed });
     if (sessions.length > 100) sessions.splice(0, sessions.length-100);
     fcSaveSessions(sessions);
+    // Also record SRS history for dashboard
+    if (fcMode === 'review') {
+      const hist = srsLoadHistory();
+      hist.push({ date: new Date().toISOString(), total: fcTotalCards, correct: fcCorrect, wrong: fcWrongList.length });
+      if (hist.length > 100) hist.splice(0, hist.length - 100);
+      srsSaveHistory(hist);
+      srsUpdateStreak();
+    }
   }
 
   window.fcReplayWrong = function() {
@@ -2865,6 +2875,10 @@
     const isCorrect = !isTimeout && userAnswer === q.correctAnswer;
     q.userAnswer = userAnswer;
     q.isCorrect = isCorrect;
+    // Update SRS for this quiz word
+    if (q.word && q.word.hanzi) {
+      updateSrs(q.word.hanzi, isCorrect);
+    }
     if (isCorrect) {
       qzScore++;
       qzStreak++;
@@ -2996,6 +3010,12 @@
     sessions.push({ date: new Date().toISOString(), source: qzSource, total, correct: qzScore, wrong: qzWrongList.length, maxStreak: qzMaxStreak, time: elapsed, pct });
     if (sessions.length > 50) sessions.splice(0, sessions.length - 50);
     localStorage.setItem('cw_quiz_sessions', JSON.stringify(sessions));
+    // Also record SRS history for dashboard
+    const srsHist = srsLoadHistory();
+    srsHist.push({ date: new Date().toISOString(), total, correct: qzScore, wrong: qzWrongList.length });
+    if (srsHist.length > 100) srsHist.splice(0, srsHist.length - 100);
+    srsSaveHistory(srsHist);
+    srsUpdateStreak();
   }
 
   // --- Replay wrong ---
@@ -3265,17 +3285,7 @@
   }
 
   // Hook into flashcard answer to update SRS
-  const _origFcAnswer = window.fcAnswer;
-  if (typeof _origFcAnswer === 'function') {
-    window.fcAnswer = function(correct) {
-      // Get current card hanzi before advancing
-      if (window._fcCurrentCards && window._fcCurrentIdx !== undefined) {
-        const card = window._fcCurrentCards[window._fcCurrentIdx];
-        if (card) updateSrs(card.hanzi, correct);
-      }
-      _origFcAnswer(correct);
-    };
-  }
+  // (Integrated directly into fcAnswer and qzAnswer below - no monkey-patching needed)
 
   // Expose SRS due count for UI
   window.getSrsDueCount = function() { return getDueWords().length; };
@@ -3438,18 +3448,9 @@
     fcUpdateBoxCounts();
     fcSetupSwipe();
 
-    // Update SRS after each answer via hooking
-    const origAnswer = window.fcAnswer;
-    window.fcAnswer = function(correct) {
-      const entry = window._fcCurrentEntry;
-      if (entry && entry.word) {
-        updateSrs(entry.word.hanzi, correct);
-      }
-      origAnswer(correct);
-    };
+    // fcAnswer already calls updateSrs() directly — no need to wrap it here
 
     // Record to history when done
-    const origShowResult = fcShowResult;
     const _checkDone = setInterval(() => {
       if ($('#fc-result') && !$('#fc-result').classList.contains('hidden')) {
         clearInterval(_checkDone);
