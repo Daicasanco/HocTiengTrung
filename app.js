@@ -2071,14 +2071,12 @@
     sessions.push({ date: new Date().toISOString(), mode: fcMode, source: fcSource, total: fcTotalCards, correct: fcCorrect, wrong: fcWrongList.length, time: elapsed });
     if (sessions.length > 100) sessions.splice(0, sessions.length-100);
     fcSaveSessions(sessions);
-    // Also record SRS history for dashboard
-    if (fcMode === 'review') {
-      const hist = srsLoadHistory();
-      hist.push({ date: new Date().toISOString(), total: fcTotalCards, correct: fcCorrect, wrong: fcWrongList.length });
-      if (hist.length > 100) hist.splice(0, hist.length - 100);
-      srsSaveHistory(hist);
-      srsUpdateStreak();
-    }
+    // Also record SRS history for dashboard (both review and browse modes)
+    const hist = srsLoadHistory();
+    hist.push({ date: new Date().toISOString(), total: fcTotalCards, correct: fcCorrect, wrong: fcWrongList.length, mode: fcMode });
+    if (hist.length > 100) hist.splice(0, hist.length - 100);
+    srsSaveHistory(hist);
+    srsUpdateStreak();
   }
 
   window.fcReplayWrong = function() {
@@ -3449,25 +3447,7 @@
     fcSetupSwipe();
 
     // fcAnswer already calls updateSrs() directly — no need to wrap it here
-
-    // Record to history when done
-    const _checkDone = setInterval(() => {
-      if ($('#fc-result') && !$('#fc-result').classList.contains('hidden')) {
-        clearInterval(_checkDone);
-        // Record history
-        const hist = srsLoadHistory();
-        hist.push({
-          date: new Date().toISOString(),
-          total: fcTotalCards,
-          correct: fcCorrect,
-          wrong: fcWrongList.length
-        });
-        if (hist.length > 100) hist.splice(0, hist.length - 100);
-        srsSaveHistory(hist);
-        // Update streak
-        srsUpdateStreak();
-      }
-    }, 500);
+    // fcShowResult already records SRS history — no need for duplicate interval check
   };
 
   window.srsReset = function() {
