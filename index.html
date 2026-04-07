@@ -27,7 +27,9 @@
       }
     </script>
     <style>
-      .page { display: none; } .page.active { display: block; }
+      .page { display: none; opacity: 0; transition: opacity 0.25s ease; } 
+      .page.active { display: block; opacity: 1; }
+      .page.fade-in { opacity: 1; }
       .hsk-chip { padding: 6px 16px; border-radius: 9999px; font-size: 13px; font-weight: 500; border: 2px solid #e2e8f0; background: #fff; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
       .hsk-chip:hover { border-color: #2563eb; color: #2563eb; }
       .hsk-chip.active { background: #2563eb; color: #fff; border-color: #2563eb; box-shadow: 0 2px 8px rgba(37,99,235,0.3); }
@@ -36,10 +38,80 @@
       .tab-panel { display: none; } .tab-panel.active { display: block; }
       .stroke-dot.done { background: #1e293b; } .stroke-dot.act { background: #dc2626; width: 11px; height: 11px; }
       #stroke-canvas { aspect-ratio: 1; }
-      .nav-dropdown { opacity: 0; visibility: hidden; transition: all 0.2s; }
-      .nav-group:hover .nav-dropdown { opacity: 1; visibility: visible; }
+      .nav-dropdown { opacity: 0; visibility: hidden; transform: translateY(-4px); transition: all 0.2s ease; }
+      .nav-group:hover .nav-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
       @keyframes spin { to { transform: rotate(360deg); } }
       .spinner { animation: spin 0.7s linear infinite; }
+
+      /* Mobile slide-in menu */
+      #mobile-menu { 
+        transform: translateX(100%); opacity: 0;
+        transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+        position: fixed; top: 0; right: 0; bottom: 0; width: 80%; max-width: 320px;
+        z-index: 60; overflow-y: auto; box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+      }
+      #mobile-menu.open { transform: translateX(0); opacity: 1; }
+      #mobile-menu:not(.hidden) { display: block; }
+      #mobile-backdrop { 
+        opacity: 0; transition: opacity 0.3s ease;
+        position: fixed; inset: 0; z-index: 55; background: rgba(0,0,0,0.4);
+      }
+      #mobile-backdrop.open { opacity: 1; }
+      .mobile-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; padding: 12px 20px 4px; }
+      .mobile-nav-item { display: flex; align-items: center; gap: 12px; padding: 14px 20px; font-size: 15px; font-weight: 500; transition: background 0.15s; }
+      .mobile-nav-item:hover, .mobile-nav-item:active { background: #eff6ff; }
+      .mobile-nav-item .nav-icon { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+      .mobile-nav-divider { height: 1px; background: #f1f5f9; margin: 4px 16px; }
+
+      /* Bottom Tab Bar (mobile only) */
+      #bottom-tab-bar {
+        display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+        background: #fff; border-top: 2px solid #f1f5f9; 
+        padding: 4px 0 env(safe-area-inset-bottom, 4px);
+        box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+      }
+      @media (max-width: 767px) { 
+        #bottom-tab-bar { display: flex; }
+        body { padding-bottom: 72px; }
+      }
+      .btab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 2px;
+        font-size: 10px; font-weight: 500; color: #94a3b8; transition: color 0.15s; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+      .btab:active { transform: scale(0.93); }
+      .btab.active { color: #2563eb; }
+      .btab .btab-icon { font-size: 22px; line-height: 1; }
+      .btab .btab-dot { width: 4px; height: 4px; border-radius: 50%; background: #2563eb; margin-top: -2px; opacity: 0; transition: opacity 0.15s; }
+      .btab.active .btab-dot { opacity: 1; }
+
+      /* Toast notification improvements */
+      @keyframes toast-in { from { transform: translate(-50%, 20px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+      @keyframes toast-out { from { opacity: 1; } to { opacity: 0; transform: translate(-50%, 10px); } }
+      .cw-toast { animation: toast-in 0.3s ease; }
+      .cw-toast.hiding { animation: toast-out 0.3s ease forwards; }
+
+      /* Library card improvements */
+      .word-card { 
+        padding: 12px 16px; border-radius: 12px; border: 1.5px solid #f1f5f9; 
+        margin-bottom: 6px; transition: all 0.2s ease; background: #fff;
+      }
+      .word-card:hover { border-color: #dbeafe; background: #fafbff; box-shadow: 0 2px 8px rgba(37,99,235,0.06); transform: translateY(-1px); }
+      .word-card:active { transform: scale(0.995); }
+      .word-card .quick-actions { opacity: 0; transition: opacity 0.15s; }
+      .word-card:hover .quick-actions { opacity: 1; }
+      @media (max-width: 767px) { .word-card .quick-actions { opacity: 1; } }
+
+      /* HSK badge colors */
+      .hsk-badge { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+      .hsk-badge-1 { background: #dcfce7; color: #166534; }
+      .hsk-badge-2 { background: #dbeafe; color: #1e40af; }
+      .hsk-badge-3 { background: #fef9c3; color: #854d0e; }
+      .hsk-badge-4 { background: #ffedd5; color: #9a3412; }
+      .hsk-badge-5 { background: #fce7f3; color: #9d174d; }
+      .hsk-badge-6 { background: #ede9fe; color: #6d28d9; }
+      .hsk-badge-7 { background: #fecaca; color: #991b1b; }
+
+      /* Skeleton loading */
+      @keyframes shimmer { 0% { background-position: -200px 0; } 100% { background-position: 200px 0; } }
+      .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 400px 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
     </style>
 </head>
 <body class="font-sans bg-white text-slate-900 min-h-screen">
@@ -53,75 +125,152 @@
       <span class="text-xl font-extrabold text-primary">ChineseWriter</span>
     </a>
     
-    <!-- Desktop Nav -->
+    <!-- Desktop Nav (Grouped) -->
     <nav class="hidden md:flex items-center space-x-1">
+      <!-- Group 1: Học tập -->
       <div class="relative nav-group">
-        <button class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
-          <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
-          Thư viện HSK
-          <svg class="ml-1 w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        <button class="flex items-center text-sm font-medium px-3 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
+          📖 Học tập
+          <svg class="ml-1 w-3.5 h-3.5 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
         </button>
-        <ul class="nav-dropdown absolute left-0 top-full mt-1 w-56 bg-white shadow-lg rounded-lg border z-50 py-1">
-          <li><a href="javascript:void(0)" onclick="showPage('library');filterHsk(0)" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors">📚 Tất cả từ vựng</a></li>
-          <li><a href="javascript:void(0)" onclick="showPage('library');filterHsk(1)" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors">🌱 HSK 1 - Sơ cấp</a></li>
-          <li><a href="javascript:void(0)" onclick="showPage('library');filterHsk(2)" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors">📖 HSK 2</a></li>
-          <li><a href="javascript:void(0)" onclick="showPage('library');filterHsk(3)" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors">📝 HSK 3</a></li>
-          <li><a href="javascript:void(0)" onclick="showPage('library');filterHsk(4)" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors">📗 HSK 4-5</a></li>
-          <li><a href="javascript:void(0)" onclick="showPage('library');filterHsk(6)" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors">🎓 HSK 6-7 Cao cấp</a></li>
+        <ul class="nav-dropdown absolute left-0 top-full mt-1 w-56 bg-white shadow-xl rounded-xl border z-50 py-2">
+          <li><a href="javascript:void(0)" onclick="showPage('library');filterHsk(0)" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">📚 <span>Thư viện HSK</span></a></li>
+          <li><a href="javascript:void(0)" onclick="showPage('radicals')" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1"><span class="text-base">部</span> <span>214 Bộ thủ</span></a></li>
+          <li><a href="javascript:void(0)" onclick="showPage('reader')" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">📖 <span>Reader đọc hiểu</span></a></li>
+          <li class="border-t my-1 mx-3"></li>
+          <li class="px-4 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Theo cấp HSK</li>
+          <li><a href="javascript:void(0)" onclick="showPage('library');filterHsk(1)" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">🌱 HSK 1-2 Sơ cấp</a></li>
+          <li><a href="javascript:void(0)" onclick="showPage('library');filterHsk(3)" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">📗 HSK 3-4 Trung cấp</a></li>
+          <li><a href="javascript:void(0)" onclick="showPage('library');filterHsk(6)" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">🎓 HSK 5-7 Cao cấp</a></li>
         </ul>
       </div>
-      <a href="javascript:void(0)" onclick="showPage('stroke')" class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
-        <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
-        Học viết chữ
-      </a>
-      <a href="javascript:void(0)" onclick="showPage('radicals')" class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
-        <span class="mr-2 text-base">部</span>
-        Bộ thủ
-      </a>
-      <a href="javascript:void(0)" onclick="showPage('flashcard')" class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
-        <span class="mr-2">🃏</span>
-        Flashcard
-      </a>
-      <a href="javascript:void(0)" onclick="showPage('quiz')" class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
-        <span class="mr-2">🧩</span>
-        Quiz
-      </a>
-      <a href="javascript:void(0)" onclick="showPage('bookmarks')" class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
-        <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        Hồ sơ học
-      </a>
-      <a href="javascript:void(0)" onclick="showPage('reader')" class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
-        <span class="mr-2">📖</span>
-        Reader
-      </a>
-      <a href="javascript:void(0)" onclick="showPage('srs')" class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
-        <span class="mr-2">🧠</span>
-        SRS
-      </a>
-      <a href="javascript:void(0)" onclick="showPage('pdf')" class="flex items-center text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
-        <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        Xuất PDF
-      </a>
+
+      <!-- Group 2: Luyện tập -->
+      <div class="relative nav-group">
+        <button class="flex items-center text-sm font-medium px-3 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
+          🎮 Luyện tập
+          <svg class="ml-1 w-3.5 h-3.5 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <ul class="nav-dropdown absolute left-0 top-full mt-1 w-52 bg-white shadow-xl rounded-xl border z-50 py-2">
+          <li><a href="javascript:void(0)" onclick="showPage('stroke')" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">✏️ <span>Học viết chữ</span></a></li>
+          <li><a href="javascript:void(0)" onclick="showPage('flashcard')" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">🃏 <span>Flashcard</span></a></li>
+          <li><a href="javascript:void(0)" onclick="showPage('quiz')" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">🧩 <span>Quiz kiểm tra</span></a></li>
+        </ul>
+      </div>
+
+      <!-- Group 3: Tiến độ -->
+      <div class="relative nav-group">
+        <button class="flex items-center text-sm font-medium px-3 py-2 rounded-md hover:bg-blue-50 hover:text-primary transition-colors">
+          📊 Tiến độ
+          <svg class="ml-1 w-3.5 h-3.5 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <ul class="nav-dropdown absolute left-0 top-full mt-1 w-52 bg-white shadow-xl rounded-xl border z-50 py-2">
+          <li><a href="javascript:void(0)" onclick="showPage('bookmarks')" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">🔖 <span>Hồ sơ học</span></a></li>
+          <li><a href="javascript:void(0)" onclick="showPage('srs')" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">🧠 <span>SRS Ôn tập</span></a></li>
+          <li><a href="javascript:void(0)" onclick="showPage('pdf')" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">📄 <span>Xuất PDF</span></a></li>
+        </ul>
+      </div>
     </nav>
 
     <!-- Mobile menu btn -->
-    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden p-2 border rounded-md hover:bg-slate-50">
+    <button onclick="toggleMobileMenu()" class="md:hidden p-2 border rounded-lg hover:bg-slate-50 transition-colors" id="mobile-menu-btn">
       <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
     </button>
   </div>
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden md:hidden border-t bg-white">
-    <a href="javascript:void(0)" onclick="showPage('library');filterHsk(0);closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">📚 Thư viện HSK</a>
-    <a href="javascript:void(0)" onclick="showPage('stroke');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">✏️ Học viết chữ</a>
-    <a href="javascript:void(0)" onclick="showPage('radicals');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">部 Bộ thủ</a>
-    <a href="javascript:void(0)" onclick="showPage('flashcard');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">🃏 Flashcard</a>
-    <a href="javascript:void(0)" onclick="showPage('quiz');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">🧩 Quiz</a>
-    <a href="javascript:void(0)" onclick="showPage('bookmarks');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">🔖 Hồ sơ học</a>
-    <a href="javascript:void(0)" onclick="showPage('reader');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">📖 Reader</a>
-    <a href="javascript:void(0)" onclick="showPage('srs');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">🧠 SRS Ôn tập</a>
-    <a href="javascript:void(0)" onclick="showPage('pdf');closeMobile()" class="block px-6 py-3 text-sm font-medium hover:bg-blue-50">📄 Xuất PDF tập viết</a>
-  </div>
 </header>
+
+<!-- Mobile backdrop -->
+<div id="mobile-backdrop" class="hidden" onclick="closeMobile()"></div>
+
+<!-- Mobile slide-in menu -->
+<div id="mobile-menu" class="hidden bg-white">
+  <!-- Menu header -->
+  <div class="flex items-center justify-between px-5 py-4 border-b bg-gradient-to-r from-blue-50 to-white">
+    <div class="flex items-center gap-2">
+      <span class="text-xl font-cn font-bold text-hanzi">中</span>
+      <span class="font-extrabold text-primary">Menu</span>
+    </div>
+    <button onclick="closeMobile()" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </div>
+
+  <!-- Menu items grouped -->
+  <div class="py-2">
+    <div class="mobile-section-title">📖 Học tập</div>
+    <a href="javascript:void(0)" onclick="showPage('library');filterHsk(0);closeMobile()" class="mobile-nav-item">
+      <div class="nav-icon bg-blue-50">📚</div>
+      <div><div class="text-slate-800">Thư viện HSK</div><div class="text-[11px] text-slate-400">11,000+ từ vựng</div></div>
+    </a>
+    <a href="javascript:void(0)" onclick="showPage('radicals');closeMobile()" class="mobile-nav-item">
+      <div class="nav-icon bg-amber-50">部</div>
+      <div><div class="text-slate-800">214 Bộ thủ</div><div class="text-[11px] text-slate-400">Phân tách chữ Hán</div></div>
+    </a>
+    <a href="javascript:void(0)" onclick="showPage('reader');closeMobile()" class="mobile-nav-item">
+      <div class="nav-icon bg-green-50">📖</div>
+      <div><div class="text-slate-800">Reader</div><div class="text-[11px] text-slate-400">Đọc hiểu văn bản</div></div>
+    </a>
+
+    <div class="mobile-nav-divider"></div>
+    <div class="mobile-section-title">🎮 Luyện tập</div>
+    <a href="javascript:void(0)" onclick="showPage('stroke');closeMobile()" class="mobile-nav-item">
+      <div class="nav-icon bg-amber-50">✏️</div>
+      <div><div class="text-slate-800">Học viết chữ</div><div class="text-[11px] text-slate-400">Animation bút thuận</div></div>
+    </a>
+    <a href="javascript:void(0)" onclick="showPage('flashcard');closeMobile()" class="mobile-nav-item">
+      <div class="nav-icon bg-purple-50">🃏</div>
+      <div><div class="text-slate-800">Flashcard</div><div class="text-[11px] text-slate-400">Leitner 3 hộp</div></div>
+    </a>
+    <a href="javascript:void(0)" onclick="showPage('quiz');closeMobile()" class="mobile-nav-item">
+      <div class="nav-icon bg-pink-50">🧩</div>
+      <div><div class="text-slate-800">Quiz kiểm tra</div><div class="text-[11px] text-slate-400">7 dạng câu hỏi</div></div>
+    </a>
+
+    <div class="mobile-nav-divider"></div>
+    <div class="mobile-section-title">📊 Tiến độ</div>
+    <a href="javascript:void(0)" onclick="showPage('bookmarks');closeMobile()" class="mobile-nav-item">
+      <div class="nav-icon bg-amber-50">🔖</div>
+      <div><div class="text-slate-800">Hồ sơ học</div><div class="text-[11px] text-slate-400">Bộ từ vựng đã lưu</div></div>
+    </a>
+    <a href="javascript:void(0)" onclick="showPage('srs');closeMobile()" class="mobile-nav-item">
+      <div class="nav-icon bg-red-50">🧠</div>
+      <div><div class="text-slate-800">SRS Ôn tập</div><div class="text-[11px] text-slate-400">Spaced Repetition</div></div>
+    </a>
+    <a href="javascript:void(0)" onclick="showPage('pdf');closeMobile()" class="mobile-nav-item">
+      <div class="nav-icon bg-green-50">📄</div>
+      <div><div class="text-slate-800">Xuất PDF</div><div class="text-[11px] text-slate-400">Tập viết chữ Hán</div></div>
+    </a>
+  </div>
+</div>
+
+<!-- ===== BOTTOM TAB BAR (Mobile) ===== -->
+<div id="bottom-tab-bar">
+  <div class="btab" onclick="showPage('library');filterHsk(0)" data-page="library">
+    <span class="btab-icon">📚</span>
+    <span>Thư viện</span>
+    <div class="btab-dot"></div>
+  </div>
+  <div class="btab" onclick="showPage('flashcard')" data-page="flashcard">
+    <span class="btab-icon">🃏</span>
+    <span>Flashcard</span>
+    <div class="btab-dot"></div>
+  </div>
+  <div class="btab" onclick="showPage('quiz')" data-page="quiz">
+    <span class="btab-icon">🧩</span>
+    <span>Quiz</span>
+    <div class="btab-dot"></div>
+  </div>
+  <div class="btab" onclick="showPage('bookmarks')" data-page="bookmarks">
+    <span class="btab-icon">🔖</span>
+    <span>Hồ sơ</span>
+    <div class="btab-dot"></div>
+  </div>
+  <div class="btab" onclick="toggleMobileMenu()" data-page="more">
+    <span class="btab-icon">☰</span>
+    <span>Thêm</span>
+    <div class="btab-dot"></div>
+  </div>
+</div>
 
 <!-- ===== PAGE: HOME (Landing) ===== -->
 <div id="page-home" class="page active">
