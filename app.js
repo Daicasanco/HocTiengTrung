@@ -3578,9 +3578,15 @@
         }
       }
       if (!matched) {
-        // Single character
+        // Single character - check allWords first, then characters dict
         const w = allWords.find(x => x.hanzi === ch);
-        tokens.push({ text: ch, type: w ? 'word' : 'char' });
+        if (w) {
+          tokens.push({ text: ch, type: 'word' });
+        } else if (characters[ch]) {
+          tokens.push({ text: ch, type: 'known_char' });
+        } else {
+          tokens.push({ text: ch, type: 'char' });
+        }
         i++;
       }
     }
@@ -3648,11 +3654,14 @@
         return `<span>${tok.text.replace(/\n/g, '<br>')}</span>`;
       }
       const w = allWords.find(x => x.hanzi === tok.text);
+      const charInfo = (!w && tok.text.length === 1) ? characters[tok.text] : null;
       const hsk = w ? w.hsk : 0;
       const c = getHskColor(hsk);
-      const pinyin = w ? w.pinyin : '';
+      // Get pinyin from allWords first, then from characters.json
+      const pinyin = w ? w.pinyin : (charInfo && charInfo.pinyin ? charInfo.pinyin : '');
       const pinyinHtml = readerPinyinVisible && pinyin ? `<span class="text-[10px] ${c.text} block leading-tight">${pinyin}</span>` : '';
-      const cls = tok.type === 'char' ? 'underline decoration-dotted decoration-red-300' : '';
+      const cls = tok.type === 'char' ? 'underline decoration-dotted decoration-red-300' : 
+                  (tok.type === 'known_char' ? 'underline decoration-dotted decoration-amber-300' : '');
       return `<ruby class="inline-block cursor-pointer px-0.5 py-0.5 rounded ${c.bg} border ${c.border} hover:shadow-md transition-all ${cls}" onclick="readerShowPopup(event, ${idx})">${pinyinHtml ? `<span class="flex flex-col items-center">${pinyinHtml}<span class="font-cn font-bold">${tok.text}</span></span>` : `<span class="font-cn font-bold">${tok.text}</span>`}</ruby>`;
     }).join('');
   }
@@ -3687,12 +3696,27 @@
         <button onclick="readerClosePopup();strokeQuick('${tokEsc}')" class="text-xs px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50">✏️ Bút thuận</button>
       </div>`;
     } else {
-      html += `<div class="text-sm text-slate-400 mt-2">Không tìm thấy trong từ điển HSK</div>`;
-      html += `<div class="text-xs text-slate-300 mt-1">Ký tự này nằm ngoài danh sách HSK 1-7</div>`;
-      // Still offer speak and stroke
-      html += `<div class="flex gap-2 mt-2">
+      // Check characters.json for pinyin/definition
+      const charInfo = (tok.text.length === 1) ? characters[tok.text] : null;
+      if (charInfo) {
+        if (charInfo.pinyin) html += `<div class="text-sm text-primary font-medium mb-1">${charInfo.pinyin}</div>`;
+        html += `<div class="text-xs px-2 py-0.5 rounded-full inline-block mb-2 bg-amber-50 text-amber-600 font-bold">Ngoài HSK</div>`;
+        if (charInfo.vietnamese) html += `<div class="text-sm mb-1">🇻🇳 ${charInfo.vietnamese}</div>`;
+        if (charInfo.def) html += `<div class="text-xs text-slate-400 mb-2">🇬🇧 ${charInfo.def}</div>`;
+        if (charInfo.radical) {
+          const radInfo = radicals[charInfo.radical];
+          const radLabel = radInfo ? `${charInfo.radical} ${radInfo.viet}` : charInfo.radical;
+          html += `<div class="text-xs text-slate-400 mb-2">Bộ thủ: <strong class="text-slate-600">${radLabel}</strong> · ${charInfo.strokeCount || '?'} nét</div>`;
+        }
+      } else {
+        html += `<div class="text-sm text-slate-400 mt-2">Không tìm thấy trong từ điển</div>`;
+        html += `<div class="text-xs text-slate-300 mt-1">Ký tự này chưa có trong hệ thống dữ liệu</div>`;
+      }
+      // Offer speak and stroke buttons
+      html += `<div class="flex flex-wrap gap-2 mt-2">
         <button onclick="speakText('${tokEsc}')" class="text-xs px-3 py-1.5 bg-primary text-white rounded-lg hover:bg-primary-dark">🔊 Phát âm</button>
-        <button onclick="readerClosePopup();strokeQuick('${tokEsc}')" class="text-xs px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50">✏️ Bút thuận</button>
+        ${charInfo ? `<button onclick="readerClosePopup();strokeQuick('${tokEsc}')" class="text-xs px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50">✏️ Bút thuận</button>` : ''}
+        <button onclick="addToBookmark('${tokEsc}')" class="text-xs px-3 py-1.5 border border-amber-300 text-amber-700 rounded-lg hover:bg-amber-50">🔖 Lưu</button>
       </div>`;
     }
     content.innerHTML = html;
