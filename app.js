@@ -2597,7 +2597,18 @@
     return shuffled.slice(0, n);
   }
 
-  function qzGetViDef(w) { return (w.vietnamese || w.english || '').split(/[;；]/)[0].trim() || w.hanzi; }
+  // Get Vietnamese definition - up to 3 meaningful definitions, skip "biến thể" lines
+  function qzGetViDef(w, maxDefs) {
+    const max = maxDefs || 3;
+    const raw = (w.vietnamese || w.english || '').split(/[;；]/).map(s => s.trim()).filter(Boolean);
+    // Filter out unhelpful definitions like "biến thể của...", "xem...", "như..."
+    const meaningful = raw.filter(d => !/^(biến thể|dạng khác|xem |như |tương tự|giống với)/i.test(d));
+    const defs = meaningful.length ? meaningful : raw; // fallback to all if all filtered
+    if (!defs.length) return w.hanzi;
+    return [...new Set(defs)].slice(0, max).join('; ');
+  }
+  // Get single short def for compact display
+  function qzGetViDefShort(w) { return qzGetViDef(w, 1); }
 
   // --- Question generators ---
   function qzGenHanziToViet(word, pool) {
