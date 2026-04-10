@@ -137,6 +137,7 @@
           <li><a href="javascript:void(0)" onclick="showPage('library');filterHsk(0)" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">📚 <span>Thư viện HSK</span></a></li>
           <li><a href="javascript:void(0)" onclick="showPage('radicals')" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1"><span class="text-base">部</span> <span>214 Bộ thủ</span></a></li>
           <li><a href="javascript:void(0)" onclick="showPage('reader')" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">📖 <span>Reader đọc hiểu</span></a></li>
+          <li><a href="javascript:void(0)" onclick="showPage('grammar')" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">📐 <span>Ngữ pháp HSK</span></a></li>
           <li class="border-t my-1 mx-3"></li>
           <li class="px-4 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Theo cấp HSK</li>
           <li><a href="javascript:void(0)" onclick="showPage('library');filterHsk(1)" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">🌱 HSK 1-2 Sơ cấp</a></li>
@@ -209,6 +210,10 @@
     <a href="javascript:void(0)" onclick="showPage('reader');closeMobile()" class="mobile-nav-item">
       <div class="nav-icon bg-green-50">📖</div>
       <div><div class="text-slate-800">Reader</div><div class="text-[11px] text-slate-400">Đọc hiểu văn bản</div></div>
+    </a>
+    <a href="javascript:void(0)" onclick="showPage('grammar');closeMobile()" class="mobile-nav-item">
+      <div class="nav-icon bg-indigo-50">📐</div>
+      <div><div class="text-slate-800">Ngữ pháp HSK</div><div class="text-[11px] text-slate-400">90+ điểm ngữ pháp</div></div>
     </a>
 
     <div class="mobile-nav-divider"></div>
@@ -1023,6 +1028,44 @@
         <div id="reader-popup-content"></div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: GRAMMAR (Ngữ pháp HSK) ===== -->
+<div id="page-grammar" class="page">
+  <div class="container mx-auto max-w-5xl px-4 py-6">
+    <div class="flex items-center justify-between mb-2">
+      <h2 class="text-2xl font-bold">📐 Ngữ pháp HSK</h2>
+      <span class="text-sm text-slate-400" id="gram-count"></span>
+    </div>
+    <p class="text-sm text-slate-500 mb-4">Tổng hợp các điểm ngữ pháp quan trọng từ HSK 1-6, giải thích bằng tiếng Việt, kèm ví dụ và ghi chú.</p>
+
+    <!-- Search -->
+    <div class="relative mb-4">
+      <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="gram-search" placeholder="Tìm ngữ pháp (VD: 虽然, mặc dù, comparison...)" class="w-full pl-12 pr-10 py-3 border-2 border-slate-200 rounded-xl focus:border-primary focus:ring-2 focus:ring-blue-100 outline-none text-sm transition-all" autocomplete="off" oninput="gramSearch()">
+    </div>
+
+    <!-- HSK level chips -->
+    <div class="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-hide" id="gram-chips"></div>
+
+    <!-- Loading -->
+    <div id="gram-loading" class="flex flex-col items-center py-16 text-slate-400">
+      <div class="w-8 h-8 border-3 border-slate-200 border-t-primary rounded-full spinner mb-3" style="border-width:3px"></div>
+      <p>Đang tải dữ liệu ngữ pháp...</p>
+    </div>
+
+    <!-- Grammar list -->
+    <div id="gram-list" class="space-y-4"></div>
+
+    <!-- Empty state -->
+    <div id="gram-empty" class="hidden text-center py-16 text-slate-400">
+      <div class="text-5xl mb-3">📐</div>
+      <p>Không tìm thấy điểm ngữ pháp nào</p>
+    </div>
+
+    <!-- Load more -->
+    <button id="gram-more" class="hidden w-full py-3 text-sm font-medium text-primary border-2 border-primary-light rounded-lg hover:bg-blue-50 transition-colors mt-4" onclick="gramLoadMore()">Xem thêm</button>
   </div>
 </div>
 
