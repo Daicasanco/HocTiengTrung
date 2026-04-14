@@ -2507,9 +2507,18 @@
       const sets = loadBookmarks();
       if (!sets.length) { html = '<div class="bg-amber-50 rounded-xl p-4 text-sm text-amber-700">Chưa có bộ bookmark nào. Hãy tạo bộ từ ở trang Hồ sơ học.</div>'; }
       else {
+        const totalWords = sets.reduce((sum, s) => sum + s.words.length, 0);
         html = '<div class="bg-slate-50 rounded-xl p-4 space-y-2">';
-        for (const s of sets) { html += `<label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="qz-bm-set" value="${s.id}" class="accent-primary"><span class="text-sm">${s.name} (${s.words.length} từ)</span></label>`; }
-        html += '</div>';
+        html += `<div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-200">
+          <label class="flex items-center gap-2 cursor-pointer font-medium text-sm">
+            <input type="checkbox" id="qz-bm-select-all" class="accent-primary w-4 h-4">
+            <span>Chọn tất cả bộ bookmark</span>
+            <span class="text-xs text-slate-400">(${sets.length} bộ · ${totalWords} từ)</span>
+          </label>
+        </div>`;
+        html += '<div class="space-y-1.5">';
+        for (const s of sets) { html += `<label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-white transition-colors"><input type="checkbox" name="qz-bm-set" value="${s.id}" class="qz-bm-cb accent-primary w-4 h-4"><span class="text-sm">${s.name}</span><span class="text-xs text-slate-400">(${s.words.length} từ)</span></label>`; }
+        html += '</div></div>';
       }
     } else if (src === 'radical') {
       html = '<div class="bg-slate-50 rounded-xl p-4"><p class="text-xs text-slate-500 mb-2">Chọn bộ thủ:</p><div class="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto">';
@@ -2548,12 +2557,23 @@
       const limit = parseInt($('#qz-hsk-limit')?.value) || 50;
       for (const lv of checked) { words = words.concat(allWords.filter(w => w.hsk === lv).slice(0, limit)); }
     } else if (qzSource === 'bookmark') {
-      const sel = document.querySelector('input[name="qz-bm-set"]:checked');
-      if (!sel) return [];
+      const checked = [...document.querySelectorAll('input[name="qz-bm-set"]:checked')];
+      if (!checked.length) return [];
       const sets = loadBookmarks();
-      const s = sets.find(x => x.id === sel.value);
-      if (!s) return [];
-      words = s.words.map(h => allWords.find(w => w.hanzi === h)).filter(Boolean);
+      // Collect all selected set IDs
+      const selectedIds = new Set(checked.map(c => c.value));
+      const selectedSets = sets.filter(s => selectedIds.has(s.id));
+      // Deduplicate hanzi across all selected sets
+      const seenHanzi = new Set();
+      for (const s of selectedSets) {
+        for (const h of s.words) {
+          if (!seenHanzi.has(h)) {
+            seenHanzi.add(h);
+            const found = allWords.find(w => w.hanzi === h);
+            if (found) words.push(found);
+          }
+        }
+      }
     } else if (qzSource === 'radical') {
       const sel = document.querySelector('input[name="qz-rad"]:checked');
       if (!sel) return [];
@@ -2860,11 +2880,26 @@
     const q = qzQuestions[qzIdx];
     if (!q) return;
     qzAnswered = false;
+    const showPinyin = $('#qz-show-pinyin')?.checked !== false;
+    const vietFirst = $('#qz-viet-first')?.checked === true;
     $('#qz-cur').textContent = qzIdx + 1;
     $('#qz-progress-bar').style.width = Math.round(((qzIdx) / qzQuestions.length) * 100) + '%';
+
+    // Apply viet-first mode for hanzi_to_viet type
+    if (vietFirst && q.type === 'hanzi_to_viet') {
+      const questionText = qzGetViDef(q.word);
+      const correct = q.word.hanzi;
+      // Re-generate options: correct hanzi + 3 distractors from same HSK
+      const sameHsk = qzSourceWords.filter(w => w.hanzi !== q.word.hanzi && qzGetViDef(w) !== questionText);
+      const distractors = qzPickRandom(sameHsk.length >= 3 ? sameHsk : qzSourceWords.filter(w => w.hanzi !== q.word.hanzi), 3).map(w => w.hanzi);
+      q.options = qzShuffle([correct, ...distractors]);
+      q.questionHtml = `<div class="text-2xl font-bold text-slate-700">${questionText}</div>`;
+      q.hint = q.word.pinyin || '';
+    }
+
     $('#qz-q-type-label').textContent = q.typeLabel;
     $('#qz-q-content').innerHTML = q.questionHtml;
-    $('#qz-q-hint').textContent = q.hint || '';
+    $('#qz-q-hint').textContent = (showPinyin && q.hint) ? q.hint : '';
     $('#qz-feedback').classList.add('hidden');
     $('#qz-next-btn').classList.add('hidden');
     // Streak badge
