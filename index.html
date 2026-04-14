@@ -228,7 +228,7 @@
     </a>
     <a href="javascript:void(0)" onclick="showPage('quiz');closeMobile()" class="mobile-nav-item">
       <div class="nav-icon bg-pink-50">🧩</div>
-      <div><div class="text-slate-800">Quiz kiểm tra</div><div class="text-[11px] text-slate-400">7 dạng câu hỏi</div></div>
+      <div><div class="text-slate-800">Quiz kiểm tra</div><div class="text-[11px] text-slate-400">8 dạng câu hỏi</div></div>
     </a>
 
     <div class="mobile-nav-divider"></div>
@@ -741,7 +741,7 @@
 
     <!-- Quiz type selection -->
     <h3 class="text-sm font-bold text-slate-700 mb-3">🎮 Chọn dạng Quiz</h3>
-    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
       <label class="qz-type-label border-2 rounded-xl p-3 text-center cursor-pointer hover:border-primary hover:shadow-sm transition-all border-primary bg-blue-50">
         <input type="checkbox" class="qz-type-cb hidden" value="hanzi_to_viet" checked>
         <div class="text-2xl mb-1">🀄→🇻🇳</div>
@@ -756,6 +756,11 @@
         <input type="checkbox" class="qz-type-cb hidden" value="listen_to_hanzi">
         <div class="text-2xl mb-1">🔊→🀄</div>
         <div class="font-bold text-xs">Nghe → Chọn Hán</div>
+      </label>
+      <label class="qz-type-label border-2 rounded-xl p-3 text-center cursor-pointer hover:border-primary hover:shadow-sm transition-all">
+        <input type="checkbox" class="qz-type-cb hidden" value="listen_to_viet">
+        <div class="text-2xl mb-1">🔊→🇻🇳</div>
+        <div class="font-bold text-xs">Nghe → Nghĩa Việt</div>
       </label>
       <label class="qz-type-label border-2 rounded-xl p-3 text-center cursor-pointer hover:border-primary hover:shadow-sm transition-all">
         <input type="checkbox" class="qz-type-cb hidden" value="hanzi_to_pinyin">

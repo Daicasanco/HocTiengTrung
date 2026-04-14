@@ -2679,6 +2679,19 @@
     };
   }
 
+  function qzGenListenToViet(word, pool) {
+    const correct = qzGetViDef(word);
+    const sameHsk = pool.filter(w => w.hanzi !== word.hanzi && qzGetViDef(w) !== correct);
+    const distractors = qzPickRandom(sameHsk.length >= 3 ? sameHsk : pool.filter(w => w.hanzi !== word.hanzi), 3).map(w => qzGetViDef(w));
+    return {
+      type: 'listen_to_viet', typeLabel: 'Nghe → Nghĩa Việt',
+      questionHtml: `<button onclick="qzPlayAudio()" class="text-5xl hover:scale-110 transition-transform">🔊</button><div class="text-sm text-slate-400 mt-2">Nghe phát âm, chọn nghĩa Việt đúng</div>`,
+      hint: '', audioText: word.hanzi,
+      correctAnswer: correct, options: qzShuffle([correct, ...distractors]),
+      word: word
+    };
+  }
+
   function qzGenHanziToPinyin(word, pool) {
     if (!word.pinyin) return null;
     const correct = word.pinyin;
@@ -2775,6 +2788,7 @@
     hanzi_to_viet: qzGenHanziToViet,
     viet_to_hanzi: qzGenVietToHanzi,
     listen_to_hanzi: qzGenListenToHanzi,
+    listen_to_viet: qzGenListenToViet,
     hanzi_to_pinyin: qzGenHanziToPinyin,
     guess_radical: qzGenGuessRadical,
     fill_blank: qzGenFillBlank,
@@ -2918,7 +2932,7 @@
     }
     optsEl.innerHTML = optsHtml;
     // Auto-play audio for listen type
-    if (q.type === 'listen_to_hanzi' && q.audioText) {
+    if ((q.type === 'listen_to_hanzi' || q.type === 'listen_to_viet') && q.audioText) {
       setTimeout(() => speakText(q.audioText), 300);
     }
     // Per-question timer
@@ -3052,6 +3066,10 @@
     }
     // Show next button
     $('#qz-next-btn').classList.remove('hidden');
+    // Auto-speak the word after answering (all quiz types)
+    if (q.word && q.word.hanzi) {
+      setTimeout(() => speakText(q.word.hanzi), 200);
+    }
     if (qzIdx >= qzQuestions.length - 1) {
       $('#qz-next-btn').textContent = '📊 Xem kết quả';
     } else {
