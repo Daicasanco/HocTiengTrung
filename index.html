@@ -536,10 +536,21 @@
   <div class="container mx-auto max-w-5xl px-4 py-6">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-2xl font-bold">🔖 Hồ sơ học</h2>
-      <button onclick="createBookmarkSet()" class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-        Tạo bộ mới
-      </button>
+      <div class="flex items-center gap-2">
+        <button onclick="bmExportAll()" class="inline-flex items-center gap-1.5 border border-slate-300 text-slate-600 px-3 py-2 rounded-lg text-xs font-medium hover:bg-slate-50 transition-colors" title="Xuất file backup">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Xuất
+        </button>
+        <button onclick="document.getElementById('bm-import-file').click()" class="inline-flex items-center gap-1.5 border border-slate-300 text-slate-600 px-3 py-2 rounded-lg text-xs font-medium hover:bg-slate-50 transition-colors" title="Nhập file backup">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Nhập
+        </button>
+        <input type="file" id="bm-import-file" accept=".json" class="hidden" onchange="bmImportFile(this)">
+        <button onclick="createBookmarkSet()" class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+          Tạo bộ mới
+        </button>
+      </div>
     </div>
     <p class="text-sm text-slate-500 mb-6">Tạo các bộ từ vựng để theo dõi quá trình học. Mỗi bộ có thể chứa nhiều từ và xuất ra PDF tập viết.</p>
     <!-- Bookmark sets list -->
@@ -1151,6 +1162,17 @@
   </div>
 </div>
 
-<script src="app.js"></script>
+<script src="js/core.js"></script>
+<script src="js/library.js"></script>
+<script src="js/stroke.js"></script>
+<script src="js/pdf.js"></script>
+<script src="js/radicals.js"></script>
+<script src="js/flashcard.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/srs.js"></script>
+<script src="js/reader.js"></script>
+<script src="js/grammar.js"></script>
+<script src="js/wotd.js"></script>
+<script>window.CW.start();</script>
 </body>
 </html>
