@@ -59,6 +59,17 @@
         for (const s of sets) html += `<label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-white transition-colors"><input type="checkbox" name="qz-bm-set" value="${s.id}" class="qz-bm-cb accent-primary w-4 h-4"><span class="text-sm">${s.name}</span><span class="text-xs text-slate-400">(${s.words.length} từ)</span></label>`;
         html += '</div></div>';
       }
+      // Wire up "Select all" checkbox after rendering
+      setTimeout(() => {
+        const selectAllCb = document.getElementById('qz-bm-select-all');
+        if (selectAllCb) {
+          selectAllCb.addEventListener('change', function () {
+            const allCbs = document.querySelectorAll('.qz-bm-cb');
+            allCbs.forEach(cb => { cb.checked = selectAllCb.checked; });
+            setTimeout(qzUpdateStartInfo, 50);
+          });
+        }
+      }, 60);
     } else if (src === 'radical') {
       html = '<div class="bg-slate-50 rounded-xl p-4"><p class="text-xs text-slate-500 mb-2">Chọn bộ thủ:</p><div class="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto">';
       const sortedRads = Object.entries(radicals).sort((a, b) => a[1].strokes - b[1].strokes);

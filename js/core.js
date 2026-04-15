@@ -395,20 +395,31 @@
   let audioManifest = null;
 
   CW.loadAudioManifest = async function () {
-    try {
-      const data = await fetch('sounds/manifest.json').then(r => r.json());
-      audioManifest = new Set(data);
-      console.log('[Audio] Manifest loaded:', audioManifest.size, 'files');
-    } catch (e) {
-      console.warn('[Audio] Manifest not found, will try loading MP3 directly');
-      audioManifest = null;
+    // Try manifest files in order of preference
+    const manifestFiles = ['sounds/manifest_v2.json', 'sounds/manifest.json'];
+    for (const url of manifestFiles) {
+      try {
+        const resp = await fetch(url);
+        if (!resp.ok) continue;
+        const data = await resp.json();
+        if (Array.isArray(data) && data.length > 0) {
+          audioManifest = new Set(data);
+          console.log('[Audio] Manifest loaded from', url, ':', audioManifest.size, 'files');
+          return;
+        }
+      } catch (e) { /* try next */ }
     }
+    console.warn('[Audio] No valid manifest found, using TTS fallback');
+    audioManifest = null;
   };
 
   CW.speakText = window.speakText = function (text) {
     if (currentAudio) { currentAudio.pause(); currentAudio = null; }
     if ('speechSynthesis' in window) speechSynthesis.cancel();
-    if (audioManifest && !audioManifest.has(text)) { fallbackTTS(text); return; }
+    // If manifest loaded and word is NOT in it, skip MP3 and go straight to TTS
+    if (audioManifest !== null && !audioManifest.has(text)) { fallbackTTS(text); return; }
+    // If manifest never loaded (null), also go straight to TTS to avoid delay
+    if (audioManifest === null) { fallbackTTS(text); return; }
     const thisId = ++speakId;
     let resolved = false;
     const audioUrl = 'sounds/cmn-' + encodeURIComponent(text) + '.mp3';
@@ -421,10 +432,11 @@
     audio.onerror = function () {
       if (resolved || thisId !== speakId) return; resolved = true; fallbackTTS(text);
     };
+    // Reduced timeout from 8s to 2s — if MP3 hasn't loaded by then, use TTS
     setTimeout(function () {
       if (resolved || thisId !== speakId) return; resolved = true;
       audio.pause(); currentAudio = null; fallbackTTS(text);
-    }, 8000);
+    }, 2000);
   };
 
   function fallbackTTS(text) {
@@ -438,53 +450,31 @@
   }
 
   // ===== DATA LOADING =====
-  // Lazy-load flags for heavy data files
-  let _charsLoaded = false, _charsLoading = null;
-  let _ctxLoaded = false, _ctxLoading = null;
-
-  // Lazy loader for characters.json (8.8MB) — only fetched when needed
-  CW.ensureCharacters = function () {
-    if (_charsLoaded) return Promise.resolve();
-    if (_charsLoading) return _charsLoading;
-    _charsLoading = fetch('data/characters.json')
-      .then(r => r.json())
-      .then(data => { Object.assign(CW.characters, data); _charsLoaded = true; })
-      .catch(e => console.warn('[Data] characters.json load failed:', e))
-      .finally(() => { _charsLoading = null; });
-    return _charsLoading;
-  };
-
-  // Lazy loader for context_quiz.json (2.7MB) — only fetched when quiz needs it
-  CW.ensureContextQuiz = function () {
-    if (_ctxLoaded) return Promise.resolve();
-    if (_ctxLoading) return _ctxLoading;
-    _ctxLoading = fetch('data/context_quiz.json')
-      .then(r => r.json())
-      .then(data => { CW.contextQuizData.push(...data); _ctxLoaded = true; })
-      .catch(e => console.warn('[Data] context_quiz.json load failed:', e))
-      .finally(() => { _ctxLoading = null; });
-    return _ctxLoading;
-  };
+  // Backward-compatible stubs — data is loaded eagerly in init()
+  CW.ensureCharacters = function () { return Promise.resolve(); };
+  CW.ensureContextQuiz = function () { return Promise.resolve(); };
 
   CW.init = async function () {
     try {
-      // Only load essential data at startup: words (4MB) + radicals (38KB)
-      // characters.json (8.8MB) and context_quiz.json (2.7MB) are lazy-loaded on demand
-      const [wordsData, radicalsData] = await Promise.all([
+      // Load ALL data files in parallel at startup for best performance
+      const [wordsData, radicalsData, charsData, ctxData] = await Promise.all([
         fetch('data/words.json').then(r => r.json()),
-        fetch('data/radicals.json').then(r => r.json()).catch(() => ({}))
+        fetch('data/radicals.json').then(r => r.json()).catch(() => ({})),
+        fetch('data/characters.json').then(r => r.json()).catch(() => ({})),
+        fetch('data/context_quiz.json').then(r => r.json()).catch(() => [])
       ]);
       // Populate shared data (preserve references for module aliases)
       CW.allWords.push(...wordsData);
       Object.assign(CW.radicals, radicalsData);
+      Object.assign(CW.characters, charsData);
+      if (ctxData.length) CW.contextQuizData.push(...ctxData);
+      console.log('[Data] All loaded:', CW.allWords.length, 'words,', Object.keys(CW.characters).length, 'chars,', CW.contextQuizData.length, 'quiz items');
       const sw = $('#stat-words');
       if (sw) sw.textContent = CW.allWords.length.toLocaleString() + '+';
       // Call module init callbacks
       CW._initCallbacks.forEach(fn => fn());
       const ll = $('#lib-loading');
       if (ll) ll.classList.add('hidden');
-      // Start preloading characters.json in background (non-blocking)
-      setTimeout(() => CW.ensureCharacters(), 2000);
     } catch (e) {
       const ll = $('#lib-loading');
       if (ll) ll.innerHTML = `<div class="text-center py-16 text-red-500"><div class="text-5xl mb-3">❌</div><p>Lỗi tải: ${e.message}</p></div>`;
@@ -520,13 +510,14 @@
 
   // ===== APP START =====
   CW.start = async function () {
-    // Init speech synthesis voices
+    // Init speech synthesis voices early so they're ready when needed
     if ('speechSynthesis' in window) {
       speechSynthesis.getVoices();
       speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
     }
+    // Load audio manifest FIRST so speakText knows which MP3s exist
+    await CW.loadAudioManifest();
     await CW.init();
-    CW.loadAudioManifest();
     CW.initVisitorCounter();
   };
 })();
