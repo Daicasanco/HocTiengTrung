@@ -175,10 +175,17 @@
   function qzGetViDefShort(w) { return qzGetViDef(w, 1); }
 
   // --- Question generators ---
+  // Helper: count pinyin syllables (space-separated)
+  function qzPinyinSyllables(pinyin) { return (pinyin || '').trim().split(/\s+/).length; }
+
   function qzGenHanziToViet(word, pool) {
     const correct = qzGetViDef(word);
-    const sameHsk = pool.filter(w => w.hanzi !== word.hanzi && qzGetViDef(w) !== correct);
-    const distractors = qzPickRandom(sameHsk.length >= 3 ? sameHsk : pool.filter(w => w.hanzi !== word.hanzi), 3).map(w => qzGetViDef(w));
+    const charLen = [...word.hanzi].length;
+    // Prefer distractors with same character count to prevent length-based guessing
+    const sameLenPool = pool.filter(w => w.hanzi !== word.hanzi && [...w.hanzi].length === charLen && qzGetViDef(w) !== correct);
+    const fallbackPool = pool.filter(w => w.hanzi !== word.hanzi && qzGetViDef(w) !== correct);
+    const distPool = sameLenPool.length >= 3 ? sameLenPool : fallbackPool;
+    const distractors = qzPickRandom(distPool, 3).map(w => qzGetViDef(w));
     return { type: 'hanzi_to_viet', typeLabel: 'Hán → Nghĩa Việt', questionHtml: `<div class="font-cn text-5xl font-bold text-hanzi">${word.hanzi}</div>`, hint: word.pinyin || '', correctAnswer: correct, options: qzShuffle([correct, ...distractors]), word: word };
   }
 
@@ -205,16 +212,23 @@
 
   function qzGenListenToViet(word, pool) {
     const correct = qzGetViDef(word);
-    const sameHsk = pool.filter(w => w.hanzi !== word.hanzi && qzGetViDef(w) !== correct);
-    const distractors = qzPickRandom(sameHsk.length >= 3 ? sameHsk : pool.filter(w => w.hanzi !== word.hanzi), 3).map(w => qzGetViDef(w));
+    const charLen = [...word.hanzi].length;
+    const sameLenPool = pool.filter(w => w.hanzi !== word.hanzi && [...w.hanzi].length === charLen && qzGetViDef(w) !== correct);
+    const fallbackPool = pool.filter(w => w.hanzi !== word.hanzi && qzGetViDef(w) !== correct);
+    const distPool = sameLenPool.length >= 3 ? sameLenPool : fallbackPool;
+    const distractors = qzPickRandom(distPool, 3).map(w => qzGetViDef(w));
     return { type: 'listen_to_viet', typeLabel: 'Nghe → Nghĩa Việt', questionHtml: `<button onclick="qzPlayAudio()" class="text-5xl hover:scale-110 transition-transform">🔊</button><div class="text-sm text-slate-400 mt-2">Nghe phát âm, chọn nghĩa Việt đúng</div>`, hint: '', audioText: word.hanzi, correctAnswer: correct, options: qzShuffle([correct, ...distractors]), word: word };
   }
 
   function qzGenHanziToPinyin(word, pool) {
     if (!word.pinyin) return null;
     const correct = word.pinyin;
-    const sameHsk = pool.filter(w => w.hanzi !== word.hanzi && w.pinyin && w.pinyin !== correct);
-    const distractors = qzPickRandom(sameHsk.length >= 3 ? sameHsk : pool.filter(w => w.hanzi !== word.hanzi && w.pinyin), 3).map(w => w.pinyin);
+    const correctSyllables = qzPinyinSyllables(correct);
+    // CRITICAL: Only pick distractors with same syllable count to prevent length-based guessing
+    const sameSyllablePool = pool.filter(w => w.hanzi !== word.hanzi && w.pinyin && w.pinyin !== correct && qzPinyinSyllables(w.pinyin) === correctSyllables);
+    const fallbackPool = pool.filter(w => w.hanzi !== word.hanzi && w.pinyin && w.pinyin !== correct);
+    const distPool = sameSyllablePool.length >= 3 ? sameSyllablePool : fallbackPool;
+    const distractors = qzPickRandom(distPool, 3).map(w => w.pinyin);
     return { type: 'hanzi_to_pinyin', typeLabel: 'Hán → Pinyin', questionHtml: `<div class="font-cn text-5xl font-bold text-hanzi">${word.hanzi}</div>`, hint: qzGetViDef(word), correctAnswer: correct, options: qzShuffle([correct, ...distractors]), word: word };
   }
 
