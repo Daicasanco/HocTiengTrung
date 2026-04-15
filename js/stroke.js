@@ -21,9 +21,10 @@
     doStrokeLookup();
   };
 
-  window.doStrokeLookup = function () {
+  window.doStrokeLookup = async function () {
     const text = $('#stroke-input').value.trim();
     if (!text) return;
+    await CW.ensureCharacters();
     currentStrokeChars = [];
     for (const ch of text) { if (characters[ch]) currentStrokeChars.push(characters[ch]); }
     if (!currentStrokeChars.length) {

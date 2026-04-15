@@ -304,11 +304,16 @@
   }
 
   // --- Start Quiz ---
-  window.qzStart = function () {
+  window.qzStart = async function () {
     qzUpdateSelectedTypes();
     const words = qzGetWordsFromSource();
     if (words.length < 4) { CW.showToast('Cần ít nhất 4 từ'); return; }
     if (!qzSelectedTypes.length) { CW.showToast('Chọn ít nhất 1 dạng quiz'); return; }
+    // Lazy-load heavy data if needed by selected quiz types
+    const loadPromises = [];
+    if (qzSelectedTypes.includes('context_fill')) loadPromises.push(CW.ensureContextQuiz());
+    if (qzSelectedTypes.includes('guess_radical') || qzSelectedTypes.includes('fill_blank')) loadPromises.push(CW.ensureCharacters());
+    if (loadPromises.length) await Promise.all(loadPromises);
     const count = parseInt($('#qz-count')?.value) || 20;
     qzTimeLimit = parseInt($('#qz-time-limit')?.value) || 0;
     qzSourceWords = words;

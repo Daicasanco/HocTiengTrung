@@ -153,7 +153,8 @@
     return { img: cvs.toDataURL('image/png'), count: n };
   }
 
-  window.generatePdf = function () {
+  window.generatePdf = async function () {
+    await CW.ensureCharacters();
     try {
       const words = getPdfWords();
       if (!words.length) {

@@ -9,6 +9,37 @@
   let wotdWord = null;
   let wotdRandom = false;
 
+  function drawWotdCanvas(canvas, firstChar) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, 160, 160);
+    // Draw grid
+    ctx.strokeStyle = '#fde68a'; ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.moveTo(80, 0); ctx.lineTo(80, 160); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, 80); ctx.lineTo(160, 80); ctx.stroke();
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(160, 160); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(160, 0); ctx.lineTo(0, 160); ctx.stroke();
+    ctx.setLineDash([]);
+    // Draw character
+    if (characters[firstChar] && characters[firstChar].strokes) {
+      const strokes = characters[firstChar].strokes;
+      ctx.save();
+      ctx.translate(10, 150);
+      ctx.scale(140 / 1024, -140 / 1024);
+      strokes.forEach(s => {
+        const p = new Path2D(s);
+        ctx.fillStyle = '#1e293b';
+        ctx.fill(p);
+      });
+      ctx.restore();
+    } else {
+      ctx.font = 'bold 100px "Noto Sans SC", sans-serif';
+      ctx.fillStyle = '#dc2626';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(firstChar, 80, 85);
+    }
+  }
+
   function getWotdIndex(dateStr) {
     // Simple hash of date string to get a stable index
     let h = 0;
@@ -53,35 +84,10 @@
     // Mini stroke canvas
     const canvas = $('#wotd-canvas');
     if (canvas) {
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, 160, 160);
-      // Draw grid
-      ctx.strokeStyle = '#fde68a'; ctx.lineWidth = 0.5;
-      ctx.beginPath(); ctx.moveTo(80, 0); ctx.lineTo(80, 160); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(0, 80); ctx.lineTo(160, 80); ctx.stroke();
-      ctx.setLineDash([4, 4]);
-      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(160, 160); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(160, 0); ctx.lineTo(0, 160); ctx.stroke();
-      ctx.setLineDash([]);
-      // Draw first character
-      const firstChar = w.hanzi[0];
-      if (characters[firstChar] && characters[firstChar].strokes) {
-        const strokes = characters[firstChar].strokes;
-        ctx.save();
-        // Transform from 1024x1024 to 160x160, flip Y
-        ctx.translate(10, 150);
-        ctx.scale(140 / 1024, -140 / 1024);
-        strokes.forEach(s => {
-          const p = new Path2D(s);
-          ctx.fillStyle = '#1e293b';
-          ctx.fill(p);
-        });
-        ctx.restore();
-      } else {
-        ctx.font = 'bold 100px "Noto Sans SC", sans-serif';
-        ctx.fillStyle = '#dc2626';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText(firstChar, 80, 85);
+      drawWotdCanvas(canvas, w.hanzi[0]);
+      // If characters not yet loaded, load and redraw with strokes
+      if (!characters[w.hanzi[0]]) {
+        CW.ensureCharacters().then(() => drawWotdCanvas(canvas, w.hanzi[0]));
       }
     }
 

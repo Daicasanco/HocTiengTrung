@@ -117,8 +117,9 @@
   }
 
   // ===== DETAIL PAGE =====
-  CW.openDetail = function (w) {
+  CW.openDetail = async function (w) {
     CW.showPage('detail');
+    await CW.ensureCharacters();
     const charData = [];
     for (const ch of w.hanzi) { if (characters[ch]) charData.push(characters[ch]); }
 

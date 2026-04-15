@@ -104,7 +104,8 @@
   // ===== RADICAL MODAL =====
   let _modalTab = 'info';
 
-  window.showRadicalModal = function (char) {
+  window.showRadicalModal = async function (char) {
+    await CW.ensureCharacters();
     const old = document.getElementById('radical-modal-overlay');
     if (old) old.remove();
     const rad = radicals[char];
@@ -303,7 +304,8 @@
   // ===== RADICALS PAGE =====
   let radStrokeFilter = 0;
 
-  function renderRadicalsPage() {
+  async function renderRadicalsPage() {
+    await CW.ensureCharacters();
     const grid = $('#rad-grid');
     const chips = $('#rad-stroke-chips');
     const countEl = $('#rad-count');

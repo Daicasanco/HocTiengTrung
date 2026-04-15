@@ -474,7 +474,8 @@
     });
   };
 
-  window.doFcExportPdf = function () {
+  window.doFcExportPdf = async function () {
+    await CW.ensureCharacters();
     const sizeVal = document.querySelector('input[name="fc-pdf-size"]:checked')?.value || 'medium';
     const showPinyin = document.getElementById('fc-pdf-pinyin')?.checked;
     const showMeaning = document.getElementById('fc-pdf-meaning')?.checked;

@@ -438,25 +438,53 @@
   }
 
   // ===== DATA LOADING =====
+  // Lazy-load flags for heavy data files
+  let _charsLoaded = false, _charsLoading = null;
+  let _ctxLoaded = false, _ctxLoading = null;
+
+  // Lazy loader for characters.json (8.8MB) — only fetched when needed
+  CW.ensureCharacters = function () {
+    if (_charsLoaded) return Promise.resolve();
+    if (_charsLoading) return _charsLoading;
+    _charsLoading = fetch('data/characters.json')
+      .then(r => r.json())
+      .then(data => { Object.assign(CW.characters, data); _charsLoaded = true; })
+      .catch(e => console.warn('[Data] characters.json load failed:', e))
+      .finally(() => { _charsLoading = null; });
+    return _charsLoading;
+  };
+
+  // Lazy loader for context_quiz.json (2.7MB) — only fetched when quiz needs it
+  CW.ensureContextQuiz = function () {
+    if (_ctxLoaded) return Promise.resolve();
+    if (_ctxLoading) return _ctxLoading;
+    _ctxLoading = fetch('data/context_quiz.json')
+      .then(r => r.json())
+      .then(data => { CW.contextQuizData.push(...data); _ctxLoaded = true; })
+      .catch(e => console.warn('[Data] context_quiz.json load failed:', e))
+      .finally(() => { _ctxLoading = null; });
+    return _ctxLoading;
+  };
+
   CW.init = async function () {
     try {
-      const [wordsData, charsData, radicalsData, contextData] = await Promise.all([
+      // Only load essential data at startup: words (4MB) + radicals (38KB)
+      // characters.json (8.8MB) and context_quiz.json (2.7MB) are lazy-loaded on demand
+      const [wordsData, radicalsData] = await Promise.all([
         fetch('data/words.json').then(r => r.json()),
-        fetch('data/characters.json').then(r => r.json()),
-        fetch('data/radicals.json').then(r => r.json()).catch(() => ({})),
-        fetch('data/context_quiz.json').then(r => r.json()).catch(() => [])
+        fetch('data/radicals.json').then(r => r.json()).catch(() => ({}))
       ]);
       // Populate shared data (preserve references for module aliases)
       CW.allWords.push(...wordsData);
-      Object.assign(CW.characters, charsData);
       Object.assign(CW.radicals, radicalsData);
-      CW.contextQuizData.push(...contextData);
       const sw = $('#stat-words');
       if (sw) sw.textContent = CW.allWords.length.toLocaleString() + '+';
       // Call module init callbacks
       CW._initCallbacks.forEach(fn => fn());
       const ll = $('#lib-loading');
       if (ll) ll.classList.add('hidden');
+      // Start preloading characters.json in background (non-blocking)
+      setTimeout(() => CW.ensureCharacters(), 2000);
     } catch (e) {
       const ll = $('#lib-loading');
       if (ll) ll.innerHTML = `<div class="text-center py-16 text-red-500"><div class="text-5xl mb-3">❌</div><p>Lỗi tải: ${e.message}</p></div>`;
