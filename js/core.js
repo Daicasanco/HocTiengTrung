@@ -450,31 +450,50 @@
   }
 
   // ===== DATA LOADING =====
-  // Backward-compatible stubs — data is loaded eagerly in init()
-  CW.ensureCharacters = function () { return Promise.resolve(); };
-  CW.ensureContextQuiz = function () { return Promise.resolve(); };
+  // Phase 2 background promises — started immediately after phase 1
+  let _charsPromise = null, _ctxPromise = null;
+
+  CW.ensureCharacters = function () {
+    return _charsPromise || Promise.resolve();
+  };
+  CW.ensureContextQuiz = function () {
+    return _ctxPromise || Promise.resolve();
+  };
 
   CW.init = async function () {
     try {
-      // Load ALL data files in parallel at startup for best performance
-      const [wordsData, radicalsData, charsData, ctxData] = await Promise.all([
+      // PHASE 1: Load essential data only (4MB) — page becomes interactive fast
+      const [wordsData, radicalsData] = await Promise.all([
         fetch('data/words.json').then(r => r.json()),
-        fetch('data/radicals.json').then(r => r.json()).catch(() => ({})),
-        fetch('data/characters.json').then(r => r.json()).catch(() => ({})),
-        fetch('data/context_quiz.json').then(r => r.json()).catch(() => [])
+        fetch('data/radicals.json').then(r => r.json()).catch(() => ({}))
       ]);
-      // Populate shared data (preserve references for module aliases)
       CW.allWords.push(...wordsData);
       Object.assign(CW.radicals, radicalsData);
-      Object.assign(CW.characters, charsData);
-      if (ctxData.length) CW.contextQuizData.push(...ctxData);
-      console.log('[Data] All loaded:', CW.allWords.length, 'words,', Object.keys(CW.characters).length, 'chars,', CW.contextQuizData.length, 'quiz items');
+      console.log('[Data] Phase 1 done:', CW.allWords.length, 'words loaded');
       const sw = $('#stat-words');
       if (sw) sw.textContent = CW.allWords.length.toLocaleString() + '+';
-      // Call module init callbacks
+      // Make page interactive NOW
       CW._initCallbacks.forEach(fn => fn());
       const ll = $('#lib-loading');
       if (ll) ll.classList.add('hidden');
+
+      // PHASE 2: Load heavy data in background (non-blocking)
+      _charsPromise = fetch('data/characters.json')
+        .then(r => r.json())
+        .then(data => {
+          Object.assign(CW.characters, data);
+          console.log('[Data] characters.json loaded:', Object.keys(CW.characters).length, 'chars');
+        })
+        .catch(e => console.warn('[Data] characters.json failed:', e));
+
+      _ctxPromise = fetch('data/context_quiz.json')
+        .then(r => r.json())
+        .then(data => {
+          CW.contextQuizData.push(...data);
+          console.log('[Data] context_quiz.json loaded:', CW.contextQuizData.length, 'items');
+        })
+        .catch(e => console.warn('[Data] context_quiz.json failed:', e));
+
     } catch (e) {
       const ll = $('#lib-loading');
       if (ll) ll.innerHTML = `<div class="text-center py-16 text-red-500"><div class="text-5xl mb-3">❌</div><p>Lỗi tải: ${e.message}</p></div>`;
