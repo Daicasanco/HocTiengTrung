@@ -270,6 +270,100 @@
     return { type: 'fill_blank', typeLabel: 'Điền chữ thiếu', questionHtml: `<div class="font-cn text-4xl font-bold text-hanzi">${display}</div>`, hint: `${word.pinyin || ''} — ${qzGetViDef(word)}`, correctAnswer: correctChar, options: qzShuffle([correctChar, ...distractors]), word: word };
   }
 
+  // --- Homophone helpers ---
+  // Normalize pinyin: lowercase, strip tone marks & non-letters, keep ü as 'v'
+  function qzPinyinNorm(pinyin) {
+    if (!pinyin) return '';
+    return CW.stripTones(pinyin).replace(/[^a-zü v]/gi, '').replace(/\s+/g, ' ').trim();
+  }
+  // Split into syllable array (toneless)
+  function qzPinyinSyls(pinyin) {
+    return qzPinyinNorm(pinyin).split(' ').filter(Boolean);
+  }
+  // Similarity score between 2 pinyin strings (higher = more similar)
+  //  3 = exact match with tones
+  //  2 = exact match ignoring tones
+  //  1 = same syllable count, each syllable differs by ≤ 1 char (toneless)
+  //  0 = not similar enough
+  function qzHomophoneScore(pa, pb) {
+    if (!pa || !pb) return 0;
+    const a = (pa || '').trim().toLowerCase();
+    const b = (pb || '').trim().toLowerCase();
+    if (a === b) return 3;
+    const na = qzPinyinNorm(pa), nb = qzPinyinNorm(pb);
+    if (!na || !nb) return 0;
+    if (na === nb) return 2;
+    const sa = na.split(' '), sb = nb.split(' ');
+    if (sa.length !== sb.length) return 0;
+    // For each syllable pair compute edit-distance ≤ 1
+    let totalDiff = 0;
+    for (let i = 0; i < sa.length; i++) {
+      const d = qzSyllableDiff(sa[i], sb[i]);
+      if (d > 1) return 0;
+      totalDiff += d;
+    }
+    // At least one syllable must differ (otherwise it's exact toneless = score 2 already)
+    return totalDiff === 0 ? 2 : 1;
+  }
+  // Simple edit distance capped at 2 for efficiency
+  function qzSyllableDiff(a, b) {
+    if (a === b) return 0;
+    if (Math.abs(a.length - b.length) > 2) return 3;
+    const m = a.length, n = b.length;
+    const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+    for (let i = 0; i <= m; i++) dp[i][0] = i;
+    for (let j = 0; j <= n; j++) dp[0][j] = j;
+    for (let i = 1; i <= m; i++) {
+      for (let j = 1; j <= n; j++) {
+        dp[i][j] = a[i - 1] === b[j - 1]
+          ? dp[i - 1][j - 1]
+          : 1 + Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]);
+      }
+    }
+    return dp[m][n];
+  }
+  // Find homophone candidates from searchPool, grouped by similarity score
+  function qzFindHomophones(word, searchPool) {
+    const buckets = { 3: [], 2: [], 1: [] };
+    for (const w of searchPool) {
+      if (!w.pinyin || w.hanzi === word.hanzi) continue;
+      const s = qzHomophoneScore(word.pinyin, w.pinyin);
+      if (s >= 1) buckets[s].push(w);
+    }
+    return buckets;
+  }
+
+  function qzGenHomophone(word, pool) {
+    if (!word.pinyin) return null;
+    // Search within the full dictionary for distractors (pool for homophone is always allWords)
+    const searchPool = allWords.length > pool.length ? allWords : pool;
+    const buckets = qzFindHomophones(word, searchPool);
+    // Collect distractors: prefer exact-tone → toneless → near
+    let distractors = [];
+    for (const lvl of [3, 2, 1]) {
+      if (distractors.length >= 3) break;
+      const bucket = qzShuffle(buckets[lvl]);
+      for (const w of bucket) {
+        if (distractors.length >= 3) break;
+        if (!distractors.some(d => d.hanzi === w.hanzi)) distractors.push(w);
+      }
+    }
+    if (distractors.length < 3) return null;
+    const correct = word.hanzi;
+    const allOpts = [word, ...distractors.slice(0, 3)];
+    const viDef = qzGetViDef(word);
+    return {
+      type: 'homophone',
+      typeLabel: '🎭 Đồng âm / Na ná',
+      questionHtml: `<button onclick="qzPlayAudio()" class="text-5xl hover:scale-110 transition-transform">🔊</button><div class="text-lg text-slate-700 mt-3 max-w-xl mx-auto">${viDef}</div><div class="text-xs text-slate-400 mt-2">Nghe và chọn chữ Hán đúng với nghĩa trên</div>`,
+      hint: '',
+      audioText: word.hanzi,
+      correctAnswer: correct,
+      options: qzShuffle(allOpts.map(w => w.hanzi)),
+      word: word
+    };
+  }
+
   function qzGenContextFill(word, pool) {
     if (!contextQuizData.length) return null;
     const items = contextQuizData.filter(q => q.word === word.hanzi);
@@ -293,8 +387,20 @@
     hanzi_to_viet: qzGenHanziToViet, viet_to_hanzi: qzGenVietToHanzi,
     listen_to_hanzi: qzGenListenToHanzi, listen_to_viet: qzGenListenToViet,
     hanzi_to_pinyin: qzGenHanziToPinyin, guess_radical: qzGenGuessRadical,
-    fill_blank: qzGenFillBlank, context_fill: qzGenContextFill
+    fill_blank: qzGenFillBlank, context_fill: qzGenContextFill,
+    homophone: qzGenHomophone
   };
+
+  // Pre-filter: words in pool that have ≥ 3 homophones across the full dictionary
+  function qzFilterHomophonePool(pool) {
+    const searchPool = allWords.length > pool.length ? allWords : pool;
+    return pool.filter(w => {
+      if (!w.pinyin) return false;
+      const buckets = qzFindHomophones(w, searchPool);
+      const total = buckets[3].length + buckets[2].length + buckets[1].length;
+      return total >= 3;
+    });
+  }
 
   function qzGenerateQuestions(words, types, count) {
     const questions = [];
@@ -394,7 +500,7 @@
       optsHtml += `<button onclick="qzAnswer(${i})" class="qz-opt-btn w-full text-left px-5 py-4 border-2 rounded-xl hover:border-primary hover:bg-blue-50 transition-all ${fontClass}" data-idx="${i}"><span class="inline-flex items-center justify-center w-6 h-6 rounded-md bg-slate-100 text-slate-500 text-xs font-bold mr-3 flex-shrink-0">${i + 1}</span>${displayText}</button>`;
     }
     optsEl.innerHTML = optsHtml;
-    if ((q.type === 'listen_to_hanzi' || q.type === 'listen_to_viet') && q.audioText) setTimeout(() => CW.speakText(q.audioText), 300);
+    if ((q.type === 'listen_to_hanzi' || q.type === 'listen_to_viet' || q.type === 'homophone') && q.audioText) setTimeout(() => CW.speakText(q.audioText), 300);
     if (qzTimeLimit > 0) {
       $('#qz-q-timer-bar').classList.remove('hidden');
       $('#qz-q-timer-fill').style.width = '100%';

@@ -199,8 +199,10 @@
   };
 
   // Expose startWithDeck for SRS
-  CW.fcStartWithDeck = function (words, mode) {
+  CW.fcStartWithDeck = function (words, mode, opts) {
+    opts = opts || {};
     fcSource = 'custom'; fcMode = mode || 'review';
+    CW.fcSrsMode = !!opts.srs;
     fcDeck = words;
     for (let i = fcDeck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [fcDeck[i], fcDeck[j]] = [fcDeck[j], fcDeck[i]]; }
     fcIdx = 0; fcFlipped = false; fcCorrect = 0; fcWrong = 0; fcReviewed = 0;
@@ -210,7 +212,16 @@
     CW.showPage('flashcard');
     $('#fc-setup').classList.add('hidden'); $('#fc-play').classList.remove('hidden'); $('#fc-result').classList.add('hidden');
     $('#fc-progress-total').textContent = fcTotalCards;
-    $('#fc-ctrl-browse').classList.add('hidden'); $('#fc-ctrl-review').classList.remove('hidden'); $('#fc-boxes').classList.remove('hidden');
+    $('#fc-ctrl-browse').classList.add('hidden');
+    const srsCtrl = $('#fc-ctrl-srs');
+    if (CW.fcSrsMode && srsCtrl) {
+      srsCtrl.classList.remove('hidden');
+      $('#fc-ctrl-review').classList.add('hidden');
+    } else {
+      if (srsCtrl) srsCtrl.classList.add('hidden');
+      $('#fc-ctrl-review').classList.remove('hidden');
+    }
+    $('#fc-boxes').classList.remove('hidden');
     fcTimerStart = Date.now(); if (fcTimerId) clearInterval(fcTimerId); fcTimerId = setInterval(fcUpdateTimer, 1000);
     fcNextReviewCard(); fcUpdateProgress(); fcUpdateBoxCounts(); fcSetupSwipe();
   };
@@ -291,10 +302,30 @@
     window._fcCurrentEntry = entry;
   }
 
+  // SRS 4-button rating: 1=Again, 2=Hard, 3=Good, 4=Easy
+  window.fcAnswerRating = function (rating) {
+    const entry = window._fcCurrentEntry; if (!entry) return;
+    // Auto-flip to show answer briefly if not flipped (visual feedback)
+    if (CW.updateSrsRating) CW.updateSrsRating(entry.word.hanzi, rating);
+    // Map rating to correct/incorrect for Leitner + stats
+    window.fcAnswer(rating >= 3);
+  };
+
+  // Update rating button interval previews
+  function fcUpdateRatingPreview() {
+    const entry = window._fcCurrentEntry; if (!entry) return;
+    if (!CW.srsPredictInterval) return;
+    const h = entry.word.hanzi;
+    const pv = id => { const el = document.getElementById(id); if (el) el.textContent = CW.srsPredictInterval(h, parseInt(id.slice(-1))); };
+    pv('fc-rating-iv-1'); pv('fc-rating-iv-2'); pv('fc-rating-iv-3'); pv('fc-rating-iv-4');
+  }
+  CW.fcUpdateRatingPreview = fcUpdateRatingPreview;
+
   window.fcAnswer = function (correct) {
     const entry = window._fcCurrentEntry; if (!entry) return;
     fcReviewed++;
-    if (CW.updateSrs) CW.updateSrs(entry.word.hanzi, correct);
+    // Only use legacy updateSrs if not already rated through fcAnswerRating
+    if (!CW.fcSrsMode && CW.updateSrs) CW.updateSrs(entry.word.hanzi, correct);
     const stats = fcLoadStats();
     const key = entry.word.hanzi;
     if (!stats[key]) stats[key] = { correct: 0, wrong: 0, lastReview: '' };
@@ -315,8 +346,19 @@
     else {
       if (fcBoxes[2].length && fcReviewed % 3 === 0) fcQueue.unshift(fcBoxes[2][0]);
       fcNextReviewCard();
+      setTimeout(fcUpdateRatingPreview, 30);
     }
   };
+
+  // Keyboard: 1/2/3/4 rating in SRS mode
+  document.addEventListener('keydown', function (e) {
+    if (!CW.fcSrsMode) return;
+    const playEl = document.getElementById('fc-play');
+    if (!playEl || playEl.classList.contains('hidden')) return;
+    if (e.target && /input|textarea|select/i.test(e.target.tagName)) return;
+    if (e.key >= '1' && e.key <= '4') { e.preventDefault(); window.fcAnswerRating(parseInt(e.key)); }
+    else if (e.key === ' ') { e.preventDefault(); window.fcFlip(); }
+  });
 
   function fcFindBox(entry) { for (let b = 1; b <= 3; b++) { if (fcBoxes[b].includes(entry)) return b; } return 1; }
   function fcRemoveFromBox(entry, box) { fcBoxes[box] = fcBoxes[box].filter(e => e !== entry); }
