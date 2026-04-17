@@ -691,6 +691,30 @@
           <button onclick="fcNext()" class="px-6 py-3 bg-primary text-white rounded-xl text-sm font-medium hover:bg-primary-dark transition-colors">Tiếp →</button>
         </div>
         <!-- Review controls -->
+        <!-- SRS 4-button rating controls -->
+        <div id="fc-ctrl-srs" class="hidden grid grid-cols-4 gap-2">
+          <button onclick="fcAnswerRating(1)" class="flex flex-col items-center py-2.5 border-2 border-red-300 text-red-600 rounded-xl hover:bg-red-50 transition-colors">
+            <span class="font-bold text-sm">😵 Again</span>
+            <span id="fc-rating-iv-1" class="text-[10px] opacity-70 mt-0.5">10m</span>
+            <span class="text-[9px] opacity-50">[1]</span>
+          </button>
+          <button onclick="fcAnswerRating(2)" class="flex flex-col items-center py-2.5 border-2 border-orange-300 text-orange-600 rounded-xl hover:bg-orange-50 transition-colors">
+            <span class="font-bold text-sm">😐 Hard</span>
+            <span id="fc-rating-iv-2" class="text-[10px] opacity-70 mt-0.5">1d</span>
+            <span class="text-[9px] opacity-50">[2]</span>
+          </button>
+          <button onclick="fcAnswerRating(3)" class="flex flex-col items-center py-2.5 border-2 border-green-300 text-green-600 rounded-xl hover:bg-green-50 transition-colors">
+            <span class="font-bold text-sm">🙂 Good</span>
+            <span id="fc-rating-iv-3" class="text-[10px] opacity-70 mt-0.5">1d</span>
+            <span class="text-[9px] opacity-50">[3]</span>
+          </button>
+          <button onclick="fcAnswerRating(4)" class="flex flex-col items-center py-2.5 border-2 border-blue-300 text-blue-600 rounded-xl hover:bg-blue-50 transition-colors">
+            <span class="font-bold text-sm">😎 Easy</span>
+            <span id="fc-rating-iv-4" class="text-[10px] opacity-70 mt-0.5">4d</span>
+            <span class="text-[9px] opacity-50">[4]</span>
+          </button>
+        </div>
+        <!-- Legacy 2-button review controls -->
         <div id="fc-ctrl-review" class="hidden flex items-center gap-3">
           <button onclick="fcAnswer(false)" class="flex-1 py-3 border-2 border-red-300 text-red-600 rounded-xl font-bold text-sm hover:bg-red-50 transition-colors">❌ Chưa nhớ</button>
           <button onclick="fcFlip()" class="px-5 py-3 border-2 border-slate-200 rounded-xl text-sm font-medium hover:bg-slate-50 transition-colors">🔄 Lật</button>
@@ -793,6 +817,11 @@
         <input type="checkbox" class="qz-type-cb hidden" value="context_fill">
         <div class="text-2xl mb-1">📖✍️</div>
         <div class="font-bold text-xs">Điền từ vào câu</div>
+      </label>
+      <label class="qz-type-label border-2 rounded-xl p-3 text-center cursor-pointer hover:border-primary hover:shadow-sm transition-all">
+        <input type="checkbox" class="qz-type-cb hidden" value="homophone">
+        <div class="text-2xl mb-1">🎭🔊</div>
+        <div class="font-bold text-xs">Đồng âm / Na ná</div>
       </label>
     </div>
 
@@ -1150,11 +1179,33 @@
       <p class="text-sm text-slate-400 text-center py-4">Không có từ nào cần ôn</p>
     </div>
 
-    <!-- Recent activity / history -->
-    <h3 class="text-sm font-bold text-slate-700 mb-3">📅 Lịch sử ôn tập gần đây</h3>
-    <div id="srs-history" class="bg-white border-2 rounded-xl p-4 mb-6">
-      <p class="text-sm text-slate-400 text-center py-4">Chưa có dữ liệu</p>
+    <!-- Today stats -->
+    <div id="srs-today-stats" class="mb-4"></div>
+
+    <!-- Forecast chart -->
+    <div class="bg-white border-2 rounded-xl p-5 mb-4">
+      <h3 class="text-sm font-bold text-slate-700 mb-3">📅 Dự báo 30 ngày tới</h3>
+      <div id="srs-forecast"></div>
+      <p class="text-[11px] text-slate-400 mt-2">Số thẻ đến hạn mỗi ngày. Cột đỏ = hôm nay (bao gồm tồn đọng).</p>
     </div>
+
+    <!-- Heatmap -->
+    <div class="bg-white border-2 rounded-xl p-5 mb-4">
+      <h3 class="text-sm font-bold text-slate-700 mb-3">🔥 Hoạt động 26 tuần</h3>
+      <div id="srs-heatmap"></div>
+    </div>
+
+    <!-- History -->
+    <div class="bg-white border-2 rounded-xl p-5 mb-4">
+      <h3 class="text-sm font-bold text-slate-700 mb-3">📜 Lịch sử ôn gần đây</h3>
+      <div id="srs-history"></div>
+    </div>
+
+    <!-- Settings -->
+    <details class="bg-white border-2 rounded-xl p-5 mb-6">
+      <summary class="text-sm font-bold text-slate-700 cursor-pointer">⚙️ Cài đặt SRS nâng cao</summary>
+      <div id="srs-settings" class="mt-3"></div>
+    </details>
 
     <!-- Reset -->
     <div class="text-center">
