@@ -1081,23 +1081,63 @@
   </div>
 </div>
 
-<!-- ===== PAGE: GRAMMAR (Ngữ pháp HSK) ===== -->
+<!-- ===== PAGE: GRAMMAR (Ngữ pháp HSK) - 3-pane layout ===== -->
+<style>
+  /* Grammar page custom styles */
+  #page-grammar .gram-shell { display: flex; gap: 1rem; height: calc(100vh - 140px); min-height: 500px; }
+  #page-grammar .gram-sidebar { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; background: #fff; border: 1px solid #e2e8f0; border-radius: 0.75rem; overflow: hidden; }
+  #page-grammar .gram-main { flex: 1; min-width: 0; background: #fff; border: 1px solid #e2e8f0; border-radius: 0.75rem; overflow-y: auto; }
+  #page-grammar .gram-rail { width: 260px; flex-shrink: 0; display: flex; flex-direction: column; gap: 0.75rem; overflow-y: auto; }
+  #page-grammar .gram-sidebar-scroll { flex: 1; overflow-y: auto; padding: 0.5rem; }
+  #page-grammar .gram-sidebar-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border-radius: 0.5rem; cursor: pointer; font-size: 0.8125rem; transition: background .12s; }
+  #page-grammar .gram-sidebar-item:hover { background: #f1f5f9; }
+  #page-grammar .gram-sidebar-item.active { background: #dbeafe; color: #1d4ed8; font-weight: 600; }
+  #page-grammar .gram-group-header { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; cursor: pointer; user-select: none; font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.04em; border-top: 1px solid #f1f5f9; }
+  #page-grammar .gram-group-header:first-child { border-top: none; }
+  #page-grammar .gram-group-header:hover { background: #f8fafc; }
+  #page-grammar .gram-formula { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0.25rem; padding: 0.5rem 0.75rem; background: linear-gradient(135deg,#fef3c7,#fde68a); border-radius: 0.5rem; font-family: ui-monospace, monospace; font-size: 0.9rem; }
+  #page-grammar .gram-tok { padding: 0.125rem 0.375rem; border-radius: 0.25rem; background: #fff; border: 1px solid #f59e0b; }
+  #page-grammar .gram-tok-zh { font-family: 'Noto Sans SC','Ma Shan Zheng',serif; color: #dc2626; font-weight: 700; font-size: 1.05em; background: #fef2f2; border-color: #fecaca; }
+  #page-grammar .gram-tok-plus { background: transparent; border: none; color: #92400e; font-weight: 700; padding: 0 0.125rem; }
+  #page-grammar .gram-ruby rt { font-size: 0.55em; color: #1d4ed8; font-weight: 500; }
+  #page-grammar .gram-ex { position: relative; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.625rem; padding: 0.75rem 0.875rem; transition: all .15s; }
+  #page-grammar .gram-ex:hover { border-color: #93c5fd; background: #fff; box-shadow: 0 2px 6px rgba(59,130,246,.08); }
+  #page-grammar .gram-ex-zh { font-family: 'Noto Sans SC','Ma Shan Zheng',serif; font-size: 1.125rem; line-height: 1.7; color: #1e293b; }
+  #page-grammar .gram-status-icon { display: inline-block; width: 14px; text-align: center; flex-shrink: 0; }
+  #page-grammar .gram-hsk-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  #page-grammar .gram-kbd { display: inline-block; padding: 1px 5px; background: #f1f5f9; border: 1px solid #cbd5e1; border-bottom-width: 2px; border-radius: 3px; font-family: ui-monospace, monospace; font-size: 10px; color: #475569; }
+  @media (max-width: 1023px) {
+    #page-grammar .gram-shell { display: block; height: auto; }
+    #page-grammar .gram-sidebar { position: fixed; top: 0; left: 0; bottom: 0; width: 85%; max-width: 340px; z-index: 60; transform: translateX(-100%); transition: transform .25s; box-shadow: 4px 0 20px rgba(0,0,0,.15); border-radius: 0; }
+    #page-grammar .gram-sidebar.open { transform: translateX(0); }
+    #page-grammar .gram-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 59; opacity: 0; pointer-events: none; transition: opacity .2s; }
+    #page-grammar .gram-overlay.open { opacity: 1; pointer-events: auto; }
+    #page-grammar .gram-main { height: auto; min-height: 400px; margin-bottom: 1rem; }
+    #page-grammar .gram-rail { width: 100%; }
+  }
+</style>
 <div id="page-grammar" class="page">
-  <div class="container mx-auto max-w-5xl px-4 py-6">
-    <div class="flex items-center justify-between mb-2">
-      <h2 class="text-2xl font-bold">📐 Ngữ pháp HSK</h2>
-      <span class="text-sm text-slate-400" id="gram-count"></span>
+  <div class="container mx-auto max-w-[1400px] px-3 py-4">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-3 gap-2 flex-wrap">
+      <div class="flex items-center gap-2">
+        <button id="gram-sidebar-toggle" class="lg:hidden p-2 -ml-1 rounded-lg hover:bg-slate-100" onclick="gramToggleSidebar()" aria-label="Mở danh mục">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <h2 class="text-xl lg:text-2xl font-bold">📐 Ngữ pháp HSK</h2>
+        <span class="text-xs text-slate-400 hidden md:inline" id="gram-count"></span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="hidden lg:inline text-xs text-slate-400">
+          <span class="gram-kbd">/</span> tìm ·
+          <span class="gram-kbd">↑↓</span> chọn ·
+          <span class="gram-kbd">B</span> lưu ·
+          <span class="gram-kbd">N</span> đã học ·
+          <span class="gram-kbd">R</span> ngẫu nhiên
+        </span>
+        <button onclick="gramRandomRule()" class="p-2 rounded-lg hover:bg-slate-100" title="Ngẫu nhiên (R)">🎲</button>
+      </div>
     </div>
-    <p class="text-sm text-slate-500 mb-4">Tổng hợp các điểm ngữ pháp quan trọng từ HSK 1-6, giải thích bằng tiếng Việt, kèm ví dụ và ghi chú.</p>
-
-    <!-- Search -->
-    <div class="relative mb-4">
-      <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      <input type="text" id="gram-search" placeholder="Tìm ngữ pháp (VD: 虽然, mặc dù, comparison...)" class="w-full pl-12 pr-10 py-3 border-2 border-slate-200 rounded-xl focus:border-primary focus:ring-2 focus:ring-blue-100 outline-none text-sm transition-all" autocomplete="off" oninput="gramSearch()">
-    </div>
-
-    <!-- HSK level chips -->
-    <div class="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-hide" id="gram-chips"></div>
 
     <!-- Loading -->
     <div id="gram-loading" class="flex flex-col items-center py-16 text-slate-400">
@@ -1105,19 +1145,71 @@
       <p>Đang tải dữ liệu ngữ pháp...</p>
     </div>
 
-    <!-- Grammar list -->
-    <div id="gram-list" class="space-y-4"></div>
+    <!-- 3-pane Shell -->
+    <div id="gram-shell" class="gram-shell hidden">
+      <!-- Mobile overlay -->
+      <div id="gram-overlay" class="gram-overlay lg:hidden" onclick="gramToggleSidebar(false)"></div>
 
-    <!-- Empty state -->
-    <div id="gram-empty" class="hidden text-center py-16 text-slate-400">
-      <div class="text-5xl mb-3">📐</div>
-      <p>Không tìm thấy điểm ngữ pháp nào</p>
+      <!-- LEFT SIDEBAR -->
+      <aside id="gram-sidebar" class="gram-sidebar">
+        <!-- Search -->
+        <div class="p-3 border-b border-slate-100">
+          <div class="relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="gram-search" placeholder="Tìm ZH/VI/EN…" class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:border-primary focus:ring-1 focus:ring-blue-100 outline-none text-sm" autocomplete="off" oninput="gramSearch()">
+          </div>
+          <!-- HSK chips -->
+          <div class="flex gap-1 mt-2 overflow-x-auto scrollbar-hide" id="gram-chips"></div>
+          <!-- Status filter -->
+          <div class="flex gap-1 mt-2 text-xs">
+            <button class="gram-status-btn active px-2 py-1 rounded bg-slate-100 hover:bg-slate-200" data-status="" onclick="gramFilterStatus('')">Tất cả</button>
+            <button class="gram-status-btn px-2 py-1 rounded hover:bg-slate-100" data-status="bookmark" onclick="gramFilterStatus('bookmark')">⭐ Lưu</button>
+            <button class="gram-status-btn px-2 py-1 rounded hover:bg-slate-100" data-status="learned" onclick="gramFilterStatus('learned')">✓ Đã học</button>
+            <button class="gram-status-btn px-2 py-1 rounded hover:bg-slate-100" data-status="unlearned" onclick="gramFilterStatus('unlearned')">📖 Chưa học</button>
+          </div>
+          <!-- Progress -->
+          <div class="mt-2">
+            <div class="flex items-center justify-between text-[11px] text-slate-500 mb-0.5">
+              <span id="gram-progress-label">Tiến độ</span>
+              <span id="gram-progress-text">0/0</span>
+            </div>
+            <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+              <div id="gram-progress-bar" class="h-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+        <!-- List -->
+        <div id="gram-list" class="gram-sidebar-scroll"></div>
+      </aside>
+
+      <!-- MAIN content -->
+      <main id="gram-detail" class="gram-main p-5">
+        <div class="text-center text-slate-400 py-20">
+          <div class="text-6xl mb-3">📐</div>
+          <p class="text-sm">Chọn một điểm ngữ pháp từ danh sách bên trái để xem chi tiết.</p>
+        </div>
+      </main>
+
+      <!-- RIGHT RAIL -->
+      <aside class="gram-rail hidden lg:flex">
+        <div class="bg-white border border-slate-200 rounded-xl p-4">
+          <h3 class="text-sm font-bold mb-2 text-slate-700">📊 Tiến độ theo cấp</h3>
+          <div id="gram-hsk-progress" class="space-y-1.5 text-xs"></div>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-4">
+          <h3 class="text-sm font-bold mb-2 text-slate-700">🔗 Liên quan</h3>
+          <div id="gram-related" class="text-xs text-slate-400">—</div>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-4">
+          <h3 class="text-sm font-bold mb-2 text-slate-700">🎴 Ôn ví dụ</h3>
+          <p class="text-xs text-slate-500 mb-2"><span id="gram-srs-count">0</span> câu đã lưu</p>
+          <button onclick="gramReviewExamples()" class="w-full py-2 text-xs bg-primary text-white rounded-lg hover:bg-primary-dark">Bắt đầu ôn tập</button>
+        </div>
+      </aside>
     </div>
-
-    <!-- Load more -->
-    <button id="gram-more" class="hidden w-full py-3 text-sm font-medium text-primary border-2 border-primary-light rounded-lg hover:bg-blue-50 transition-colors mt-4" onclick="gramLoadMore()">Xem thêm</button>
   </div>
 </div>
+
 
 <!-- ===== PAGE: SRS (Spaced Repetition Dashboard) ===== -->
 <div id="page-srs" class="page">
