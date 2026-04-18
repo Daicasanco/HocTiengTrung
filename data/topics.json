@@ -1,0 +1,191 @@
+[
+  {
+    "id": "electronics_and_pcb",
+    "name_vi": "Linh kiện, Bo mạch & Điện tử công nghiệp",
+    "name_zh": "",
+    "icon": "📁",
+    "color": "#ef4444",
+    "count": 120,
+    "order": 0
+  },
+  {
+    "id": "digital_signage_pro",
+    "name_vi": "Màn hình, Quảng cáo & Hệ thống CMS",
+    "name_zh": "",
+    "icon": "🗂️",
+    "color": "#f97316",
+    "count": 115,
+    "order": 1
+  },
+  {
+    "id": "software_and_game_dev",
+    "name_vi": "Lập trình, Phát triển Game & Nghệ thuật số",
+    "name_zh": "",
+    "icon": "📚",
+    "color": "#f59e0b",
+    "count": 124,
+    "order": 2
+  },
+  {
+    "id": "business_and_contracts",
+    "name_vi": "Kinh doanh, Hợp đồng & Tài chính",
+    "name_zh": "",
+    "icon": "🔖",
+    "color": "#eab308",
+    "count": 110,
+    "order": 3
+  },
+  {
+    "id": "divination_and_iching",
+    "name_vi": "Tâm linh, Kinh dịch & Chiêm tinh",
+    "name_zh": "",
+    "icon": "🏷️",
+    "color": "#84cc16",
+    "count": 101,
+    "order": 4
+  },
+  {
+    "id": "education_and_chemistry",
+    "name_vi": "Học tập, Thi cử & Hóa học",
+    "name_zh": "",
+    "icon": "🧩",
+    "color": "#22c55e",
+    "count": 110,
+    "order": 5
+  },
+  {
+    "id": "social_and_emotions",
+    "name_vi": "Giao tiếp xã hội, Tính cách & Cảm xúc",
+    "name_zh": "",
+    "icon": "💡",
+    "color": "#10b981",
+    "count": 109,
+    "order": 6
+  },
+  {
+    "id": "food_and_restaurant",
+    "name_vi": "Ẩm thực, Nhà hàng & Nấu nướng",
+    "name_zh": "",
+    "icon": "🎯",
+    "color": "#14b8a6",
+    "count": 110,
+    "order": 7
+  },
+  {
+    "id": "traffic_and_travel",
+    "name_vi": "Giao thông, Du lịch & Khách sạn",
+    "name_zh": "",
+    "icon": "🌟",
+    "color": "#06b6d4",
+    "count": 101,
+    "order": 8
+  },
+  {
+    "id": "medical_and_health",
+    "name_vi": "Y tế, Sức khỏe & Cơ thể con người",
+    "name_zh": "",
+    "icon": "🔥",
+    "color": "#0ea5e9",
+    "count": 150,
+    "order": 9
+  },
+  {
+    "id": "sports_and_entertainment",
+    "name_vi": "Thể thao, Giải trí & Nghệ thuật",
+    "name_zh": "",
+    "icon": "⚙️",
+    "color": "#3b82f6",
+    "count": 145,
+    "order": 10
+  },
+  {
+    "id": "home_and_daily_life",
+    "name_vi": "Nhà cửa, Đồ dùng & Đời sống hàng ngày",
+    "name_zh": "",
+    "icon": "🛠️",
+    "color": "#6366f1",
+    "count": 151,
+    "order": 11
+  },
+  {
+    "id": "fashion_and_cosmetics",
+    "name_vi": "Thời trang, Trang phục & Mỹ phẩm",
+    "name_zh": "",
+    "icon": "🧪",
+    "color": "#8b5cf6",
+    "count": 138,
+    "order": 12
+  },
+  {
+    "id": "nature_and_animals",
+    "name_vi": "Tự nhiên, Động thực vật & Môi trường",
+    "name_zh": "",
+    "icon": "🔬",
+    "color": "#a855f7",
+    "count": 130,
+    "order": 13
+  },
+  {
+    "id": "public_places_and_city",
+    "name_vi": "Địa điểm công cộng, Thành phố & Kiến trúc",
+    "name_zh": "",
+    "icon": "💻",
+    "color": "#d946ef",
+    "count": 107,
+    "order": 14
+  },
+  {
+    "id": "law_and_politics",
+    "name_vi": "Pháp luật, Chính trị & Hành chính",
+    "name_zh": "",
+    "icon": "📡",
+    "color": "#ec4899",
+    "count": 130,
+    "order": 15
+  },
+  {
+    "id": "economy_and_ecommerce",
+    "name_vi": "Kinh tế, Tài chính & Thương mại điện tử",
+    "name_zh": "",
+    "icon": "🚀",
+    "color": "#f43f5e",
+    "count": 115,
+    "order": 16
+  },
+  {
+    "id": "culture_history_festivals",
+    "name_vi": "Văn hóa, Lịch sử & Lễ hội truyền thống",
+    "name_zh": "",
+    "icon": "✈️",
+    "color": "#78716c",
+    "count": 128,
+    "order": 17
+  },
+  {
+    "id": "environment_and_climate",
+    "name_vi": "Môi trường, Khí hậu & Năng lượng xanh",
+    "name_zh": "",
+    "icon": "🚗",
+    "color": "#737373",
+    "count": 94,
+    "order": 18
+  },
+  {
+    "id": "media_and_social_networks",
+    "name_vi": "Truyền thông, Mạng xã hội & Digital Signage",
+    "name_zh": "",
+    "icon": "🏥",
+    "color": "#a3a3a3",
+    "count": 94,
+    "order": 19
+  },
+  {
+    "id": "psychology_and_philosophy",
+    "name_vi": "Tâm lý học, Triết học & Tư duy",
+    "name_zh": "",
+    "icon": "🏠",
+    "color": "#dc2626",
+    "count": 95,
+    "order": 20
+  }
+]
