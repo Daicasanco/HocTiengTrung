@@ -383,13 +383,123 @@
     return { type: 'context_fill', typeLabel: '📖 Điền từ vào câu', questionHtml: qHtml, hint: '', correctAnswer: correct, options: qzShuffle([correct, ...distractors]), word: word, explanation: item.explanation || '' };
   }
 
+  // --- Typing quiz: Hán → Gõ nghĩa Việt ---
+  function qzGenTypeViet(word, pool) {
+    const accepted = qzGetAcceptedViAnswers(word);
+    if (!accepted.length) return null;
+    return {
+      type: 'type_viet',
+      typeLabel: '⌨️ Hán → Gõ nghĩa Việt',
+      questionHtml: `<div class="font-cn text-5xl font-bold text-hanzi">${word.hanzi}</div>`,
+      hint: word.pinyin || '',
+      correctAnswer: accepted[0],
+      acceptedAnswers: accepted,
+      isTyping: true,
+      typingMode: 'viet',
+      options: [],
+      word: word
+    };
+  }
+
+  // --- Typing quiz: Nghĩa Việt → Gõ chữ Hán ---
+  function qzGenTypeHanzi(word, pool) {
+    if (!word.hanzi) return null;
+    const viDef = qzGetViDef(word);
+    return {
+      type: 'type_hanzi',
+      typeLabel: '⌨️ Việt → Gõ chữ Hán',
+      questionHtml: `<div class="text-2xl font-bold text-slate-700">${viDef}</div>`,
+      hint: '', // Pinyin KHÔNG gợi ý để tránh tra mẹo
+      correctAnswer: word.hanzi,
+      acceptedAnswers: [word.hanzi],
+      isTyping: true,
+      typingMode: 'hanzi',
+      options: [],
+      word: word
+    };
+  }
+
+  // Trả về mảng các nghĩa tiếng Việt được chấp nhận (đã làm sạch)
+  function qzGetAcceptedViAnswers(word) {
+    const raw = (word.vietnamese || word.english || '').split(/[;；]/);
+    const seen = new Set();
+    const out = [];
+    for (const r of raw) {
+      const c = qzCleanViDef(r).trim();
+      if (!c) continue;
+      // Tách thêm theo "/" hoặc "," để người học có thể gõ 1 trong nhiều nghĩa
+      const parts = c.split(/\s*[\/,]\s*/).map(s => s.trim()).filter(Boolean);
+      for (const p of parts) {
+        const k = qzNormalizeVi(p);
+        if (!k || seen.has(k)) continue;
+        seen.add(k);
+        out.push(p);
+      }
+    }
+    return out;
+  }
+
+  // Chuẩn hóa chuỗi tiếng Việt: bỏ dấu, lower, loại ký tự không phải chữ/số/khoảng trắng
+  function qzNormalizeVi(s) {
+    if (!s) return '';
+    return s
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/đ/g, 'd')
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  // Distance Levenshtein đơn giản để chấp nhận lỗi chính tả nhỏ
+  function qzLevenshtein(a, b) {
+    if (a === b) return 0;
+    const m = a.length, n = b.length;
+    if (!m) return n; if (!n) return m;
+    const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+    for (let i = 0; i <= m; i++) dp[i][0] = i;
+    for (let j = 0; j <= n; j++) dp[0][j] = j;
+    for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++) {
+      dp[i][j] = a[i - 1] === b[j - 1] ? dp[i - 1][j - 1] : 1 + Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]);
+    }
+    return dp[m][n];
+  }
+
+  // So sánh đáp án typing: trả về {ok, matched}
+  function qzCheckTyped(userAnswer, q) {
+    const ua = (userAnswer || '').trim();
+    if (!ua) return { ok: false, matched: null };
+    if (q.typingMode === 'hanzi') {
+      // Loại khoảng trắng; chấp nhận chính xác
+      const clean = ua.replace(/\s+/g, '');
+      return { ok: clean === q.correctAnswer, matched: clean };
+    }
+    // viet: so khớp với bất kỳ nghĩa nào trong acceptedAnswers
+    const uaNorm = qzNormalizeVi(ua);
+    if (!uaNorm) return { ok: false, matched: null };
+    for (const a of q.acceptedAnswers) {
+      const an = qzNormalizeVi(a);
+      if (!an) continue;
+      if (an === uaNorm) return { ok: true, matched: a };
+      // Chấp nhận chứa (user gõ ngắn hơn / dài hơn 1 chút)
+      if (an.includes(uaNorm) && uaNorm.length >= Math.max(3, an.length - 3)) return { ok: true, matched: a };
+      if (uaNorm.includes(an) && an.length >= 3) return { ok: true, matched: a };
+      // Sai chính tả nhỏ (Levenshtein ≤ 1 với chuỗi ≥4 ký tự)
+      if (an.length >= 4 && qzLevenshtein(an, uaNorm) <= 1) return { ok: true, matched: a };
+    }
+    return { ok: false, matched: null };
+  }
+
   const qzGenerators = {
     hanzi_to_viet: qzGenHanziToViet, viet_to_hanzi: qzGenVietToHanzi,
     listen_to_hanzi: qzGenListenToHanzi, listen_to_viet: qzGenListenToViet,
     hanzi_to_pinyin: qzGenHanziToPinyin, guess_radical: qzGenGuessRadical,
     fill_blank: qzGenFillBlank, context_fill: qzGenContextFill,
-    homophone: qzGenHomophone
+    homophone: qzGenHomophone,
+    type_viet: qzGenTypeViet, type_hanzi: qzGenTypeHanzi
   };
+
 
   // Pre-filter: words in pool that have ≥ 3 homophones across the full dictionary
   function qzFilterHomophonePool(pool) {
@@ -417,8 +527,11 @@
         if (round < types.length && usedCombos.has(comboKey)) continue;
         const gen = qzGenerators[type]; if (!gen) continue;
         const q = gen(word, words); if (!q) continue;
-        const uniqueOpts = [...new Set(q.options)]; if (uniqueOpts.length < 4) continue;
-        q.options = uniqueOpts.slice(0, 4); q.userAnswer = null; q.isCorrect = null; q.timeSpent = 0;
+        if (!q.isTyping) {
+          const uniqueOpts = [...new Set(q.options)]; if (uniqueOpts.length < 4) continue;
+          q.options = uniqueOpts.slice(0, 4);
+        }
+        q.userAnswer = null; q.isCorrect = null; q.timeSpent = 0;
         questions.push(q); usedCombos.add(comboKey); generated = true; break;
       }
       if (!generated) {
@@ -426,9 +539,17 @@
         const gen = qzGenerators[type];
         if (gen) {
           const q = gen(word, words);
-          if (q) { const uo = [...new Set(q.options)]; if (uo.length >= 4) { q.options = uo.slice(0, 4); q.userAnswer = null; q.isCorrect = null; q.timeSpent = 0; questions.push(q); } }
+          if (q) {
+            if (q.isTyping) {
+              q.userAnswer = null; q.isCorrect = null; q.timeSpent = 0; questions.push(q);
+            } else {
+              const uo = [...new Set(q.options)];
+              if (uo.length >= 4) { q.options = uo.slice(0, 4); q.userAnswer = null; q.isCorrect = null; q.timeSpent = 0; questions.push(q); }
+            }
+          }
         }
       }
+
       wordIdx++; if (wordIdx % shuffledWords.length === 0) round++; attempts++;
     }
     return questions;
@@ -491,15 +612,44 @@
     if (qzStreak >= 2) { streakBadge.classList.remove('hidden'); streakBadge.textContent = '🔥 ' + qzStreak; }
     else streakBadge.classList.add('hidden');
     const optsEl = $('#qz-options');
-    let optsHtml = '';
-    for (let i = 0; i < q.options.length; i++) {
-      const opt = q.options[i];
-      const displayText = (q.optionLabels && q.optionLabels[opt]) ? q.optionLabels[opt] : opt;
-      const isCn = q.type === 'viet_to_hanzi' || q.type === 'listen_to_hanzi' || q.type === 'guess_radical' || q.type === 'fill_blank' || q.type === 'context_fill';
-      const fontClass = isCn ? 'font-cn text-xl' : 'text-sm';
-      optsHtml += `<button onclick="qzAnswer(${i})" class="qz-opt-btn w-full text-left px-5 py-4 border-2 rounded-xl hover:border-primary hover:bg-blue-50 transition-all ${fontClass}" data-idx="${i}"><span class="inline-flex items-center justify-center w-6 h-6 rounded-md bg-slate-100 text-slate-500 text-xs font-bold mr-3 flex-shrink-0">${i + 1}</span>${displayText}</button>`;
+    if (q.isTyping) {
+      // Render ô nhập text thay cho các nút lựa chọn
+      const placeholder = q.typingMode === 'hanzi'
+        ? 'Gõ chữ Hán vào đây...'
+        : 'Gõ nghĩa tiếng Việt vào đây...';
+      const fontClass = q.typingMode === 'hanzi' ? 'font-cn text-2xl' : 'text-base';
+      optsEl.innerHTML = `
+        <div class="space-y-3">
+          <input type="text" id="qz-type-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+            placeholder="${placeholder}"
+            class="w-full px-5 py-4 border-2 border-slate-200 rounded-xl focus:border-primary focus:ring-2 focus:ring-blue-100 outline-none transition-all ${fontClass}">
+          <div class="flex gap-2">
+            <button onclick="qzSubmitTyped()" class="flex-1 py-3 bg-primary text-white rounded-xl font-medium text-sm hover:bg-primary-dark transition-colors">✓ Kiểm tra (Enter)</button>
+            <button onclick="qzSkipTyped()" class="px-5 py-3 border-2 border-slate-200 rounded-xl text-sm font-medium hover:bg-slate-50 transition-colors">⏭️ Bỏ qua</button>
+          </div>
+          <p class="text-[11px] text-slate-400">${q.typingMode === 'viet' ? '💡 Chấp nhận nhiều nghĩa & bỏ dấu tiếng Việt' : '💡 Gõ chính xác chữ Hán (không dấu cách)'}</p>
+        </div>`;
+      setTimeout(() => {
+        const inp = document.getElementById('qz-type-input');
+        if (inp) {
+          inp.focus();
+          inp.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); qzSubmitTyped(); }
+          });
+        }
+      }, 50);
+    } else {
+      let optsHtml = '';
+      for (let i = 0; i < q.options.length; i++) {
+        const opt = q.options[i];
+        const displayText = (q.optionLabels && q.optionLabels[opt]) ? q.optionLabels[opt] : opt;
+        const isCn = q.type === 'viet_to_hanzi' || q.type === 'listen_to_hanzi' || q.type === 'guess_radical' || q.type === 'fill_blank' || q.type === 'context_fill';
+        const fontClass = isCn ? 'font-cn text-xl' : 'text-sm';
+        optsHtml += `<button onclick="qzAnswer(${i})" class="qz-opt-btn w-full text-left px-5 py-4 border-2 rounded-xl hover:border-primary hover:bg-blue-50 transition-all ${fontClass}" data-idx="${i}"><span class="inline-flex items-center justify-center w-6 h-6 rounded-md bg-slate-100 text-slate-500 text-xs font-bold mr-3 flex-shrink-0">${i + 1}</span>${displayText}</button>`;
+      }
+      optsEl.innerHTML = optsHtml;
     }
-    optsEl.innerHTML = optsHtml;
+
     if ((q.type === 'listen_to_hanzi' || q.type === 'listen_to_viet' || q.type === 'homophone') && q.audioText) setTimeout(() => CW.speakText(q.audioText), 300);
     if (qzTimeLimit > 0) {
       $('#qz-q-timer-bar').classList.remove('hidden');
@@ -532,10 +682,86 @@
     if (!playEl || playEl.classList.contains('hidden')) return;
     const resultEl = $('#qz-result');
     if (resultEl && !resultEl.classList.contains('hidden')) return;
-    if ((e.key === 'ArrowRight' || e.key === 'Enter' || e.key === ' ') && qzAnswered) { e.preventDefault(); qzNext(); return; }
-    if (!qzAnswered && e.key >= '1' && e.key <= '4') { e.preventDefault(); const idx = parseInt(e.key) - 1; const q = qzQuestions[qzIdx]; if (q && idx < q.options.length) qzAnswer(idx); return; }
-    if (e.key === 'ArrowLeft') { e.preventDefault(); qzPlayAudio(); return; }
+    const q = qzQuestions[qzIdx];
+    const inTypeInput = e.target && e.target.id === 'qz-type-input';
+    if ((e.key === 'ArrowRight' || (e.key === 'Enter' && !inTypeInput) || e.key === ' ') && qzAnswered) { e.preventDefault(); qzNext(); return; }
+    if (!qzAnswered && !inTypeInput && !(q && q.isTyping) && e.key >= '1' && e.key <= '4') { e.preventDefault(); const idx = parseInt(e.key) - 1; if (q && idx < q.options.length) qzAnswer(idx); return; }
+    if (e.key === 'ArrowLeft' && !inTypeInput) { e.preventDefault(); qzPlayAudio(); return; }
   });
+
+  // --- Typing answer handlers ---
+  window.qzSubmitTyped = function () {
+    if (qzAnswered) return;
+    const inp = document.getElementById('qz-type-input');
+    if (!inp) return;
+    const val = inp.value;
+    qzAnswerTyped(val);
+  };
+
+  window.qzSkipTyped = function () {
+    if (qzAnswered) return;
+    qzAnswerTyped(''); // empty = wrong
+  };
+
+  function qzAnswerTyped(userText) {
+    if (qzAnswered) return;
+    qzAnswered = true;
+    if (qzQTimerId) { clearInterval(qzQTimerId); qzQTimerId = null; }
+    const q = qzQuestions[qzIdx];
+    const showAnswer = $('#qz-show-answer')?.checked;
+    const result = qzCheckTyped(userText, q);
+    const isCorrect = result.ok;
+    q.userAnswer = userText || null;
+    q.isCorrect = isCorrect;
+    if (q.word && q.word.hanzi && CW.updateSrs) CW.updateSrs(q.word.hanzi, isCorrect);
+    if (isCorrect) { qzScore++; qzStreak++; if (qzStreak > qzMaxStreak) qzMaxStreak = qzStreak; }
+    else { qzStreak = 0; qzWrongList.push(q); }
+    const streakBadge = $('#qz-streak-badge');
+    if (qzStreak >= 2) { streakBadge.classList.remove('hidden'); streakBadge.textContent = '🔥 ' + qzStreak; }
+    else streakBadge.classList.add('hidden');
+
+    // Visual feedback on input
+    const inp = document.getElementById('qz-type-input');
+    if (inp) {
+      inp.disabled = true;
+      inp.classList.remove('border-slate-200');
+      if (isCorrect) inp.classList.add('border-green-400', 'bg-green-50', 'text-green-700');
+      else inp.classList.add('border-red-400', 'bg-red-50', 'text-red-700');
+    }
+
+    const fb = $('#qz-feedback'), fbc = $('#qz-feedback-content');
+    fb.classList.remove('hidden');
+    if (isCorrect) {
+      fb.classList.remove('border-red-200', 'bg-red-50'); fb.classList.add('border-green-200', 'bg-green-50');
+      const msgs = ['🎉 Chính xác!', '👏 Xuất sắc!', '✨ Tuyệt vời!', '💪 Giỏi lắm!', '🏆 Đúng rồi!'];
+      let html = `<div class="font-bold text-green-700">${msgs[Math.floor(Math.random() * msgs.length)]}</div>`;
+      if (result.matched && qzNormalizeVi(result.matched) !== qzNormalizeVi(userText)) {
+        html += `<div class="text-xs text-slate-500 mt-1">Khớp với nghĩa: <strong>${result.matched}</strong></div>`;
+      }
+      // Show full info to reinforce learning
+      html += `<div class="mt-1 text-slate-500 text-xs">${q.word.hanzi} · ${q.word.pinyin || ''} · ${qzGetViDef(q.word)}</div>`;
+      fbc.innerHTML = html;
+    } else {
+      fb.classList.remove('border-green-200', 'bg-green-50'); fb.classList.add('border-red-200', 'bg-red-50');
+      let html = userText ? '<div class="font-bold text-red-700">❌ Sai rồi!</div>' : '<div class="font-bold text-red-700">⏭️ Bỏ qua</div>';
+      if (showAnswer) {
+        if (q.typingMode === 'viet') {
+          html += `<div class="mt-1 text-slate-600">Đáp án: <strong class="text-green-700">${q.acceptedAnswers.slice(0, 4).join(' / ')}</strong></div>`;
+        } else {
+          html += `<div class="mt-1 text-slate-600">Đáp án: <strong class="font-cn text-xl text-green-700">${q.correctAnswer}</strong></div>`;
+        }
+        html += `<div class="mt-1 text-slate-500 text-xs">${q.word.hanzi} · ${q.word.pinyin || ''} · ${qzGetViDef(q.word)}</div>`;
+      }
+      fbc.innerHTML = html;
+    }
+    $('#qz-next-btn').classList.remove('hidden');
+    if (q.word && q.word.hanzi) setTimeout(() => CW.speakText(q.word.hanzi), 200);
+    if (qzIdx >= qzQuestions.length - 1) $('#qz-next-btn').textContent = '📊 Xem kết quả';
+    else $('#qz-next-btn').textContent = 'Câu tiếp theo →';
+    if (qzAutoAdvanceId) { clearTimeout(qzAutoAdvanceId); qzAutoAdvanceId = null; }
+    qzAutoAdvanceId = setTimeout(() => { qzAutoAdvanceId = null; qzNext(); }, isCorrect ? 2000 : 3500);
+  }
+
 
   // --- Answer handling ---
   window.qzAnswer = function (optIdx) {
