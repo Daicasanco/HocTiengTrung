@@ -9,6 +9,15 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>中</text></svg>" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      @font-face {
+        font-family: 'STKaiti';
+        src: url('华文楷体.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+    </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="jspdf.umd.min.js"></script>
     <script>
@@ -21,7 +30,7 @@
             },
             fontFamily: {
               sans: ['Inter', 'system-ui', 'sans-serif'],
-              cn: ['Noto Sans SC', 'Microsoft YaHei', 'sans-serif'],
+              cn: ['STKaiti', 'Noto Sans SC', 'Microsoft YaHei', 'KaiTi', 'sans-serif'],
             }
           }
         }
