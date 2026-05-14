@@ -89,6 +89,9 @@
           <button onclick="addToBookmark('${charEsc}')" class="inline-flex items-center gap-1.5 border border-amber-400 text-amber-700 px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-amber-50 transition-colors">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Lưu
           </button>
+          <button onclick="openChiettuByHanzi('${charEsc}')" class="inline-flex items-center gap-1.5 border border-red-200 text-red-700 px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-red-50 transition-colors">
+            🔬 Chiết tự
+          </button>
         </div>
         ${viFullHtml}${enLineHtml}
         ${c.decomp ? `<div class="mt-3"><div class="text-xs font-bold text-primary uppercase tracking-wide mb-2">Phân tách</div><div class="flex flex-wrap gap-2">${partsH}</div></div>` : ''}

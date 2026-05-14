@@ -149,12 +149,15 @@
         <div class="font-cn text-5xl font-bold text-hanzi mb-2">${w.hanzi}</div>
         <div class="text-lg text-primary font-medium">${w.pinyin}</div>
         <div class="text-sm text-slate-400 mt-1">HSK ${w.hsk}</div>
-        <div class="flex gap-2 mt-3">
+        <div class="flex flex-wrap gap-2 mt-3">
           <button onclick="speakWord('${hanziEsc}')" class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors">
             <svg viewBox="0 0 24 24" width="16" height="16"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 8.5v7a4.47 4.47 0 002.5-3.5z" fill="currentColor"/></svg> Phát âm
           </button>
           <button onclick="addToBookmark('${hanziEsc}')" class="inline-flex items-center gap-2 border-2 border-amber-400 text-amber-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-amber-50 transition-colors">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Lưu vào hồ sơ
+          </button>
+          <button onclick="openChiettuByHanzi('${hanziEsc}')" class="inline-flex items-center gap-2 border-2 border-red-200 text-red-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors">
+            🔬 Chiết tự
           </button>
         </div>
       </div>

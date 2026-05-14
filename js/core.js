@@ -366,9 +366,9 @@
     _skipPushState = false;
   });
 
-  // Set initial history state
+  // Set initial history state (do NOT navigate yet — wait until data is loaded)
   (function initHistory() {
-    const hash = location.hash.replace('#', '');
+    const hash = location.hash.replace('#', '').trim();
     const initialPage = hash || 'home';
     history.replaceState({ page: initialPage }, '', '#' + initialPage);
   })();
@@ -476,6 +476,16 @@
       CW._initCallbacks.forEach(fn => fn());
       const ll = $('#lib-loading');
       if (ll) ll.classList.add('hidden');
+
+      // Navigate to the page from URL hash (supports F5 / direct URL)
+      const startHash = location.hash.replace('#', '').trim();
+      // Ignore sub-pages that need context (e.g. chiettu-detail needs an item selected)
+      const _subPages = ['chiettu-detail', 'detail'];
+      const startPage = (startHash && !_subPages.includes(startHash)) ? startHash : 'home';
+      _doShowPage(startPage);
+      if (startPage !== startHash) history.replaceState({ page: startPage }, '', '#' + startPage);
+      const startHooks = CW._pageHooks[startPage];
+      if (startHooks) startHooks.forEach(fn => fn());
 
       // PHASE 2: Load heavy data in background (non-blocking)
       _charsPromise = fetch('data/characters.json')
