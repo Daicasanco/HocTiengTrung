@@ -344,7 +344,7 @@
     "hanzi": "穿",
     "pinyin": "chuān",
     "english": "to wear; to put on; to dress; to bore through; to pierce; to perforate; to penetrate; to pass through; to thread",
-    "vietnamese": "mặc; mang; mặc vào; xuyên qua; đâm thủng; khoan; thâm nhập; đi qua; xâu qua; mặc; mang; mặc vào; xuyên qua; đâm thủng; khoan; thâm nhập; đi qua; xâu qua",
+    "vietnamese": "mặc; mang; mặc vào; xuyên qua; đâm thủng; khoan; thâm nhập; đi qua; xâu qua; mặc; mang; mặc vào; xuyên qua; đâm thủng; khoan; thâm nhập; đi qua; xâu qua; Mặc (áo) / Đi (giày)",
     "hsk": 1,
     "audio": "sounds/hsk1/穿.mp3",
     "strokes": 9
@@ -804,7 +804,7 @@
     "hanzi": "给",
     "pinyin": "gěi",
     "english": "to; for; for the benefit of; to give; to allow; to do sth (for sb); (grammatical equivalent of 被); (grammatical equivalent of 把); (sentence intensifier)",
-    "vietnamese": "cho; để; cho lợi ích của; đưa; cung cấp; làm gì đó (cho ai); (tương đương ngữ pháp của 被); (tương đương ngữ pháp của 把); (nhấn mạnh câu); cung cấp; cấp",
+    "vietnamese": "cho; để; cho lợi ích của; đưa; cung cấp; làm gì đó (cho ai); (tương đương ngữ pháp của 被); (tương đương ngữ pháp của 把); (nhấn mạnh câu); cung cấp; cấp; Cho / Đưa",
     "hsk": 1,
     "audio": "sounds/hsk1/给.mp3",
     "strokes": 9
@@ -1054,7 +1054,7 @@
     "hanzi": "回",
     "pinyin": "huí",
     "english": "to circle; to go back; to turn around; to answer; to return; to revolve; Hui ethnic group (Chinese Muslims); time; classifier for acts of a play; section or chapter (of a classic book)",
-    "vietnamese": "xoay vòng; quay lại; quay quanh; trả lời; trở về; xoay; chủng tộc Hồi (người Hồi giáo Trung Quốc); lần; lượng từ cho hành động trong vở kịch; phần hoặc chương (của sách kinh điển); xoay vòng; quay lại; quay quanh; trả lời; trở về; xoay; chủng tộc Hồi (người Hồi giáo Trung Quốc); lần; lượng từ cho hành động trong vở kịch; phần hoặc chương (của sách kinh điển); cong; quay lại; xoay vòng; biến thể của 迴|回[hui2]",
+    "vietnamese": "xoay vòng; quay lại; quay quanh; trả lời; trở về; xoay; chủng tộc Hồi (người Hồi giáo Trung Quốc); lần; lượng từ cho hành động trong vở kịch; phần hoặc chương (của sách kinh điển); xoay vòng; quay lại; quay quanh; trả lời; trở về; xoay; chủng tộc Hồi (người Hồi giáo Trung Quốc); lần; lượng từ cho hành động trong vở kịch; phần hoặc chương (của sách kinh điển); cong; quay lại; xoay vòng; biến thể của 迴|回[hui2]; Về",
     "hsk": 1,
     "audio": "sounds/hsk1/回.mp3",
     "strokes": 6
@@ -1204,7 +1204,7 @@
     "hanzi": "叫",
     "pinyin": "jiào",
     "english": "to shout; to call; to order; to ask; to be called; by (indicates agent in the passive mood)",
-    "vietnamese": "kêu; gọi; đặt hàng; bảo; được gọi; bởi (chỉ tác nhân trong câu bị động); kêu; gọi; đặt hàng; bảo; được gọi; bởi (chỉ tác nhân trong câu bị động); biến thể của 叫[jiao4]",
+    "vietnamese": "kêu; gọi; đặt hàng; bảo; được gọi; bởi (chỉ tác nhân trong câu bị động); kêu; gọi; đặt hàng; bảo; được gọi; bởi (chỉ tác nhân trong câu bị động); biến thể của 叫[jiao4]; Gọi / Tên là",
     "hsk": 1,
     "audio": "sounds/hsk1/叫.mp3",
     "strokes": 5
@@ -1274,7 +1274,7 @@
     "hanzi": "觉得",
     "pinyin": "jué de",
     "english": "to think that ...; to feel that ...; to feel (uncomfortable etc)",
-    "vietnamese": "nghĩ rằng ...; cảm thấy rằng ...; cảm thấy (không thoải mái, v.v.)",
+    "vietnamese": "nghĩ rằng ...; cảm thấy rằng ...; cảm thấy (không thoải mái, v.v.); Cảm thấy",
     "hsk": 1,
     "audio": "sounds/hsk1/觉得.mp3",
     "strokes": 20
@@ -1284,7 +1284,7 @@
     "hanzi": "开",
     "pinyin": "kāi",
     "english": "to open (transitive or intransitive); (of ships, vehicles, troops etc) to start; to turn on; to put in operation; to operate; to run; to boil; to write out (a prescription, check, invoice etc); (directional complement) away; off; carat (gold); abbr. for Kelvin, 开尔文; abbr. for 开本, book format",
-    "vietnamese": "mở (ngoại động từ hoặc nội động từ); (tàu thuyền, xe cộ, quân đội, v.v.) bắt đầu; bật; vận hành; hoạt động; chạy; đun sôi; viết (đơn thuốc, séc, hóa đơn, v.v.); (bổ ngữ xu hướng) đi; rời; carat (vàng); viết tắt của Kelvin, 開爾文|开尔文[Kai1 er3 wen2]; viết tắt của 開本|开本[kai1 ben3], khổ sách",
+    "vietnamese": "mở (ngoại động từ hoặc nội động từ); (tàu thuyền, xe cộ, quân đội, v.v.) bắt đầu; bật; vận hành; hoạt động; chạy; đun sôi; viết (đơn thuốc, séc, hóa đơn, v.v.); (bổ ngữ xu hướng) đi; rời; carat (vàng); viết tắt của Kelvin, 開爾文|开尔文[Kai1 er3 wen2]; viết tắt của 開本|开本[kai1 ben3], khổ sách; Mở / Lái (xe)",
     "hsk": 1,
     "audio": "sounds/hsk1/开.mp3",
     "strokes": 4
@@ -1304,7 +1304,7 @@
     "hanzi": "看",
     "pinyin": "kān",
     "english": "to look after; to take care of; to watch; to guard",
-    "vietnamese": "chăm sóc; trông nom; theo dõi; canh giữ; chăm sóc; trông nom; theo dõi; canh giữ; nhìn; xem; đọc; xem thăm; thăm viếng; xem như; coi như; chăm sóc; chữa (bệnh hoặc triệu chứng); phụ thuộc; cảm thấy (rằng); (sau động từ) thử làm; cẩn thận; coi chừng; nhìn; xem; đọc; xem thăm; thăm viếng; xem như; coi như; chăm sóc; chữa (bệnh hoặc triệu chứng); phụ thuộc; cảm thấy (rằng); (sau động từ) thử làm; cẩn thận; coi chừng",
+    "vietnamese": "chăm sóc; trông nom; theo dõi; canh giữ; chăm sóc; trông nom; theo dõi; canh giữ; nhìn; xem; đọc; xem thăm; thăm viếng; xem như; coi như; chăm sóc; chữa (bệnh hoặc triệu chứng); phụ thuộc; cảm thấy (rằng); (sau động từ) thử làm; cẩn thận; coi chừng; nhìn; xem; đọc; xem thăm; thăm viếng; xem như; coi như; chăm sóc; chữa (bệnh hoặc triệu chứng); phụ thuộc; cảm thấy (rằng); (sau động từ) thử làm; cẩn thận; coi chừng; Nhìn / Xem / Đọc",
     "hsk": 1,
     "audio": "sounds/hsk1/看.mp3",
     "strokes": 9
@@ -1384,7 +1384,7 @@
     "hanzi": "来",
     "pinyin": "lái",
     "english": "to come; (used as a substitute for a more specific verb); hither (directional complement for motion toward the speaker, as in 回来); ever since (as in 自古以来); for the past (amount of time); (prefix) the coming ...; the next ... (as in 来世); (between two verbs) in order to; (after a round number) approximately; (used after 得 to indicate possibility, as in 谈得来, or after 不 to indicate impossibility, as in 吃不来)",
-    "vietnamese": "đến; (dùng thay cho động từ cụ thể hơn); lại đây (bổ ngữ hướng chỉ động tác về phía người nói, như trong 回來|回来[hui2lai5]); từ khi (như trong 自古以來|自古以来[zi4gu3 yi3lai2]); trong (khoảng thời gian đã qua); (tiền tố) ... sắp tới; ... tiếp theo (như trong 來世|来世[lai2shi4]); (giữa hai động từ) để; (sau số tròn) khoảng; chỉ khả năng sau 得[de2], như trong 談得來|谈得来[tan2de5lai2], hoặc chỉ không khả năng sau 不[bu4], như trong 吃不來|吃不来[chi1bu5lai2])",
+    "vietnamese": "đến; (dùng thay cho động từ cụ thể hơn); lại đây (bổ ngữ hướng chỉ động tác về phía người nói, như trong 回來|回来[hui2lai5]); từ khi (như trong 自古以來|自古以来[zi4gu3 yi3lai2]); trong (khoảng thời gian đã qua); (tiền tố) ... sắp tới; ... tiếp theo (như trong 來世|来世[lai2shi4]); (giữa hai động từ) để; (sau số tròn) khoảng; chỉ khả năng sau 得[de2], như trong 談得來|谈得来[tan2de5lai2], hoặc chỉ không khả năng sau 不[bu4], như trong 吃不來|吃不来[chi1bu5lai2]); Đến / Lại",
     "hsk": 1,
     "audio": "sounds/hsk1/来.mp3",
     "strokes": 7
@@ -2094,7 +2094,7 @@
     "hanzi": "去",
     "pinyin": "qù",
     "english": "to go; to go to (a place); (of a time etc) last; just passed; to send; to remove; to get rid of; to reduce; to be apart from in space or time; to die (euphemism); to play (a part); (when used either before or after a verb) to go in order to do sth; (after a verb of motion indicates movement away from the speaker); (used after certain verbs to indicate detachment or separation)",
-    "vietnamese": "đi; đi đến (một nơi); (về thời gian, v.v.) trước; vừa qua; gửi; gỡ bỏ; loại bỏ; giảm; cách xa về không gian hoặc thời gian; mất (nói giảm); đóng (một vai); (khi dùng trước hoặc sau động từ) đi để làm gì đó; (sau động từ chỉ sự di chuyển ra xa người nói); (dùng sau một số động từ để chỉ tách rời hoặc phân ly); đi; đi đến (một nơi); (về thời gian, v.v.) trước; vừa qua; gửi; gỡ bỏ; loại bỏ; giảm; cách xa về không gian hoặc thời gian; mất (nói giảm); đóng (một vai); (khi dùng trước hoặc sau động từ) đi để làm gì đó; (sau động từ chỉ sự di chuyển ra xa người nói); (dùng sau một số động từ để chỉ tách rời hoặc phân ly)",
+    "vietnamese": "đi; đi đến (một nơi); (về thời gian, v.v.) trước; vừa qua; gửi; gỡ bỏ; loại bỏ; giảm; cách xa về không gian hoặc thời gian; mất (nói giảm); đóng (một vai); (khi dùng trước hoặc sau động từ) đi để làm gì đó; (sau động từ chỉ sự di chuyển ra xa người nói); (dùng sau một số động từ để chỉ tách rời hoặc phân ly); đi; đi đến (một nơi); (về thời gian, v.v.) trước; vừa qua; gửi; gỡ bỏ; loại bỏ; giảm; cách xa về không gian hoặc thời gian; mất (nói giảm); đóng (một vai); (khi dùng trước hoặc sau động từ) đi để làm gì đó; (sau động từ chỉ sự di chuyển ra xa người nói); (dùng sau một số động từ để chỉ tách rời hoặc phân ly); Đi đến",
     "hsk": 1,
     "audio": "sounds/hsk1/去.mp3",
     "strokes": 5
@@ -2134,7 +2134,7 @@
     "hanzi": "认识",
     "pinyin": "rèn shi",
     "english": "to know; to recognize; to be familiar with; to get acquainted with sb; knowledge; understanding; awareness; cognition",
-    "vietnamese": "biết; nhận ra; quen thuộc; làm quen với ai đó; kiến thức; hiểu biết; nhận thức; nhận biết",
+    "vietnamese": "biết; nhận ra; quen thuộc; làm quen với ai đó; kiến thức; hiểu biết; nhận thức; nhận biết; Quen biết / Nhận biết",
     "hsk": 1,
     "audio": "sounds/hsk1/认识.mp3",
     "strokes": 11
@@ -2874,7 +2874,7 @@
     "hanzi": "想",
     "pinyin": "xiǎng",
     "english": "to think (about); to think of; to devise; to think (that); to believe (that); to desire; to want (to); to miss (feel wistful about the absence of)",
-    "vietnamese": "nghĩ (về); nghĩ đến; nghĩ ra; nghĩ (rằng); tin (rằng); mong muốn; muốn; nhớ (cảm giác tiếc nuối về sự vắng mặt); nghĩ (về); nghĩ đến; nghĩ ra; nghĩ (rằng); tin (rằng); mong muốn; muốn; nhớ (cảm giác tiếc nuối về sự vắng mặt)",
+    "vietnamese": "nghĩ (về); nghĩ đến; nghĩ ra; nghĩ (rằng); tin (rằng); mong muốn; muốn; nhớ (cảm giác tiếc nuối về sự vắng mặt); nghĩ (về); nghĩ đến; nghĩ ra; nghĩ (rằng); tin (rằng); mong muốn; muốn; nhớ (cảm giác tiếc nuối về sự vắng mặt); Nghĩ / Muốn",
     "hsk": 1,
     "audio": "sounds/hsk1/想.mp3",
     "strokes": 13
@@ -3524,7 +3524,7 @@
     "hanzi": "住",
     "pinyin": "zhù",
     "english": "to live; to dwell; to stay; to reside; to stop; (suffix indicating firmness, steadiness, or coming to a halt)",
-    "vietnamese": "sống; ở; lưu lại; cư trú; dừng; (hậu tố chỉ sự chắc chắn, ổn định, hoặc dừng lại); sống; ở; lưu lại; cư trú; dừng; (hậu tố chỉ sự chắc chắn, ổn định, hoặc dừng lại)",
+    "vietnamese": "sống; ở; lưu lại; cư trú; dừng; (hậu tố chỉ sự chắc chắn, ổn định, hoặc dừng lại); sống; ở; lưu lại; cư trú; dừng; (hậu tố chỉ sự chắc chắn, ổn định, hoặc dừng lại); Ở / Cư trú",
     "hsk": 1,
     "audio": "sounds/hsk1/住.mp3",
     "strokes": 7
@@ -3654,7 +3654,7 @@
     "hanzi": "帮",
     "pinyin": "bāng",
     "english": "old variant of 帮",
-    "vietnamese": "biến thể cũ của 幫|帮[bang1]; biến thể cũ của 幫|帮[bang1]; giúp; hỗ trợ; ủng hộ; giúp ai đó (tức là như một sự giúp đỡ); thuê (làm công); bên (của thùng, thuyền, v.v.); lớp ngoài; phần trên (của giày); nhóm; băng; đảng; phái; hội kín",
+    "vietnamese": "biến thể cũ của 幫|帮[bang1]; biến thể cũ của 幫|帮[bang1]; giúp; hỗ trợ; ủng hộ; giúp ai đó (tức là như một sự giúp đỡ); thuê (làm công); bên (của thùng, thuyền, v.v.); lớp ngoài; phần trên (của giày); nhóm; băng; đảng; phái; hội kín; Giúp đỡ",
     "hsk": 2,
     "audio": "sounds/hsk2/帮.mp3",
     "strokes": 9
@@ -3804,7 +3804,7 @@
     "hanzi": "出",
     "pinyin": "chū",
     "english": "to go out; to come out; to occur; to produce; to go beyond; to rise; to put forth; to happen; (used after a verb to indicate an outward direction or a positive result); classifier for dramas, plays, operas etc",
-    "vietnamese": "đi ra; đi ra ngoài; phát sinh; xảy ra; sản xuất; tạo ra; vượt quá; (dùng sau động từ để chỉ hướng ra ngoài hoặc kết quả tích cực); lượng từ cho kịch, vở diễn, opera, v.v.; đi ra; đi ra ngoài; phát sinh; xảy ra; sản xuất; tạo ra; vượt quá; (dùng sau động từ để chỉ hướng ra ngoài hoặc kết quả tích cực); lượng từ cho kịch, vở diễn, opera, v.v.; biến thể của 出[chu1] (lượng từ cho vở kịch hoặc chương của tiểu thuyết cổ điển)",
+    "vietnamese": "đi ra; đi ra ngoài; phát sinh; xảy ra; sản xuất; tạo ra; vượt quá; (dùng sau động từ để chỉ hướng ra ngoài hoặc kết quả tích cực); lượng từ cho kịch, vở diễn, opera, v.v.; đi ra; đi ra ngoài; phát sinh; xảy ra; sản xuất; tạo ra; vượt quá; (dùng sau động từ để chỉ hướng ra ngoài hoặc kết quả tích cực); lượng từ cho kịch, vở diễn, opera, v.v.; biến thể của 出[chu1] (lượng từ cho vở kịch hoặc chương của tiểu thuyết cổ điển); Ra",
     "hsk": 2,
     "audio": "sounds/hsk2/出.mp3",
     "strokes": 5
@@ -3924,7 +3924,7 @@
     "hanzi": "打",
     "pinyin": "dá",
     "english": "dozen (loanword)",
-    "vietnamese": "tá (từ mượn); tá (từ mượn); đánh; đập; vỗ; phá; gõ; trộn; xây; đấu; lấy; làm; buộc; phát; bắn; tính; chơi (một trò chơi); từ; kể từ; đánh; đập; vỗ; phá; gõ; trộn; xây; đấu; lấy; làm; buộc; phát; bắn; tính; chơi (một trò chơi); từ; kể từ",
+    "vietnamese": "tá (từ mượn); tá (từ mượn); đánh; đập; vỗ; phá; gõ; trộn; xây; đấu; lấy; làm; buộc; phát; bắn; tính; chơi (một trò chơi); từ; kể từ; đánh; đập; vỗ; phá; gõ; trộn; xây; đấu; lấy; làm; buộc; phát; bắn; tính; chơi (một trò chơi); từ; kể từ; Đánh / Gọi (điện thoại)",
     "hsk": 2,
     "audio": "sounds/hsk2/打.mp3",
     "strokes": 5
@@ -4124,7 +4124,7 @@
     "hanzi": "懂",
     "pinyin": "dǒng",
     "english": "to understand; to comprehend",
-    "vietnamese": "hiểu; nhận thức; hiểu; nhận thức",
+    "vietnamese": "hiểu; nhận thức; hiểu; nhận thức; Hiểu / Biết",
     "hsk": 2,
     "audio": "sounds/hsk2/懂.mp3",
     "strokes": 15
@@ -4264,7 +4264,7 @@
     "hanzi": "过",
     "pinyin": "Guō",
     "english": "surname Guo",
-    "vietnamese": "họ [Guo1]; băng qua; đi qua; trải qua (thời gian); ăn mừng (ngày lễ); sống; hòa hợp; quá; mức quá-; (trợ từ chỉ hành động đã trải qua)",
+    "vietnamese": "họ [Guo1]; băng qua; đi qua; trải qua (thời gian); ăn mừng (ngày lễ); sống; hòa hợp; quá; mức quá-; (trợ từ chỉ hành động đã trải qua); Băng qua / Đón (lễ)",
     "hsk": 2,
     "audio": "sounds/hsk2/过.mp3",
     "strokes": 6
@@ -4484,7 +4484,7 @@
     "hanzi": "记得",
     "pinyin": "jì de",
     "english": "to remember",
-    "vietnamese": "nhớ",
+    "vietnamese": "nhớ; Nhớ (kỷ niệm/kiến thức)",
     "hsk": 2,
     "audio": "sounds/hsk2/记得.mp3",
     "strokes": 16
@@ -4584,7 +4584,7 @@
     "hanzi": "介绍",
     "pinyin": "jiè shào",
     "english": "to introduce (sb to sb); to give a presentation; to present (sb for a job etc); introduction",
-    "vietnamese": "giới thiệu (ai với ai); thuyết trình; trình bày (ai cho công việc, v.v.); lời giới thiệu",
+    "vietnamese": "giới thiệu (ai với ai); thuyết trình; trình bày (ai cho công việc, v.v.); lời giới thiệu; Giới thiệu",
     "hsk": 2,
     "audio": "sounds/hsk2/介绍.mp3",
     "strokes": 12
@@ -4604,7 +4604,7 @@
     "hanzi": "进",
     "pinyin": "jìn",
     "english": "to go forward; to advance; to go in; to enter; to put in; to submit; to take in; to admit; (math.) base of a number system; classifier for sections in a building or residential compound",
-    "vietnamese": "tiến lên; tiến bộ; đi vào; nhập vào; cho vào; nộp vào; tiếp nhận; thừa nhận; (toán học) cơ số của hệ thống số; lượng từ cho các khu trong tòa nhà hoặc khu dân cư",
+    "vietnamese": "tiến lên; tiến bộ; đi vào; nhập vào; cho vào; nộp vào; tiếp nhận; thừa nhận; (toán học) cơ số của hệ thống số; lượng từ cho các khu trong tòa nhà hoặc khu dân cư; Vào",
     "hsk": 2,
     "audio": "sounds/hsk2/进.mp3",
     "strokes": 7
@@ -4834,7 +4834,7 @@
     "hanzi": "累",
     "pinyin": "lěi",
     "english": "to accumulate; to involve or implicate (Taiwan pr. [lèi]); continuous; repeated",
-    "vietnamese": "tích lũy; liên lụy hoặc dính líu (cách phát âm Đài Loan [lei4]); liên tục; lặp đi lặp lại; tích lũy; liên lụy hoặc dính líu (cách phát âm Đài Loan [lei4]); liên tục; lặp đi lặp lại; mệt; mỏi; căng thẳng; kiệt sức; làm việc chăm chỉ; mệt; mỏi; căng thẳng; kiệt sức; làm việc chăm chỉ; họ [Lei2]; dây; thắt lại; quấn quanh",
+    "vietnamese": "tích lũy; liên lụy hoặc dính líu (cách phát âm Đài Loan [lei4]); liên tục; lặp đi lặp lại; tích lũy; liên lụy hoặc dính líu (cách phát âm Đài Loan [lei4]); liên tục; lặp đi lặp lại; mệt; mỏi; căng thẳng; kiệt sức; làm việc chăm chỉ; mệt; mỏi; căng thẳng; kiệt sức; làm việc chăm chỉ; họ [Lei2]; dây; thắt lại; quấn quanh; Mệt (động từ trạng thái)",
     "hsk": 2,
     "audio": "sounds/hsk2/累.mp3",
     "strokes": 11
@@ -5014,7 +5014,7 @@
     "hanzi": "拿",
     "pinyin": "ná",
     "english": "old variant of 拿",
-    "vietnamese": "biến thể cũ của 拿[na2]; biến thể của 拿[na2]; cầm; nắm; bắt; chụp; lấy; (dùng giống như 把[ba3]: đánh dấu danh từ phía sau là tân ngữ); cầm; nắm; bắt; chụp; lấy; (dùng giống như 把[ba3]: đánh dấu danh từ phía sau là tân ngữ)",
+    "vietnamese": "biến thể cũ của 拿[na2]; biến thể của 拿[na2]; cầm; nắm; bắt; chụp; lấy; (dùng giống như 把[ba3]: đánh dấu danh từ phía sau là tân ngữ); cầm; nắm; bắt; chụp; lấy; (dùng giống như 把[ba3]: đánh dấu danh từ phía sau là tân ngữ); Cầm / Lấy",
     "hsk": 2,
     "audio": "sounds/hsk2/拿.mp3",
     "strokes": 10
@@ -5544,7 +5544,7 @@
     "hanzi": "送",
     "pinyin": "sòng",
     "english": "to send; to deliver; to transmit; to give (as a present); to see (sb) off; to accompany; to go along with",
-    "vietnamese": "gửi; giao; truyền; tặng (như một món quà); tiễn; đi cùng; đi theo; gửi; giao; truyền; tặng (như một món quà); tiễn; đi cùng; đi theo",
+    "vietnamese": "gửi; giao; truyền; tặng (như một món quà); tiễn; đi cùng; đi theo; gửi; giao; truyền; tặng (như một món quà); tiễn; đi cùng; đi theo; Tặng / Tiễn",
     "hsk": 2,
     "audio": "sounds/hsk2/送.mp3",
     "strokes": 9
@@ -5814,7 +5814,7 @@
     "hanzi": "洗",
     "pinyin": "xǐ",
     "english": "to wash; to bathe; to develop (photographs); to shuffle (cards etc); to erase (a recording)",
-    "vietnamese": "rửa; tắm; rửa ảnh; xào bài (lá,...); xóa (ghi âm); rửa; tắm; rửa ảnh; xào bài (lá,...); xóa (ghi âm)",
+    "vietnamese": "rửa; tắm; rửa ảnh; xào bài (lá,...); xóa (ghi âm); rửa; tắm; rửa ảnh; xào bài (lá,...); xóa (ghi âm); Rửa / Giặt",
     "hsk": 2,
     "audio": "sounds/hsk2/洗.mp3",
     "strokes": 9
@@ -6544,7 +6544,7 @@
     "hanzi": "走",
     "pinyin": "zǒu",
     "english": "to walk; to go; to run; to move (of vehicle); to visit; to leave; to go away; to die (euph.); from; through; away (in compound verbs, such as 走); to change (shape, form, meaning)",
-    "vietnamese": "đi; bước; chạy; di chuyển (của phương tiện); thăm; rời đi; đi khỏi; chết (nói giảm); từ; xuyên qua; đi mất (trong động từ ghép, như 撤走[che4 zou3]); thay đổi (hình dạng, hình thức, ý nghĩa); đi; bước; chạy; di chuyển (của phương tiện); thăm; rời đi; đi khỏi; chết (nói giảm); từ; xuyên qua; đi mất (trong động từ ghép, như 撤走[che4 zou3]); thay đổi (hình dạng, hình thức, ý nghĩa)",
+    "vietnamese": "đi; bước; chạy; di chuyển (của phương tiện); thăm; rời đi; đi khỏi; chết (nói giảm); từ; xuyên qua; đi mất (trong động từ ghép, như 撤走[che4 zou3]); thay đổi (hình dạng, hình thức, ý nghĩa); đi; bước; chạy; di chuyển (của phương tiện); thăm; rời đi; đi khỏi; chết (nói giảm); từ; xuyên qua; đi mất (trong động từ ghép, như 撤走[che4 zou3]); thay đổi (hình dạng, hình thức, ý nghĩa); Đi bộ",
     "hsk": 2,
     "audio": "sounds/hsk2/走.mp3",
     "strokes": 7
@@ -6734,7 +6734,7 @@
     "hanzi": "搬",
     "pinyin": "bān",
     "english": "to move (i.e. relocate oneself); to move (sth relatively heavy or bulky); to shift; to copy indiscriminately",
-    "vietnamese": "di chuyển (tức là tự dời đi); di chuyển (thứ gì đó tương đối nặng hoặc cồng kềnh); chuyển; dọn sao chép mà không chọn lọc; di chuyển (tức là tự dời đi); di chuyển (thứ gì đó tương đối nặng hoặc cồng kềnh); chuyển; dọn sao chép mà không chọn lọc",
+    "vietnamese": "di chuyển (tức là tự dời đi); di chuyển (thứ gì đó tương đối nặng hoặc cồng kềnh); chuyển; dọn sao chép mà không chọn lọc; di chuyển (tức là tự dời đi); di chuyển (thứ gì đó tương đối nặng hoặc cồng kềnh); chuyển; dọn sao chép mà không chọn lọc; Khiêng / Chuyển",
     "hsk": 3,
     "audio": "sounds/hsk3/搬.mp3",
     "strokes": 13
@@ -7434,7 +7434,7 @@
     "hanzi": "打扫",
     "pinyin": "dǎ sǎo",
     "english": "to clean; to sweep",
-    "vietnamese": "dọn dẹp; quét; Quét dọn / Vệ sinh",
+    "vietnamese": "dọn dẹp; quét; Quét dọn / Vệ sinh; Quét dọn",
     "hsk": 3,
     "audio": "sounds/hsk3/打扫.mp3",
     "strokes": 11
@@ -7524,7 +7524,7 @@
     "hanzi": "带",
     "pinyin": "dài",
     "english": "band; belt; girdle; ribbon; tire; area; zone; region; to wear; to carry; to take along; to bear (i.e. to have); to lead; to bring; to look after; to raise",
-    "vietnamese": "dải; thắt lưng; ruy băng; lốp; vùng; khu vực; khu; LT:條|条[tiao2]; đeo; mang; dẫn theo; chịu; có; dẫn; dắt; chăm sóc; nuôi dưỡng",
+    "vietnamese": "dải; thắt lưng; ruy băng; lốp; vùng; khu vực; khu; LT:條|条[tiao2]; đeo; mang; dẫn theo; chịu; có; dẫn; dắt; chăm sóc; nuôi dưỡng; Mang theo",
     "hsk": 3,
     "audio": "sounds/hsk3/带.mp3",
     "strokes": 9
@@ -7684,7 +7684,7 @@
     "hanzi": "丢",
     "pinyin": "diū",
     "english": "to lose; to put aside; to throw",
-    "vietnamese": "mất; để sang một bên; ném",
+    "vietnamese": "mất; để sang một bên; ném; Đánh mất / Vứt",
     "hsk": 3,
     "audio": "sounds/hsk3/丢.mp3",
     "strokes": 6
@@ -7814,7 +7814,7 @@
     "hanzi": "锻炼",
     "pinyin": "duàn liàn",
     "english": "to toughen; to temper; to engage in physical exercise; to work out; (fig.) to develop one's skills; to train oneself",
-    "vietnamese": "rèn luyện; rèn giũa; tập thể dục; tập luyện; (bóng) phát triển kỹ năng; tự đào tạo; Rèn luyện thân thể",
+    "vietnamese": "rèn luyện; rèn giũa; tập thể dục; tập luyện; (bóng) phát triển kỹ năng; tự đào tạo; Rèn luyện thân thể; Luyện tập",
     "hsk": 3,
     "audio": "sounds/hsk3/锻炼.mp3",
     "strokes": 23
@@ -7834,7 +7834,7 @@
     "hanzi": "饿",
     "pinyin": "è",
     "english": "to be hungry; hungry; to starve (sb)",
-    "vietnamese": "đói; làm cho đói",
+    "vietnamese": "đói; làm cho đói; Đói (động từ trạng thái)",
     "hsk": 3,
     "audio": "sounds/hsk3/饿.mp3",
     "strokes": 10
@@ -7874,7 +7874,7 @@
     "hanzi": "发",
     "pinyin": "fā",
     "english": "to send out; to show (one's feeling); to issue; to develop; to make a bundle of money; classifier for gunshots (rounds)",
-    "vietnamese": "gửi đi; bộc lộ (cảm xúc của một người); phát hành; phát triển; kiếm được nhiều tiền; lượng từ cho phát súng (phát); tóc; phiên âm Đài Loan [fa3]",
+    "vietnamese": "gửi đi; bộc lộ (cảm xúc của một người); phát hành; phát triển; kiếm được nhiều tiền; lượng từ cho phát súng (phát); tóc; phiên âm Đài Loan [fa3]; Phát ra / Gửi",
     "hsk": 3,
     "audio": "sounds/hsk3/发.mp3",
     "strokes": 5
@@ -7974,7 +7974,7 @@
     "hanzi": "放",
     "pinyin": "fàng",
     "english": "to put; to place; to release; to free; to let go; to let out; to set off (fireworks)",
-    "vietnamese": "đặt; để; phát hành; thả; để cho đi; thả ra; bắn (pháo hoa); đặt; để; phát hành; thả; để cho đi; thả ra; bắn (pháo hoa)",
+    "vietnamese": "đặt; để; phát hành; thả; để cho đi; thả ra; bắn (pháo hoa); đặt; để; phát hành; thả; để cho đi; thả ra; bắn (pháo hoa); Để / Đặt",
     "hsk": 3,
     "audio": "sounds/hsk3/放.mp3",
     "strokes": 8
@@ -8004,7 +8004,7 @@
     "hanzi": "放心",
     "pinyin": "fàng xīn",
     "english": "to feel relieved; to feel reassured; to be at ease",
-    "vietnamese": "cảm thấy nhẹ nhõm; cảm thấy yên tâm; an tâm; cảm thấy nhẹ nhõm; cảm thấy yên tâm; an tâm",
+    "vietnamese": "cảm thấy nhẹ nhõm; cảm thấy yên tâm; an tâm; cảm thấy nhẹ nhõm; cảm thấy yên tâm; an tâm; Yên tâm",
     "hsk": 3,
     "audio": "sounds/hsk3/放心.mp3",
     "strokes": 12
@@ -8334,7 +8334,7 @@
     "hanzi": "关",
     "pinyin": "Guān",
     "english": "surname Guan",
-    "vietnamese": "họ [Guan1]; ải núi; đóng; khép; tắt; giam giữ; nhốt; nhốt (ai đó trong phòng, chim trong lồng, v.v.); liên quan; dính líu",
+    "vietnamese": "họ [Guan1]; ải núi; đóng; khép; tắt; giam giữ; nhốt; nhốt (ai đó trong phòng, chim trong lồng, v.v.); liên quan; dính líu; Đóng / Tắt",
     "hsk": 3,
     "audio": "sounds/hsk3/关.mp3",
     "strokes": 6
@@ -8614,7 +8614,7 @@
     "hanzi": "换",
     "pinyin": "huàn",
     "english": "to exchange; to change (clothes etc); to substitute; to switch; to convert (currency)",
-    "vietnamese": "trao đổi; thay đổi (quần áo, v.v.); thay thế; chuyển đổi; đổi (tiền tệ)",
+    "vietnamese": "trao đổi; thay đổi (quần áo, v.v.); thay thế; chuyển đổi; đổi (tiền tệ); Thay đổi / Đổi",
     "hsk": 3,
     "audio": "sounds/hsk3/换.mp3",
     "strokes": 10
@@ -8994,7 +8994,7 @@
     "hanzi": "借",
     "pinyin": "jiè",
     "english": "to lend; to borrow; by means of; to take (an opportunity)",
-    "vietnamese": "mượn; (dùng kết hợp với 給|给[gei3] hoặc 出[chu1],...) cho mượn; tận dụng; lợi dụng; (đôi khi theo sau bởi 著|着[zhe5]) bằng; với; mượn; (dùng kết hợp với 給|给[gei3] hoặc 出[chu1],...) cho mượn; tận dụng; lợi dụng; (đôi khi theo sau bởi 著|着[zhe5]) bằng; với; biến thể của 借[jie4]",
+    "vietnamese": "mượn; (dùng kết hợp với 給|给[gei3] hoặc 出[chu1],...) cho mượn; tận dụng; lợi dụng; (đôi khi theo sau bởi 著|着[zhe5]) bằng; với; mượn; (dùng kết hợp với 給|给[gei3] hoặc 出[chu1],...) cho mượn; tận dụng; lợi dụng; (đôi khi theo sau bởi 著|着[zhe5]) bằng; với; biến thể của 借[jie4]; Mượn / Cho mượn",
     "hsk": 3,
     "audio": "sounds/hsk3/借.mp3",
     "strokes": 10
@@ -9234,7 +9234,7 @@
     "hanzi": "渴",
     "pinyin": "kě",
     "english": "thirsty",
-    "vietnamese": "khát; khát",
+    "vietnamese": "khát; khát; Khát (động từ trạng thái)",
     "hsk": 3,
     "audio": "sounds/hsk3/渴.mp3",
     "strokes": 12
@@ -9724,7 +9724,7 @@
     "hanzi": "明白",
     "pinyin": "míng bai",
     "english": "clear; obvious; unequivocal; to understand; to realize",
-    "vietnamese": "rõ ràng; hiển nhiên; không mơ hồ; hiểu; nhận ra; rõ ràng; hiển nhiên; không mơ hồ; hiểu; nhận ra",
+    "vietnamese": "rõ ràng; hiển nhiên; không mơ hồ; hiểu; nhận ra; rõ ràng; hiển nhiên; không mơ hồ; hiểu; nhận ra; Rõ ràng / Hiểu",
     "hsk": 3,
     "audio": "sounds/hsk3/明白.mp3",
     "strokes": 13
@@ -9864,7 +9864,7 @@
     "hanzi": "努力",
     "pinyin": "nǔ lì",
     "english": "to make an effort; to try hard; to strive; hard-working; conscientious",
-    "vietnamese": "nỗ lực; cố gắng; phấn đấu; chăm chỉ; tận tụy; nỗ lực; cố gắng; phấn đấu; chăm chỉ; tận tụy",
+    "vietnamese": "nỗ lực; cố gắng; phấn đấu; chăm chỉ; tận tụy; nỗ lực; cố gắng; phấn đấu; chăm chỉ; tận tụy; Nỗ lực / Cố gắng",
     "hsk": 3,
     "audio": "sounds/hsk3/努力.mp3",
     "strokes": 9
@@ -9894,7 +9894,7 @@
     "hanzi": "爬",
     "pinyin": "pá",
     "english": "to crawl; to climb; to get up or sit up",
-    "vietnamese": "bò; leo; ngồi dậy hoặc đứng dậy; bò; leo; ngồi dậy hoặc đứng dậy",
+    "vietnamese": "bò; leo; ngồi dậy hoặc đứng dậy; bò; leo; ngồi dậy hoặc đứng dậy; Leo / Trèo / Bò",
     "hsk": 3,
     "audio": "sounds/hsk3/爬.mp3",
     "strokes": 8
@@ -10014,7 +10014,7 @@
     "hanzi": "奇怪",
     "pinyin": "qí guài",
     "english": "strange; odd; to marvel; to be baffled",
-    "vietnamese": "kỳ lạ; lập dị; ngạc nhiên; bối rối; kỳ lạ; lập dị; ngạc nhiên; bối rối",
+    "vietnamese": "kỳ lạ; lập dị; ngạc nhiên; bối rối; kỳ lạ; lập dị; ngạc nhiên; bối rối; Lấy làm lạ",
     "hsk": 3,
     "audio": "sounds/hsk3/奇怪.mp3",
     "strokes": 16
@@ -10024,7 +10024,7 @@
     "hanzi": "骑",
     "pinyin": "jì",
     "english": "(Tw) saddle horse; mounted soldier",
-    "vietnamese": "(Đài Loan) ngựa cưỡi; lính kỵ mã; ngồi cưỡi; cưỡi (ngựa, xe đạp, v.v.); lượng từ cho ngựa cưỡi",
+    "vietnamese": "(Đài Loan) ngựa cưỡi; lính kỵ mã; ngồi cưỡi; cưỡi (ngựa, xe đạp, v.v.); lượng từ cho ngựa cưỡi; Cưỡi / Đi (xe máy/đạp)",
     "hsk": 3,
     "audio": "sounds/hsk3/骑.mp3",
     "strokes": 11
@@ -10214,7 +10214,7 @@
     "hanzi": "认为",
     "pinyin": "rèn wéi",
     "english": "to believe; to think; to consider; to feel",
-    "vietnamese": "tin; nghĩ; xem xét; cảm thấy",
+    "vietnamese": "tin; nghĩ; xem xét; cảm thấy; Cho rằng",
     "hsk": 3,
     "audio": "sounds/hsk3/认为.mp3",
     "strokes": 8
@@ -10434,7 +10434,7 @@
     "hanzi": "收",
     "pinyin": "shōu",
     "english": "to receive; to accept; to collect; to put away; to restrain; to stop; in care of (used on address line after name)",
-    "vietnamese": "nhận; chấp nhận; sưu tầm; cất đi; kiềm chế; dừng; chăm sóc (dùng sau tên trên dòng địa chỉ); nhận; chấp nhận; sưu tầm; cất đi; kiềm chế; dừng; chăm sóc (dùng sau tên trên dòng địa chỉ)",
+    "vietnamese": "nhận; chấp nhận; sưu tầm; cất đi; kiềm chế; dừng; chăm sóc (dùng sau tên trên dòng địa chỉ); nhận; chấp nhận; sưu tầm; cất đi; kiềm chế; dừng; chăm sóc (dùng sau tên trên dòng địa chỉ); Nhận / Thu hồi",
     "hsk": 3,
     "audio": "sounds/hsk3/收.mp3",
     "strokes": 6
@@ -10514,7 +10514,7 @@
     "hanzi": "刷",
     "pinyin": "shuā",
     "english": "to brush; to paint; to daub; to paste up; to skip class (of students); to fire from a job",
-    "vietnamese": "chải; sơn; quét; đăng lên; bỏ học (của học sinh); sa thải khỏi công việc; chải; sơn; quét; đăng lên; bỏ học (của học sinh); sa thải khỏi công việc; chọn; chọn",
+    "vietnamese": "chải; sơn; quét; đăng lên; bỏ học (của học sinh); sa thải khỏi công việc; chải; sơn; quét; đăng lên; bỏ học (của học sinh); sa thải khỏi công việc; chọn; chọn; Quét / Chải / Lướt (web)",
     "hsk": 3,
     "audio": "sounds/hsk3/刷.mp3",
     "strokes": 8
@@ -11494,7 +11494,7 @@
     "hanzi": "以为",
     "pinyin": "yǐ wéi",
     "english": "to think (i.e. to take it to be true that ...) (Usually there is an implication that the notion is mistaken – except when expressing one's own current opinion.)",
-    "vietnamese": "nghĩ rằng (tức là cho là đúng ...) (Thường có hàm ý rằng quan niệm đó là sai lầm – ngoại trừ khi diễn đạt ý kiến hiện tại của chính mình.)",
+    "vietnamese": "nghĩ rằng (tức là cho là đúng ...) (Thường có hàm ý rằng quan niệm đó là sai lầm – ngoại trừ khi diễn đạt ý kiến hiện tại của chính mình.); Tưởng rằng",
     "hsk": 3,
     "audio": "sounds/hsk3/以为.mp3",
     "strokes": 8
@@ -11574,7 +11574,7 @@
     "hanzi": "用",
     "pinyin": "yòng",
     "english": "to use; to employ; to have to; to eat or drink; expense or outlay; usefulness; hence; therefore",
-    "vietnamese": "sử dụng; tận dụng; phải; ăn hoặc uống; chi phí hoặc tiêu dùng; tính hữu ích; vì vậy; do đó; sử dụng; tận dụng; phải; ăn hoặc uống; chi phí hoặc tiêu dùng; tính hữu ích; vì vậy; do đó",
+    "vietnamese": "sử dụng; tận dụng; phải; ăn hoặc uống; chi phí hoặc tiêu dùng; tính hữu ích; vì vậy; do đó; sử dụng; tận dụng; phải; ăn hoặc uống; chi phí hoặc tiêu dùng; tính hữu ích; vì vậy; do đó; Dùng / Sử dụng",
     "hsk": 3,
     "audio": "sounds/hsk3/用.mp3",
     "strokes": 5
@@ -12074,7 +12074,7 @@
     "hanzi": "注意",
     "pinyin": "zhù yì",
     "english": "to take note of; to pay attention to",
-    "vietnamese": "chú ý đến; quan tâm đến; chú ý đến; quan tâm đến",
+    "vietnamese": "chú ý đến; quan tâm đến; chú ý đến; quan tâm đến; Chú ý",
     "hsk": 3,
     "audio": "sounds/hsk3/注意.mp3",
     "strokes": 21
@@ -12834,7 +12834,7 @@
     "hanzi": "擦",
     "pinyin": "cā",
     "english": "to rub; to scratch; to towel; to wipe with a towel; to apply (lipstick, lotion etc); to touch; to brush (past); to shred (vegetables etc)",
-    "vietnamese": "chà; cào; lao; đánh bóng; thoa (son, kem v.v.); lướt qua; bào sợi (rau củ v.v.); chà; cào; lao; đánh bóng; thoa (son, kem v.v.); lướt qua; bào sợi (rau củ v.v.)",
+    "vietnamese": "chà; cào; lao; đánh bóng; thoa (son, kem v.v.); lướt qua; bào sợi (rau củ v.v.); chà; cào; lao; đánh bóng; thoa (son, kem v.v.); lướt qua; bào sợi (rau củ v.v.); Lau chùi",
     "hsk": 4,
     "audio": "sounds/hsk4/擦.mp3",
     "strokes": 17
@@ -13094,7 +13094,7 @@
     "hanzi": "吃惊",
     "pinyin": "chī jīng",
     "english": "to be startled; to be shocked; to be amazed",
-    "vietnamese": "bị giật mình; bị sốc; ngạc nhiên",
+    "vietnamese": "bị giật mình; bị sốc; ngạc nhiên; Giật mình / Ngạc nhiên",
     "hsk": 4,
     "audio": "sounds/hsk4/吃惊.mp3",
     "strokes": 17
@@ -13134,7 +13134,7 @@
     "hanzi": "出差",
     "pinyin": "chū chāi",
     "english": "to go on an official or business trip",
-    "vietnamese": "đi công tác hoặc chuyến đi kinh doanh; đi công tác hoặc chuyến đi kinh doanh",
+    "vietnamese": "đi công tác hoặc chuyến đi kinh doanh; đi công tác hoặc chuyến đi kinh doanh; Đi công tác",
     "hsk": 4,
     "audio": "sounds/hsk4/出差.mp3",
     "strokes": 14
@@ -13424,7 +13424,7 @@
     "hanzi": "答应",
     "pinyin": "dā ying",
     "english": "to answer; to respond; to answer positively; to agree; to accept; to promise",
-    "vietnamese": "trả lời; phản hồi; trả lời tích cực; đồng ý; chấp nhận; hứa",
+    "vietnamese": "trả lời; phản hồi; trả lời tích cực; đồng ý; chấp nhận; hứa; Hứa / Đồng ý",
     "hsk": 4,
     "audio": "sounds/hsk4/答应.mp3",
     "strokes": 19
@@ -13464,7 +13464,7 @@
     "hanzi": "打印",
     "pinyin": "dǎ yìn",
     "english": "to affix a seal; to stamp; to print out (with a printer)",
-    "vietnamese": "đóng dấu; đóng mộc; in ra (bằng máy in); đóng dấu; đóng mộc; in ra (bằng máy in)",
+    "vietnamese": "đóng dấu; đóng mộc; in ra (bằng máy in); đóng dấu; đóng mộc; in ra (bằng máy in); In ấn",
     "hsk": 4,
     "audio": "sounds/hsk4/打印.mp3",
     "strokes": 10
@@ -13674,7 +13674,7 @@
     "hanzi": "弹",
     "pinyin": "dàn",
     "english": "crossball; bullet; shot; shell; ball",
-    "vietnamese": "đạn; viên đạn; phát bắn; đạn pháo; quả bóng; gảy (dây đàn); chơi (nhạc cụ dây); bật hoặc nhảy; bắn (ví dụ: bằng ná); (bông) đánh tơi hoặc giũ; búng; bật buộc; tố cáo; luận tội; co giãn (về vật liệu)",
+    "vietnamese": "đạn; viên đạn; phát bắn; đạn pháo; quả bóng; gảy (dây đàn); chơi (nhạc cụ dây); bật hoặc nhảy; bắn (ví dụ: bằng ná); (bông) đánh tơi hoặc giũ; búng; bật buộc; tố cáo; luận tội; co giãn (về vật liệu); Gảy / Đánh (đàn)",
     "hsk": 4,
     "audio": "sounds/hsk4/弹.mp3",
     "strokes": 11
@@ -13744,7 +13744,7 @@
     "hanzi": "倒",
     "pinyin": "dǎo",
     "english": "to fall; to collapse; to lie horizontally; to fail; to go bankrupt; to overthrow; to change (trains or buses); to move around; to resell at a profit",
-    "vietnamese": "ngã; sụp đổ; nằm ngang; thất bại; phá sản; lật đổ; đổi (tàu hoặc xe buýt); di chuyển xung quanh; buôn bán kiếm lời; ngã; sụp đổ; nằm ngang; thất bại; phá sản; lật đổ; đổi (tàu hoặc xe buýt); di chuyển xung quanh; buôn bán kiếm lời; lật ngược; đặt úp hoặc lộn ngược; rót ra; đổ ra; trút ra; bị lật; lộn ngược; đảo ngược; đi lùi; ngược với dự đoán; nhưng; tuy nhiên; lật ngược; đặt úp hoặc lộn ngược; rót ra; đổ ra; trút ra; bị lật; lộn ngược; đảo ngược; đi lùi; ngược với dự đoán; nhưng; tuy nhiên",
+    "vietnamese": "ngã; sụp đổ; nằm ngang; thất bại; phá sản; lật đổ; đổi (tàu hoặc xe buýt); di chuyển xung quanh; buôn bán kiếm lời; ngã; sụp đổ; nằm ngang; thất bại; phá sản; lật đổ; đổi (tàu hoặc xe buýt); di chuyển xung quanh; buôn bán kiếm lời; lật ngược; đặt úp hoặc lộn ngược; rót ra; đổ ra; trút ra; bị lật; lộn ngược; đảo ngược; đi lùi; ngược với dự đoán; nhưng; tuy nhiên; lật ngược; đặt úp hoặc lộn ngược; rót ra; đổ ra; trút ra; bị lật; lộn ngược; đảo ngược; đi lùi; ngược với dự đoán; nhưng; tuy nhiên; Đổ / Rót",
     "hsk": 4,
     "audio": "sounds/hsk4/倒.mp3",
     "strokes": 10
@@ -13964,7 +13964,7 @@
     "hanzi": "掉",
     "pinyin": "diào",
     "english": "to fall; to drop; to lag behind; to lose; to go missing; to reduce; fall (in prices); to lose (value, weight etc); to wag; to swing; to turn; to change; to exchange; to swap; to show off; to shed (hair); (used after certain verbs to express completion, fulfillment, removal etc)",
-    "vietnamese": "rơi; rớt; tụt lại; mất; thất lạc; giảm; rớt (giá); mất (giá trị, cân nặng v.v.); vẫy; đung đưa; quay; đổi; thay; trao đổi; khoe; rụng (tóc); (dùng sau một số động từ để biểu đạt hoàn thành, thực hiện xong, loại bỏ v.v.); rơi; rớt; tụt lại; mất; thất lạc; giảm; rớt (giá); mất (giá trị, cân nặng v.v.); vẫy; đung đưa; quay; đổi; thay; trao đổi; khoe; rụng (tóc); (dùng sau một số động từ để biểu đạt hoàn thành, thực hiện xong, loại bỏ v.v.)",
+    "vietnamese": "rơi; rớt; tụt lại; mất; thất lạc; giảm; rớt (giá); mất (giá trị, cân nặng v.v.); vẫy; đung đưa; quay; đổi; thay; trao đổi; khoe; rụng (tóc); (dùng sau một số động từ để biểu đạt hoàn thành, thực hiện xong, loại bỏ v.v.); rơi; rớt; tụt lại; mất; thất lạc; giảm; rớt (giá); mất (giá trị, cân nặng v.v.); vẫy; đung đưa; quay; đổi; thay; trao đổi; khoe; rụng (tóc); (dùng sau một số động từ để biểu đạt hoàn thành, thực hiện xong, loại bỏ v.v.); Rơi / Mất",
     "hsk": 4,
     "audio": "sounds/hsk4/掉.mp3",
     "strokes": 11
@@ -14584,7 +14584,7 @@
     "hanzi": "复印",
     "pinyin": "fù yìn",
     "english": "to photocopy; to duplicate a document",
-    "vietnamese": "sao chép; tạo bản sao tài liệu",
+    "vietnamese": "sao chép; tạo bản sao tài liệu; Photocopy",
     "hsk": 4,
     "audio": "sounds/hsk4/复印.mp3",
     "strokes": 14
@@ -15054,7 +15054,7 @@
     "hanzi": "估计",
     "pinyin": "gū jì",
     "english": "to estimate; to reckon; (coll.) to suppose",
-    "vietnamese": "ước tính; đánh giá; tính toán; (khẩu ngữ) đoán; nghĩ (rằng ...)",
+    "vietnamese": "ước tính; đánh giá; tính toán; (khẩu ngữ) đoán; nghĩ (rằng ...); Ước tính / Đánh giá",
     "hsk": 4,
     "audio": "sounds/hsk4/估计.mp3",
     "strokes": 11
@@ -15204,7 +15204,7 @@
     "hanzi": "逛",
     "pinyin": "guàng",
     "english": "to stroll; to visit",
-    "vietnamese": "đi dạo; thăm; đi dạo; thăm",
+    "vietnamese": "đi dạo; thăm; đi dạo; thăm; Dạo chơi",
     "hsk": 4,
     "audio": "sounds/hsk4/逛.mp3",
     "strokes": 10
@@ -15514,7 +15514,7 @@
     "hanzi": "怀疑",
     "pinyin": "huái yí",
     "english": "to doubt (sth); to be skeptical of; to have one's doubts; to harbor suspicions; to suspect that",
-    "vietnamese": "nghi ngờ (điều gì); hoài nghi; có nghi ngại; ấp ủ sự nghi ngờ; nghi rằng",
+    "vietnamese": "nghi ngờ (điều gì); hoài nghi; có nghi ngại; ấp ủ sự nghi ngờ; nghi rằng; Nghi ngờ",
     "hsk": 4,
     "audio": "sounds/hsk4/怀疑.mp3",
     "strokes": 21
@@ -15564,7 +15564,7 @@
     "hanzi": "回忆",
     "pinyin": "huí yì",
     "english": "to recall; memories",
-    "vietnamese": "hồi tưởng; ký ức; LT:個|个[ge4]",
+    "vietnamese": "hồi tưởng; ký ức; LT:個|个[ge4]; Hồi ức / Nhớ lại",
     "hsk": 4,
     "audio": "sounds/hsk4/回忆.mp3",
     "strokes": 10
@@ -15724,7 +15724,7 @@
     "hanzi": "激动",
     "pinyin": "jī dòng",
     "english": "to move emotionally; to stir up (emotions); to excite",
-    "vietnamese": "xúc động; khuấy động; phấn khích",
+    "vietnamese": "xúc động; khuấy động; phấn khích; Kích động",
     "hsk": 4,
     "audio": "sounds/hsk4/激动.mp3",
     "strokes": 22
@@ -16004,7 +16004,7 @@
     "hanzi": "建议",
     "pinyin": "jiàn yì",
     "english": "to propose; to suggest; to recommend; proposal; suggestion; recommendation",
-    "vietnamese": "đề xuất; đề nghị; kiến nghị; LT:個|个[ge4],點|点[dian3]",
+    "vietnamese": "đề xuất; đề nghị; kiến nghị; LT:個|个[ge4],點|点[dian3]; Gợi ý / Kiến nghị",
     "hsk": 4,
     "audio": "sounds/hsk4/建议.mp3",
     "strokes": 13
@@ -16174,7 +16174,7 @@
     "hanzi": "交流",
     "pinyin": "jiāo liú",
     "english": "to exchange; exchange; communication; interaction; to have social contact (with sb)",
-    "vietnamese": "trao đổi; sự trao đổi; giao tiếp; tương tác; có tiếp xúc xã hội (với ai); trao đổi; sự trao đổi; giao tiếp; tương tác; có tiếp xúc xã hội (với ai)",
+    "vietnamese": "trao đổi; sự trao đổi; giao tiếp; tương tác; có tiếp xúc xã hội (với ai); trao đổi; sự trao đổi; giao tiếp; tương tác; có tiếp xúc xã hội (với ai); Giao lưu",
     "hsk": 4,
     "audio": "sounds/hsk4/交流.mp3",
     "strokes": 16
@@ -16574,7 +16574,7 @@
     "hanzi": "举",
     "pinyin": "jǔ",
     "english": "variant of 举",
-    "vietnamese": "biến thể của 舉|举[ju3]; nâng; giơ lên; dẫn chứng; liệt kê; hành động; giơ; chọn; bầu; cử động; việc làm",
+    "vietnamese": "biến thể của 舉|举[ju3]; nâng; giơ lên; dẫn chứng; liệt kê; hành động; giơ; chọn; bầu; cử động; việc làm; Giơ lên / Cất lên",
     "hsk": 4,
     "audio": "sounds/hsk4/举.mp3",
     "strokes": 9
@@ -17094,7 +17094,7 @@
     "hanzi": "理解",
     "pinyin": "lǐ jiě",
     "english": "to comprehend; to understand",
-    "vietnamese": "lĩnh hội; hiểu; lĩnh hội; hiểu",
+    "vietnamese": "lĩnh hội; hiểu; lĩnh hội; hiểu; Lý giải / Hiểu",
     "hsk": 4,
     "audio": "sounds/hsk4/理解.mp3",
     "strokes": 24
@@ -17614,7 +17614,7 @@
     "hanzi": "梦想",
     "pinyin": "mèng xiǎng",
     "english": "(fig.) to dream of; dream",
-    "vietnamese": "(bóng) mơ ước; giấc mơ",
+    "vietnamese": "(bóng) mơ ước; giấc mơ; Mơ ước",
     "hsk": 4,
     "audio": "sounds/hsk4/梦想.mp3",
     "strokes": 24
@@ -17994,7 +17994,7 @@
     "hanzi": "拍",
     "pinyin": "pāi",
     "english": "to pat; to clap; to slap; to swat; to take (a photo); to shoot (a film); racket (sports); beat (music)",
-    "vietnamese": "vỗ; vỗ tay; tát; đập; chụp (ảnh); quay (phim); vợt (thể thao); nhịp (âm nhạc); vỗ; vỗ tay; tát; đập; chụp (ảnh); quay (phim); vợt (thể thao); nhịp (âm nhạc)",
+    "vietnamese": "vỗ; vỗ tay; tát; đập; chụp (ảnh); quay (phim); vợt (thể thao); nhịp (âm nhạc); vỗ; vỗ tay; tát; đập; chụp (ảnh); quay (phim); vợt (thể thao); nhịp (âm nhạc); Vỗ / Chụp",
     "hsk": 4,
     "audio": "sounds/hsk4/拍.mp3",
     "strokes": 8
@@ -18504,7 +18504,7 @@
     "hanzi": "庆祝",
     "pinyin": "qìng zhù",
     "english": "to celebrate",
-    "vietnamese": "ăn mừng",
+    "vietnamese": "ăn mừng; Chúc mừng / Ăn mừng",
     "hsk": 4,
     "audio": "sounds/hsk4/庆祝.mp3",
     "strokes": 15
@@ -18774,7 +18774,7 @@
     "hanzi": "扔",
     "pinyin": "rēng",
     "english": "to throw; to throw away",
-    "vietnamese": "ném; vứt đi; ném; vứt đi",
+    "vietnamese": "ném; vứt đi; ném; vứt đi; Ném / Quăng",
     "hsk": 4,
     "audio": "sounds/hsk4/扔.mp3",
     "strokes": 5
@@ -19134,7 +19134,7 @@
     "hanzi": "失败",
     "pinyin": "shī bài",
     "english": "to be defeated; to lose; to fail (e.g. experiments); failure; defeat",
-    "vietnamese": "bị đánh bại; thua; thất bại (ví dụ: thí nghiệm); sự thất bại; sự thua cuộc; LT:次[ci4]",
+    "vietnamese": "bị đánh bại; thua; thất bại (ví dụ: thí nghiệm); sự thất bại; sự thua cuộc; LT:次[ci4]; Thất bại",
     "hsk": 4,
     "audio": "sounds/hsk4/失败.mp3",
     "strokes": 13
@@ -19954,7 +19954,7 @@
     "hanzi": "提",
     "pinyin": "dī",
     "english": "used in 防 and 溜",
-    "vietnamese": "dùng trong 提防[di1 fang5] và 提溜[di1 liu5]; dùng trong 提防[di1 fang5] và 提溜[di1 liu5]; xách (thòng xuống từ tay); nâng; đề xuất; nhắc đến; nêu lên (vấn đề); nét bút hướng lên; nét nâng bút (trong hội họa); gàu múc chất lỏng; xách (thòng xuống từ tay); nâng; đề xuất; nhắc đến; nêu lên (vấn đề); nét bút hướng lên; nét nâng bút (trong hội họa); gàu múc chất lỏng",
+    "vietnamese": "dùng trong 提防[di1 fang5] và 提溜[di1 liu5]; dùng trong 提防[di1 fang5] và 提溜[di1 liu5]; xách (thòng xuống từ tay); nâng; đề xuất; nhắc đến; nêu lên (vấn đề); nét bút hướng lên; nét nâng bút (trong hội họa); gàu múc chất lỏng; xách (thòng xuống từ tay); nâng; đề xuất; nhắc đến; nêu lên (vấn đề); nét bút hướng lên; nét nâng bút (trong hội họa); gàu múc chất lỏng; Xách / Nhấc",
     "hsk": 4,
     "audio": "sounds/hsk4/提.mp3",
     "strokes": 12
@@ -20144,7 +20144,7 @@
     "hanzi": "停止",
     "pinyin": "tíng zhǐ",
     "english": "to stop; to halt; to cease",
-    "vietnamese": "dừng; tạm dừng; ngừng lại; dừng; tạm dừng; ngừng lại",
+    "vietnamese": "dừng; tạm dừng; ngừng lại; dừng; tạm dừng; ngừng lại; Dừng lại",
     "hsk": 4,
     "audio": "sounds/hsk4/停止.mp3",
     "strokes": 15
@@ -20314,7 +20314,7 @@
     "hanzi": "脱",
     "pinyin": "tuō",
     "english": "to shed; to take off; to escape; to get away from",
-    "vietnamese": "rụng; cởi; thoát; thoát khỏi",
+    "vietnamese": "rụng; cởi; thoát; thoát khỏi; Cởi / Tháo",
     "hsk": 4,
     "audio": "sounds/hsk4/脱.mp3",
     "strokes": 11
@@ -21044,7 +21044,7 @@
     "hanzi": "醒",
     "pinyin": "xǐng",
     "english": "to wake up; to be awake; to become aware; to sober up; to come to",
-    "vietnamese": "tỉnh dậy; tỉnh táo; nhận ra; tỉnh rượu; tỉnh lại; tỉnh dậy; tỉnh táo; nhận ra; tỉnh rượu; tỉnh lại",
+    "vietnamese": "tỉnh dậy; tỉnh táo; nhận ra; tỉnh rượu; tỉnh lại; tỉnh dậy; tỉnh táo; nhận ra; tỉnh rượu; tỉnh lại; Tỉnh giấc",
     "hsk": 4,
     "audio": "sounds/hsk4/醒.mp3",
     "strokes": 16
@@ -21584,7 +21584,7 @@
     "hanzi": "应聘",
     "pinyin": "yìng pìn",
     "english": "to accept a job offer; to apply for an advertised position",
-    "vietnamese": "chấp nhận lời mời làm việc; ứng tuyển vào vị trí đã quảng cáo",
+    "vietnamese": "chấp nhận lời mời làm việc; ứng tuyển vào vị trí đã quảng cáo; Ứng tuyển",
     "hsk": 4,
     "audio": "sounds/hsk4/应聘.mp3",
     "strokes": 20
@@ -21704,7 +21704,7 @@
     "hanzi": "由于",
     "pinyin": "yóu yú",
     "english": "due to; as a result of; thanks to; owing to; since; because",
-    "vietnamese": "do; bởi vì; nhờ vào; tại vì; kể từ; vì",
+    "vietnamese": "do; bởi vì; nhờ vào; tại vì; kể từ; vì; Bởi vì (đôi khi dùng như động từ)",
     "hsk": 4,
     "audio": "sounds/hsk4/由于.mp3",
     "strokes": 8
@@ -22424,7 +22424,7 @@
     "hanzi": "指",
     "pinyin": "zhǐ",
     "english": "finger; to point at or to; to indicate or refer to; to depend on; to count on; (of hair) to stand on end",
-    "vietnamese": "ngón tay; chỉ vào hoặc đến; chỉ ra hoặc đề cập đến; phụ thuộc vào; dựa vào; (tóc) dựng đứng lên; ngón tay; chỉ vào hoặc đến; chỉ ra hoặc đề cập đến; phụ thuộc vào; dựa vào; (tóc) dựng đứng lên",
+    "vietnamese": "ngón tay; chỉ vào hoặc đến; chỉ ra hoặc đề cập đến; phụ thuộc vào; dựa vào; (tóc) dựng đứng lên; ngón tay; chỉ vào hoặc đến; chỉ ra hoặc đề cập đến; phụ thuộc vào; dựa vào; (tóc) dựng đứng lên; Chỉ tay",
     "hsk": 4,
     "audio": "sounds/hsk4/指.mp3",
     "strokes": 9
@@ -22624,7 +22624,7 @@
     "hanzi": "装",
     "pinyin": "zhuāng",
     "english": "adornment; to adorn; dress; clothing; costume (of an actor in a play); to play a role; to pretend; to install; to fix; to wrap (sth in a bag); to load; to pack",
-    "vietnamese": "trang sức; trang trí; mặc; quần áo; trang phục (của diễn viên trong vở kịch); đóng vai; giả vờ; lắp đặt; sửa chữa; gói (thứ gì vào túi); tải; đóng gói",
+    "vietnamese": "trang sức; trang trí; mặc; quần áo; trang phục (của diễn viên trong vở kịch); đóng vai; giả vờ; lắp đặt; sửa chữa; gói (thứ gì vào túi); tải; đóng gói; Đựng / Lắp đặt",
     "hsk": 4,
     "audio": "sounds/hsk4/装.mp3",
     "strokes": 12
@@ -22724,7 +22724,7 @@
     "hanzi": "总结",
     "pinyin": "zǒng jié",
     "english": "to sum up; to conclude; summary; résumé",
-    "vietnamese": "tóm tắt; kết luận; tóm lược; sơ yếu lý lịch; LT:個|个[ge4]",
+    "vietnamese": "tóm tắt; kết luận; tóm lược; sơ yếu lý lịch; LT:個|个[ge4]; Tổng kết",
     "hsk": 4,
     "audio": "sounds/hsk4/总结.mp3",
     "strokes": 18
@@ -22944,7 +22944,7 @@
     "hanzi": "安装",
     "pinyin": "ān zhuāng",
     "english": "to install; to erect; to fix; to mount; installation",
-    "vietnamese": "lắp đặt; dựng; lắp; gắn; cài đặt",
+    "vietnamese": "lắp đặt; dựng; lắp; gắn; cài đặt; Cài đặt / Lắp đặt",
     "hsk": 5,
     "audio": "sounds/hsk5/安装.mp3",
     "strokes": 18
@@ -23224,7 +23224,7 @@
     "hanzi": "抱怨",
     "pinyin": "bào yuàn",
     "english": "to complain; to grumble; to harbor a complaint; to feel dissatisfied",
-    "vietnamese": "phàn nàn; cằn nhằn; ôm giữ bất mãn; cảm thấy không hài lòng; phàn nàn; cằn nhằn; ôm giữ bất mãn; cảm thấy không hài lòng",
+    "vietnamese": "phàn nàn; cằn nhằn; ôm giữ bất mãn; cảm thấy không hài lòng; phàn nàn; cằn nhằn; ôm giữ bất mãn; cảm thấy không hài lòng; Than phiền",
     "hsk": 5,
     "audio": "sounds/hsk5/抱怨.mp3",
     "strokes": 17
@@ -23514,7 +23514,7 @@
     "hanzi": "表达",
     "pinyin": "biǎo dá",
     "english": "to express; to convey",
-    "vietnamese": "diễn đạt; truyền tải",
+    "vietnamese": "diễn đạt; truyền tải; Biểu đạt",
     "hsk": 5,
     "audio": "sounds/hsk5/表达.mp3",
     "strokes": 14
@@ -23754,7 +23754,7 @@
     "hanzi": "采访",
     "pinyin": "cǎi fǎng",
     "english": "to interview; to gather news; to hunt for and collect; to cover",
-    "vietnamese": "phỏng vấn; thu thập tin tức; tìm kiếm và thu thập; đưa tin",
+    "vietnamese": "phỏng vấn; thu thập tin tức; tìm kiếm và thu thập; đưa tin; Phỏng vấn / Thu thập tin",
     "hsk": 5,
     "audio": "sounds/hsk5/采访.mp3",
     "strokes": 14
@@ -23844,7 +23844,7 @@
     "hanzi": "操作",
     "pinyin": "cāo zuò",
     "english": "to work; to operate; to manipulate",
-    "vietnamese": "làm việc; vận hành; thao tác; làm việc; vận hành; thao tác",
+    "vietnamese": "làm việc; vận hành; thao tác; làm việc; vận hành; thao tác; Thao tác / Điều khiển",
     "hsk": 5,
     "audio": "sounds/hsk5/操作.mp3",
     "strokes": 23
@@ -24454,7 +24454,7 @@
     "hanzi": "充电",
     "pinyin": "chōng diàn",
     "english": "to recharge (a battery); (fig.) to recharge one's batteries (through leisure); to update one's skills and knowledge",
-    "vietnamese": "sạc (pin); (ví von) nạp lại năng lượng (qua nghỉ ngơi); cập nhật kỹ năng và kiến thức",
+    "vietnamese": "sạc (pin); (ví von) nạp lại năng lượng (qua nghỉ ngơi); cập nhật kỹ năng và kiến thức; Sạc điện",
     "hsk": 5,
     "audio": "sounds/hsk5/充电.mp3",
     "strokes": 11
@@ -24994,7 +24994,7 @@
     "hanzi": "打扮",
     "pinyin": "dǎ ban",
     "english": "to decorate; to dress; to make up; to adorn; manner of dressing; style of dress",
-    "vietnamese": "trang trí; mặc; chải chuốt; tô điểm; phong cách ăn mặc; phong cách trang phục; trang trí; mặc; chải chuốt; tô điểm; phong cách ăn mặc; phong cách trang phục",
+    "vietnamese": "trang trí; mặc; chải chuốt; tô điểm; phong cách ăn mặc; phong cách trang phục; trang trí; mặc; chải chuốt; tô điểm; phong cách ăn mặc; phong cách trang phục; Trang điểm / Diện",
     "hsk": 5,
     "audio": "sounds/hsk5/打扮.mp3",
     "strokes": 12
@@ -25564,7 +25564,7 @@
     "hanzi": "登记",
     "pinyin": "dēng jì",
     "english": "to register (one's name)",
-    "vietnamese": "đăng ký (tên)",
+    "vietnamese": "đăng ký (tên); Đăng ký",
     "hsk": 5,
     "audio": "sounds/hsk5/登记.mp3",
     "strokes": 17
@@ -26024,7 +26024,7 @@
     "hanzi": "躲",
     "pinyin": "duǒ",
     "english": "to hide; to dodge; to avoid",
-    "vietnamese": "trốn; tránh né; tránh; trốn; tránh né; tránh",
+    "vietnamese": "trốn; tránh né; tránh; trốn; tránh né; tránh; Trốn / Né",
     "hsk": 5,
     "audio": "sounds/hsk5/躲.mp3",
     "strokes": 13
@@ -27114,7 +27114,7 @@
     "hanzi": "沟通",
     "pinyin": "gōu tōng",
     "english": "to join; to connect; to link up; to communicate",
-    "vietnamese": "kết nối; liên kết; liên thông; giao tiếp",
+    "vietnamese": "kết nối; liên kết; liên thông; giao tiếp; Giao tiếp nội bộ",
     "hsk": 5,
     "audio": "sounds/hsk5/沟通.mp3",
     "strokes": 17
@@ -27624,7 +27624,7 @@
     "hanzi": "合",
     "pinyin": "gě",
     "english": "100 ml; one-tenth of a peck; measure for dry grain equal to one-tenth of sheng 升 or liter, or one-hundredth dou 斗",
-    "vietnamese": "100 ml; một phần mười của một đấu; đơn vị đo ngũ cốc khô bằng một phần mười thăng 升 hoặc lít, hoặc một phần trăm đấu 斗; 100 ml; một phần mười của một đấu; đơn vị đo ngũ cốc khô bằng một phần mười thăng 升 hoặc lít, hoặc một phần trăm đấu 斗; đóng; gia nhập; phù hợp; bằng; toàn bộ; cùng nhau; vòng (trong chiến đấu); giao hội (thiên văn); nốt thứ nhất của ngũ cung; biến thể cũ của 盒[he2]; đóng; gia nhập; phù hợp; bằng; toàn bộ; cùng nhau; vòng (trong chiến đấu); giao hội (thiên văn); nốt thứ nhất của ngũ cung; biến thể cũ của 盒[he2]; biến thể của 合[he2]",
+    "vietnamese": "100 ml; một phần mười của một đấu; đơn vị đo ngũ cốc khô bằng một phần mười thăng 升 hoặc lít, hoặc một phần trăm đấu 斗; 100 ml; một phần mười của một đấu; đơn vị đo ngũ cốc khô bằng một phần mười thăng 升 hoặc lít, hoặc một phần trăm đấu 斗; đóng; gia nhập; phù hợp; bằng; toàn bộ; cùng nhau; vòng (trong chiến đấu); giao hội (thiên văn); nốt thứ nhất của ngũ cung; biến thể cũ của 盒[he2]; đóng; gia nhập; phù hợp; bằng; toàn bộ; cùng nhau; vòng (trong chiến đấu); giao hội (thiên văn); nốt thứ nhất của ngũ cung; biến thể cũ của 盒[he2]; biến thể của 合[he2]; Gộp lại / Đóng",
     "hsk": 5,
     "audio": "sounds/hsk5/合.mp3",
     "strokes": 6
@@ -27784,7 +27784,7 @@
     "hanzi": "呼吸",
     "pinyin": "hū xī",
     "english": "to breathe",
-    "vietnamese": "thở; thở",
+    "vietnamese": "thở; thở; Hô hấp / Thở",
     "hsk": 5,
     "audio": "sounds/hsk5/呼吸.mp3",
     "strokes": 14
@@ -28304,7 +28304,7 @@
     "hanzi": "集合",
     "pinyin": "jí hé",
     "english": "to gather; to assemble; (math.) set",
-    "vietnamese": "tập hợp; tập trung; (toán) tập hợp; tập hợp; tập trung; (toán) tập hợp",
+    "vietnamese": "tập hợp; tập trung; (toán) tập hợp; tập hợp; tập trung; (toán) tập hợp; Tập trung / Tập hợp",
     "hsk": 5,
     "audio": "sounds/hsk5/集合.mp3",
     "strokes": 18
@@ -28454,7 +28454,7 @@
     "hanzi": "加工",
     "pinyin": "jiā gōng",
     "english": "to process; processing; working (of machinery)",
-    "vietnamese": "chế biến; xử lý; vận hành (máy móc); chế biến; xử lý; vận hành (máy móc)",
+    "vietnamese": "chế biến; xử lý; vận hành (máy móc); chế biến; xử lý; vận hành (máy móc); Gia công",
     "hsk": 5,
     "audio": "sounds/hsk5/加工.mp3",
     "strokes": 8
@@ -28624,7 +28624,7 @@
     "hanzi": "捡",
     "pinyin": "jiǎn",
     "english": "to pick up; to collect; to gather",
-    "vietnamese": "nhặt lên; thu thập; gom lại",
+    "vietnamese": "nhặt lên; thu thập; gom lại; Nhặt",
     "hsk": 5,
     "audio": "sounds/hsk5/捡.mp3",
     "strokes": 10
@@ -28644,7 +28644,7 @@
     "hanzi": "剪",
     "pinyin": "Jiǎn",
     "english": "surname Jian",
-    "vietnamese": "họ [Jian3]; họ [Jian3]; kéo; dao cắt; tông đơ; LT:把[ba3]; cắt bằng kéo; tỉa; xóa sổ hoặc tiêu diệt; kéo; dao cắt; tông đơ; LT:把[ba3]; cắt bằng kéo; tỉa; xóa sổ hoặc tiêu diệt",
+    "vietnamese": "họ [Jian3]; họ [Jian3]; kéo; dao cắt; tông đơ; LT:把[ba3]; cắt bằng kéo; tỉa; xóa sổ hoặc tiêu diệt; kéo; dao cắt; tông đơ; LT:把[ba3]; cắt bằng kéo; tỉa; xóa sổ hoặc tiêu diệt; Cắt (kéo)",
     "hsk": 5,
     "audio": "sounds/hsk5/剪.mp3",
     "strokes": 11
@@ -28964,7 +28964,7 @@
     "hanzi": "接收",
     "pinyin": "jiē shōu",
     "english": "reception (of transmitted signal); to receive; to accept; to admit; to take over (e.g. a factory); to expropriate",
-    "vietnamese": "sự tiếp nhận (tín hiệu truyền); nhận; chấp nhận; thừa nhận; tiếp quản (ví dụ: một nhà máy); trưng dụng; sự tiếp nhận (tín hiệu truyền); nhận; chấp nhận; thừa nhận; tiếp quản (ví dụ: một nhà máy); trưng dụng",
+    "vietnamese": "sự tiếp nhận (tín hiệu truyền); nhận; chấp nhận; thừa nhận; tiếp quản (ví dụ: một nhà máy); trưng dụng; sự tiếp nhận (tín hiệu truyền); nhận; chấp nhận; thừa nhận; tiếp quản (ví dụ: một nhà máy); trưng dụng; Thu / Nhận (tín hiệu)",
     "hsk": 5,
     "audio": "sounds/hsk5/接收.mp3",
     "strokes": 17
@@ -29774,7 +29774,7 @@
     "hanzi": "控制",
     "pinyin": "kòng zhì",
     "english": "to control",
-    "vietnamese": "kiểm soát; kiểm soát",
+    "vietnamese": "kiểm soát; kiểm soát; Kiểm soát / Điều khiển",
     "hsk": 5,
     "audio": "sounds/hsk5/控制.mp3",
     "strokes": 19
@@ -30904,7 +30904,7 @@
     "hanzi": "摸",
     "pinyin": "mō",
     "english": "to feel with the hand; to touch; to stroke; to grope; to steal; to abstract",
-    "vietnamese": "sờ bằng tay; chạm; vuốt; mò; trộm; trích; sờ bằng tay; chạm; vuốt; mò; trộm; trích; biến thể của 摹[mo2]; biến thể của 摹[mo2]",
+    "vietnamese": "sờ bằng tay; chạm; vuốt; mò; trộm; trích; sờ bằng tay; chạm; vuốt; mò; trộm; trích; biến thể của 摹[mo2]; biến thể của 摹[mo2]; Chạm / Sờ",
     "hsk": 5,
     "audio": "sounds/hsk5/摸.mp3",
     "strokes": 13
@@ -31344,7 +31344,7 @@
     "hanzi": "配送",
     "pinyin": "pèi sòng",
     "english": "to put together an order and deliver it (i.e. 配货 and 送货); to deliver (goods)",
-    "vietnamese": "ghép đơn và giao hàng (tức là 配貨|配货[pei4 huo4] và 送貨|送货[song4 huo4]); giao hàng; ghép đơn và giao hàng (tức là 配貨|配货[pei4 huo4] và 送貨|送货[song4 huo4]); giao hàng",
+    "vietnamese": "ghép đơn và giao hàng (tức là 配貨|配货[pei4 huo4] và 送貨|送货[song4 huo4]); giao hàng; ghép đơn và giao hàng (tức là 配貨|配货[pei4 huo4] và 送貨|送货[song4 huo4]); giao hàng; Giao hàng / Phối gửi",
     "hsk": 5,
     "audio": "sounds/hsk5/配送.mp3",
     "strokes": 19
@@ -31394,7 +31394,7 @@
     "hanzi": "批准",
     "pinyin": "pī zhǔn",
     "english": "to approve; to ratify",
-    "vietnamese": "phê duyệt; phê chuẩn; phê duyệt; phê chuẩn",
+    "vietnamese": "phê duyệt; phê chuẩn; phê duyệt; phê chuẩn; Chấp thuận",
     "hsk": 5,
     "audio": "sounds/hsk5/批准.mp3",
     "strokes": 17
@@ -31614,7 +31614,7 @@
     "hanzi": "期待",
     "pinyin": "qī dài",
     "english": "to look forward to; to await; expectation",
-    "vietnamese": "mong chờ; chờ đợi; sự kỳ vọng; mong chờ; chờ đợi; sự kỳ vọng",
+    "vietnamese": "mong chờ; chờ đợi; sự kỳ vọng; mong chờ; chờ đợi; sự kỳ vọng; Mong đợi",
     "hsk": 5,
     "audio": "sounds/hsk5/期待.mp3",
     "strokes": 21
@@ -31854,7 +31854,7 @@
     "hanzi": "抢",
     "pinyin": "qiāng",
     "english": "(literary) to knock against (esp. to knock one's head on the ground in grief or rage); opposite in direction; contrary",
-    "vietnamese": "(văn học) đập vào (đặc biệt là đập đầu xuống đất trong đau buồn hoặc tức giận); ngược hướng; trái lại; tranh giành; lao vào; tranh cướp; chụp lấy; cướp; giật",
+    "vietnamese": "(văn học) đập vào (đặc biệt là đập đầu xuống đất trong đau buồn hoặc tức giận); ngược hướng; trái lại; tranh giành; lao vào; tranh cướp; chụp lấy; cướp; giật; Cướp / Giành",
     "hsk": 5,
     "audio": "sounds/hsk5/抢.mp3",
     "strokes": 7
@@ -31894,7 +31894,7 @@
     "hanzi": "切",
     "pinyin": "qiē",
     "english": "to cut; to slice; to carve; (math) tangential",
-    "vietnamese": "cắt; thái; khắc; (toán) tiếp tuyến; cắt; thái; khắc; (toán) tiếp tuyến; nhất định; hoàn toàn (không); (thán từ khinh bỉ hoặc bác bỏ) Phải rồi.; Chậc!; mài; (hình thức giới hạn) gần với; (hình thức giới hạn) háo hức; tương ứng với; (dùng để chỉ rằng nên áp dụng hệ thống phản thiết 反切[fan3 qie4] cho hai ký tự trước); nhất định; hoàn toàn (không); (thán từ khinh bỉ hoặc bác bỏ) Phải rồi.; Chậc!; mài; (hình thức giới hạn) gần với; (hình thức giới hạn) háo hức; tương ứng với; (dùng để chỉ rằng nên áp dụng hệ thống phản thiết 反切[fan3 qie4] cho hai ký tự trước); Thái / Cắt",
+    "vietnamese": "cắt; thái; khắc; (toán) tiếp tuyến; cắt; thái; khắc; (toán) tiếp tuyến; nhất định; hoàn toàn (không); (thán từ khinh bỉ hoặc bác bỏ) Phải rồi.; Chậc!; mài; (hình thức giới hạn) gần với; (hình thức giới hạn) háo hức; tương ứng với; (dùng để chỉ rằng nên áp dụng hệ thống phản thiết 反切[fan3 qie4] cho hai ký tự trước); nhất định; hoàn toàn (không); (thán từ khinh bỉ hoặc bác bỏ) Phải rồi.; Chậc!; mài; (hình thức giới hạn) gần với; (hình thức giới hạn) háo hức; tương ứng với; (dùng để chỉ rằng nên áp dụng hệ thống phản thiết 反切[fan3 qie4] cho hai ký tự trước); Thái / Cắt; Cắt / Thái",
     "hsk": 5,
     "audio": "sounds/hsk5/切.mp3",
     "strokes": 4
@@ -32204,7 +32204,7 @@
     "hanzi": "确定",
     "pinyin": "què dìng",
     "english": "definite; certain; fixed; to fix (on sth); to determine; to be sure; to ensure; to make certain; to ascertain; to clinch; to recognize; to confirm; OK (on computer dialog box)",
-    "vietnamese": "rõ ràng; chắc chắn; cố định; để cố định (cái gì đó); xác định; đảm bảo; bảo đảm; xác minh; đạt được; thừa nhận; xác nhận; OK (trong hộp thoại máy tính)",
+    "vietnamese": "rõ ràng; chắc chắn; cố định; để cố định (cái gì đó); xác định; đảm bảo; bảo đảm; xác minh; đạt được; thừa nhận; xác nhận; OK (trong hộp thoại máy tính); Xác định / Chắc chắn",
     "hsk": 5,
     "audio": "sounds/hsk5/确定.mp3",
     "strokes": 20
@@ -34004,7 +34004,7 @@
     "hanzi": "思考",
     "pinyin": "sī kǎo",
     "english": "to reflect on; to ponder over",
-    "vietnamese": "suy ngẫm; cân nhắc; suy ngẫm; cân nhắc",
+    "vietnamese": "suy ngẫm; cân nhắc; suy ngẫm; cân nhắc; Tư duy",
     "hsk": 5,
     "audio": "sounds/hsk5/思考.mp3",
     "strokes": 15
@@ -34064,7 +34064,7 @@
     "hanzi": "搜索",
     "pinyin": "sōu suǒ",
     "english": "to search (a place); to search (a database); to search for (sth)",
-    "vietnamese": "tìm kiếm (một địa điểm); tìm kiếm (cơ sở dữ liệu); tìm kiếm (thứ gì đó); tìm kiếm (một địa điểm); tìm kiếm (cơ sở dữ liệu); tìm kiếm (thứ gì đó)",
+    "vietnamese": "tìm kiếm (một địa điểm); tìm kiếm (cơ sở dữ liệu); tìm kiếm (thứ gì đó); tìm kiếm (một địa điểm); tìm kiếm (cơ sở dữ liệu); tìm kiếm (thứ gì đó); Tìm kiếm (Search)",
     "hsk": 5,
     "audio": "sounds/hsk5/搜索.mp3",
     "strokes": 22
@@ -34814,7 +34814,7 @@
     "hanzi": "推广",
     "pinyin": "tuī guǎng",
     "english": "to extend; to spread; to popularize; generalization; promotion (of a product etc)",
-    "vietnamese": "mở rộng; lan rộng; phổ biến; khái quát hóa; quảng bá (sản phẩm, v.v.)",
+    "vietnamese": "mở rộng; lan rộng; phổ biến; khái quát hóa; quảng bá (sản phẩm, v.v.); Quảng bá / Marketing",
     "hsk": 5,
     "audio": "sounds/hsk5/推广.mp3",
     "strokes": 14
@@ -34864,7 +34864,7 @@
     "hanzi": "退休",
     "pinyin": "tuì xiū",
     "english": "to retire (from the workforce); to go into retirement",
-    "vietnamese": "nghỉ hưu (khỏi lực lượng lao động); đi vào nghỉ hưu; nghỉ hưu (khỏi lực lượng lao động); đi vào nghỉ hưu",
+    "vietnamese": "nghỉ hưu (khỏi lực lượng lao động); đi vào nghỉ hưu; nghỉ hưu (khỏi lực lượng lao động); đi vào nghỉ hưu; Nghỉ hưu",
     "hsk": 5,
     "audio": "sounds/hsk5/退休.mp3",
     "strokes": 15
@@ -35104,7 +35104,7 @@
     "hanzi": "违反",
     "pinyin": "wéi fǎn",
     "english": "to violate (a law)",
-    "vietnamese": "vi phạm (pháp luật)",
+    "vietnamese": "vi phạm (pháp luật); Vi phạm",
     "hsk": 5,
     "audio": "sounds/hsk5/违反.mp3",
     "strokes": 11
@@ -35134,7 +35134,7 @@
     "hanzi": "维修",
     "pinyin": "wéi xiū",
     "english": "maintenance (of equipment); to protect and maintain",
-    "vietnamese": "bảo trì (thiết bị); bảo vệ và duy trì",
+    "vietnamese": "bảo trì (thiết bị); bảo vệ và duy trì; Sửa chữa / Bảo trì",
     "hsk": 5,
     "audio": "sounds/hsk5/维修.mp3",
     "strokes": 20
@@ -35544,7 +35544,7 @@
     "hanzi": "下载",
     "pinyin": "xià zǎi",
     "english": "to download; also pr. [xià zài]",
-    "vietnamese": "tải xuống; cũng đọc là [xia4 zai4]",
+    "vietnamese": "tải xuống; cũng đọc là [xia4 zai4]; Tải về",
     "hsk": 5,
     "audio": "sounds/hsk5/下载.mp3",
     "strokes": 13
@@ -35924,7 +35924,7 @@
     "hanzi": "销售",
     "pinyin": "xiāo shòu",
     "english": "to sell; to market; sales (representative, agreement etc)",
-    "vietnamese": "bán; tiếp thị; bán hàng (đại diện, hợp đồng v.v.)",
+    "vietnamese": "bán; tiếp thị; bán hàng (đại diện, hợp đồng v.v.); Bán hàng",
     "hsk": 5,
     "audio": "sounds/hsk5/销售.mp3",
     "strokes": 23
@@ -36554,7 +36554,7 @@
     "hanzi": "研发",
     "pinyin": "yán fā",
     "english": "research and development; to develop",
-    "vietnamese": "nghiên cứu và phát triển; phát triển",
+    "vietnamese": "nghiên cứu và phát triển; phát triển; Nghiên cứu & Phát triển",
     "hsk": 5,
     "audio": "sounds/hsk5/研发.mp3",
     "strokes": 14
@@ -37744,7 +37744,7 @@
     "hanzi": "运输",
     "pinyin": "yùn shū",
     "english": "to transport; to carry; transportation",
-    "vietnamese": "vận chuyển; mang; chuyên chở",
+    "vietnamese": "vận chuyển; mang; chuyên chở; Vận tải",
     "hsk": 5,
     "audio": "sounds/hsk5/运输.mp3",
     "strokes": 20
@@ -38484,7 +38484,7 @@
     "hanzi": "执行",
     "pinyin": "zhí xíng",
     "english": "to implement; to carry out; to execute; to run",
-    "vietnamese": "thực hiện; tiến hành; thi hành; chạy; Thi hành / Thực hiện",
+    "vietnamese": "thực hiện; tiến hành; thi hành; chạy; Thi hành / Thực hiện; Thi hành / Execute",
     "hsk": 5,
     "audio": "sounds/hsk5/执行.mp3",
     "strokes": 12
@@ -38634,7 +38634,7 @@
     "hanzi": "制造",
     "pinyin": "zhì zào",
     "english": "to manufacture; to make",
-    "vietnamese": "sản xuất; làm",
+    "vietnamese": "sản xuất; làm; Chế tạo",
     "hsk": 5,
     "audio": "sounds/hsk5/制造.mp3",
     "strokes": 18
@@ -39054,7 +39054,7 @@
     "hanzi": "抓",
     "pinyin": "zhuā",
     "english": "to grab; to catch; to arrest; to snatch; to scratch",
-    "vietnamese": "bắt; nắm; túm; chộp; cào; bắt; nắm; túm; chộp; cào",
+    "vietnamese": "bắt; nắm; túm; chộp; cào; bắt; nắm; túm; chộp; cào; Bắt / Túm",
     "hsk": 5,
     "audio": "sounds/hsk5/抓.mp3",
     "strokes": 7
@@ -39184,7 +39184,7 @@
     "hanzi": "追求",
     "pinyin": "zhuī qiú",
     "english": "to pursue (a goal etc) stubbornly; to seek after; to woo",
-    "vietnamese": "theo đuổi (một mục tiêu, v.v.) một cách ngoan cố; tìm kiếm; tán tỉnh; theo đuổi (một mục tiêu, v.v.) một cách ngoan cố; tìm kiếm; tán tỉnh",
+    "vietnamese": "theo đuổi (một mục tiêu, v.v.) một cách ngoan cố; tìm kiếm; tán tỉnh; theo đuổi (một mục tiêu, v.v.) một cách ngoan cố; tìm kiếm; tán tỉnh; Theo đuổi; Mưu cầu",
     "hsk": 5,
     "audio": "sounds/hsk5/追求.mp3",
     "strokes": 16
@@ -39194,7 +39194,7 @@
     "hanzi": "咨询",
     "pinyin": "zī xún",
     "english": "to consult; to seek advice; consultation; (sales) inquiry (formal)",
-    "vietnamese": "tư vấn; xin ý kiến; tham vấn; hỏi hàng (mua bán, trang trọng)",
+    "vietnamese": "tư vấn; xin ý kiến; tham vấn; hỏi hàng (mua bán, trang trọng); Hỏi ý kiến chuyên gia",
     "hsk": 5,
     "audio": "sounds/hsk5/咨询.mp3",
     "strokes": 17
@@ -39514,7 +39514,7 @@
     "hanzi": "遵守",
     "pinyin": "zūn shǒu",
     "english": "to comply with; to abide by; to respect (an agreement)",
-    "vietnamese": "tuân thủ; tuân theo; tôn trọng (một thỏa thuận); tuân thủ; tuân theo; tôn trọng (một thỏa thuận)",
+    "vietnamese": "tuân thủ; tuân theo; tôn trọng (một thỏa thuận); tuân thủ; tuân theo; tôn trọng (một thỏa thuận); Tuân thủ (quy tắc)",
     "hsk": 5,
     "audio": "sounds/hsk5/遵守.mp3",
     "strokes": 21
@@ -40384,7 +40384,7 @@
     "hanzi": "补",
     "pinyin": "bǔ",
     "english": "to repair; to patch; to mend; to make up for; to fill (a vacancy); to supplement",
-    "vietnamese": "sửa; chắp vá; vá; bù đắp; lấp đầy (chỗ trống); bổ sung",
+    "vietnamese": "sửa; chắp vá; vá; bù đắp; lấp đầy (chỗ trống); bổ sung; Bù / Vá",
     "hsk": 6,
     "audio": "sounds/hsk6/补.mp3",
     "strokes": 7
@@ -40394,7 +40394,7 @@
     "hanzi": "补偿",
     "pinyin": "bǔ cháng",
     "english": "to compensate; to make up",
-    "vietnamese": "bồi thường; bù đắp",
+    "vietnamese": "bồi thường; bù đắp; Bù trừ (Compensation)",
     "hsk": 6,
     "audio": "sounds/hsk6/补偿.mp3",
     "strokes": 18
@@ -41784,7 +41784,7 @@
     "hanzi": "储存",
     "pinyin": "chǔ cún",
     "english": "stockpile; to store; to stockpile; storage",
-    "vietnamese": "dự trữ; lưu trữ; tích trữ; kho lưu trữ",
+    "vietnamese": "dự trữ; lưu trữ; tích trữ; kho lưu trữ; Lưu kho",
     "hsk": 6,
     "audio": "sounds/hsk6/储存.mp3",
     "strokes": 18
@@ -41914,7 +41914,7 @@
     "hanzi": "传真",
     "pinyin": "chuán zhēn",
     "english": "fax; facsimile",
-    "vietnamese": "fax; bản sao",
+    "vietnamese": "fax; bản sao; Gửi Fax",
     "hsk": 6,
     "audio": "sounds/hsk6/传真.mp3",
     "strokes": 16
@@ -42724,7 +42724,7 @@
     "hanzi": "倒闭",
     "pinyin": "dǎo bì",
     "english": "to go bankrupt; to close down",
-    "vietnamese": "phá sản; đóng cửa",
+    "vietnamese": "phá sản; đóng cửa; Phá sản / Sập tiệm",
     "hsk": 6,
     "audio": "sounds/hsk6/倒闭.mp3",
     "strokes": 16
@@ -43034,7 +43034,7 @@
     "hanzi": "调节",
     "pinyin": "tiáo jié",
     "english": "to adjust; to regulate; to harmonize; to reconcile (accountancy etc)",
-    "vietnamese": "điều chỉnh; điều tiết; hòa hợp; điều hòa (kế toán,...)",
+    "vietnamese": "điều chỉnh; điều tiết; hòa hợp; điều hòa (kế toán,...); Điều chỉnh / Tiết chế",
     "hsk": 6,
     "audio": "sounds/hsk6/调节.mp3",
     "strokes": 15
@@ -43184,7 +43184,7 @@
     "hanzi": "斗争",
     "pinyin": "dòu zhēng",
     "english": "a struggle; fight; battle",
-    "vietnamese": "một cuộc đấu tranh; chiến đấu; trận chiến",
+    "vietnamese": "một cuộc đấu tranh; chiến đấu; trận chiến; Đấu tranh",
     "hsk": 6,
     "audio": "sounds/hsk6/斗争.mp3",
     "strokes": 10
@@ -43434,7 +43434,7 @@
     "hanzi": "躲避",
     "pinyin": "duǒ bì",
     "english": "to hide; to evade; to dodge; to take shelter; to avoid (difficulties)",
-    "vietnamese": "trốn; tránh né; lẩn tránh; tìm chỗ trú; tránh (khó khăn); trốn; tránh né; lẩn tránh; tìm chỗ trú; tránh (khó khăn)",
+    "vietnamese": "trốn; tránh né; lẩn tránh; tìm chỗ trú; tránh (khó khăn); trốn; tránh né; lẩn tránh; tìm chỗ trú; tránh (khó khăn); Né tránh",
     "hsk": 6,
     "audio": "sounds/hsk6/躲避.mp3",
     "strokes": 29
@@ -43674,7 +43674,7 @@
     "hanzi": "反馈",
     "pinyin": "fǎn kuì",
     "english": "to send back information; feedback",
-    "vietnamese": "gửi thông tin phản hồi; phản hồi",
+    "vietnamese": "gửi thông tin phản hồi; phản hồi; Phản hồi (Feedback)",
     "hsk": 6,
     "audio": "sounds/hsk6/反馈.mp3",
     "strokes": 16
@@ -43774,7 +43774,7 @@
     "hanzi": "放大",
     "pinyin": "fàng dà",
     "english": "to enlarge; to magnify",
-    "vietnamese": "phóng to; khuếch đại; phóng to; khuếch đại",
+    "vietnamese": "phóng to; khuếch đại; phóng to; khuếch đại; Phóng đại / Khuếch đại",
     "hsk": 6,
     "audio": "sounds/hsk6/放大.mp3",
     "strokes": 11
@@ -45664,7 +45664,7 @@
     "hanzi": "恨",
     "pinyin": "hèn",
     "english": "to hate; to regret",
-    "vietnamese": "ghét; hối tiếc; ghét; hối tiếc",
+    "vietnamese": "ghét; hối tiếc; ghét; hối tiếc; Ghét / Hận",
     "hsk": 6,
     "audio": "sounds/hsk6/恨.mp3",
     "strokes": 9
@@ -46054,7 +46054,7 @@
     "hanzi": "汇报",
     "pinyin": "huì bào",
     "english": "to report; to give an account of; to collect information and report back",
-    "vietnamese": "báo cáo; trình bày; thu thập thông tin và báo cáo lại; báo cáo; trình bày; bản báo cáo; Báo cáo công việc",
+    "vietnamese": "báo cáo; trình bày; thu thập thông tin và báo cáo lại; báo cáo; trình bày; bản báo cáo; Báo cáo công việc; Báo cáo lên trên",
     "hsk": 6,
     "audio": "sounds/hsk6/汇报.mp3",
     "strokes": 12
@@ -46704,7 +46704,7 @@
     "hanzi": "监督",
     "pinyin": "jiān dū",
     "english": "to control; to supervise; to inspect",
-    "vietnamese": "kiểm soát; giám sát; kiểm tra",
+    "vietnamese": "kiểm soát; giám sát; kiểm tra; Giám sát quy trình",
     "hsk": 6,
     "audio": "sounds/hsk6/监督.mp3",
     "strokes": 23
@@ -46734,7 +46734,7 @@
     "hanzi": "检测",
     "pinyin": "jiǎn cè",
     "english": "to detect; to test; detection; sensing",
-    "vietnamese": "phát hiện; kiểm tra; kiểm định; cảm biến",
+    "vietnamese": "phát hiện; kiểm tra; kiểm định; cảm biến; Kiểm tra / Đo lường",
     "hsk": 6,
     "audio": "sounds/hsk6/检测.mp3",
     "strokes": 20
@@ -48014,7 +48014,7 @@
     "hanzi": "考察",
     "pinyin": "kǎo chá",
     "english": "to inspect; to observe and study; on-the-spot investigation",
-    "vietnamese": "kiểm tra; quan sát và nghiên cứu; điều tra thực địa; kiểm tra; quan sát và nghiên cứu; điều tra thực địa; Khảo sát / Kiểm tra",
+    "vietnamese": "kiểm tra; quan sát và nghiên cứu; điều tra thực địa; kiểm tra; quan sát và nghiên cứu; điều tra thực địa; Khảo sát / Kiểm tra; Khảo sát / Kiểm tra thực địa",
     "hsk": 6,
     "audio": "sounds/hsk6/考察.mp3",
     "strokes": 20
@@ -49724,7 +49724,7 @@
     "hanzi": "命令",
     "pinyin": "mìng lìng",
     "english": "order; command",
-    "vietnamese": "mệnh lệnh; lệnh; LT:道[dao4],個|个[ge4]; mệnh lệnh; lệnh; LT:道[dao4],個|个[ge4]",
+    "vietnamese": "mệnh lệnh; lệnh; LT:道[dao4],個|个[ge4]; mệnh lệnh; lệnh; LT:道[dao4],個|个[ge4]; Ra lệnh",
     "hsk": 6,
     "audio": "sounds/hsk6/命令.mp3",
     "strokes": 13
@@ -50184,7 +50184,7 @@
     "hanzi": "盼望",
     "pinyin": "pàn wàng",
     "english": "to hope for; to look forward to",
-    "vietnamese": "hy vọng; mong đợi; hy vọng; mong đợi",
+    "vietnamese": "hy vọng; mong đợi; hy vọng; mong đợi; Trông chờ",
     "hsk": 6,
     "audio": "sounds/hsk6/盼望.mp3",
     "strokes": 20
@@ -50264,7 +50264,7 @@
     "hanzi": "佩服",
     "pinyin": "pèi fú",
     "english": "to admire",
-    "vietnamese": "ngưỡng mộ; ngưỡng mộ",
+    "vietnamese": "ngưỡng mộ; ngưỡng mộ; Khâm phục",
     "hsk": 6,
     "audio": "sounds/hsk6/佩服.mp3",
     "strokes": 16
@@ -50514,7 +50514,7 @@
     "hanzi": "评估",
     "pinyin": "píng gū",
     "english": "to evaluate; to assess; assessment; evaluation",
-    "vietnamese": "đánh giá; sự đánh giá; ước lượng; định giá",
+    "vietnamese": "đánh giá; sự đánh giá; ước lượng; định giá; Đánh giá (Evaluation)",
     "hsk": 6,
     "audio": "sounds/hsk6/评估.mp3",
     "strokes": 14
@@ -51134,7 +51134,7 @@
     "hanzi": "清洁",
     "pinyin": "qīng jié",
     "english": "clean; to clean",
-    "vietnamese": "sạch; sự làm sạch",
+    "vietnamese": "sạch; sự làm sạch; Làm sạch",
     "hsk": 6,
     "audio": "sounds/hsk6/清洁.mp3",
     "strokes": 20
@@ -51984,7 +51984,7 @@
     "hanzi": "扫描",
     "pinyin": "sǎo miáo",
     "english": "to scan",
-    "vietnamese": "quét",
+    "vietnamese": "quét; Quét (Scan)",
     "hsk": 6,
     "audio": "sounds/hsk6/扫描.mp3",
     "strokes": 17
@@ -53984,7 +53984,7 @@
     "hanzi": "偷",
     "pinyin": "tōu",
     "english": "to steal; to pilfer; to snatch; thief; stealthily",
-    "vietnamese": "trộm; cắp; giật; kẻ trộm; một cách lén lút; trộm; cắp; giật; kẻ trộm; một cách lén lút",
+    "vietnamese": "trộm; cắp; giật; kẻ trộm; một cách lén lút; trộm; cắp; giật; kẻ trộm; một cách lén lút; Ăn trộm",
     "hsk": 6,
     "audio": "sounds/hsk6/偷.mp3",
     "strokes": 11
@@ -54564,7 +54564,7 @@
     "hanzi": "维护",
     "pinyin": "wéi hù",
     "english": "to defend; to safeguard; to protect; to uphold; to maintain",
-    "vietnamese": "bảo vệ; duy trì; gìn giữ; bảo hộ; bảo trì",
+    "vietnamese": "bảo vệ; duy trì; gìn giữ; bảo hộ; bảo trì; Bảo trì / Duy trì",
     "hsk": 6,
     "audio": "sounds/hsk6/维护.mp3",
     "strokes": 18
@@ -55964,7 +55964,7 @@
     "hanzi": "压缩",
     "pinyin": "yā suō",
     "english": "to compress; compression",
-    "vietnamese": "nén; sự nén",
+    "vietnamese": "nén; sự nén; Nén (dữ liệu)",
     "hsk": 6,
     "audio": "sounds/hsk6/压缩.mp3",
     "strokes": 20
@@ -57494,7 +57494,7 @@
     "hanzi": "运行",
     "pinyin": "yùn xíng",
     "english": "to move along one's course (of celestial bodies etc); (fig.) to function; to be in operation; (of a train service etc) to operate; to run; (of a computer) to run",
-    "vietnamese": "(thiên thể, v.v.) di chuyển trên quỹ đạo; (bóng) hoạt động; vận hành; (dịch vụ tàu xe, v.v.) vận hành; chạy; (máy tính) chạy",
+    "vietnamese": "(thiên thể, v.v.) di chuyển trên quỹ đạo; (bóng) hoạt động; vận hành; (dịch vụ tàu xe, v.v.) vận hành; chạy; (máy tính) chạy; Vận hành / Chạy (chương trình)",
     "hsk": 6,
     "audio": "sounds/hsk6/运行.mp3",
     "strokes": 13
@@ -58064,7 +58064,7 @@
     "hanzi": "争夺",
     "pinyin": "zhēng duó",
     "english": "to fight over; to contest; to vie over",
-    "vietnamese": "tranh giành; đua tranh; giành giật",
+    "vietnamese": "tranh giành; đua tranh; giành giật; Tranh giành (thị phần)",
     "hsk": 6,
     "audio": "sounds/hsk6/争夺.mp3",
     "strokes": 12
@@ -58844,7 +58844,7 @@
     "hanzi": "祝福",
     "pinyin": "zhù fú",
     "english": "blessings; to wish sb well",
-    "vietnamese": "lời chúc; phù hộ; lời chúc; phù hộ",
+    "vietnamese": "lời chúc; phù hộ; lời chúc; phù hộ; Chúc phúc",
     "hsk": 6,
     "audio": "sounds/hsk6/祝福.mp3",
     "strokes": 22
@@ -58944,7 +58944,7 @@
     "hanzi": "转换",
     "pinyin": "zhuǎn huàn",
     "english": "to change; to switch; to convert; to transform",
-    "vietnamese": "thay đổi; chuyển; đổi; biến đổi",
+    "vietnamese": "thay đổi; chuyển; đổi; biến đổi; Chuyển đổi",
     "hsk": 6,
     "audio": "sounds/hsk6/转换.mp3",
     "strokes": 18
@@ -64044,7 +64044,7 @@
     "hanzi": "沉思",
     "pinyin": "chén sī",
     "english": "to contemplate; to ponder; contemplation; meditation",
-    "vietnamese": "suy ngẫm; suy tư; sự suy ngẫm; thiền định; suy ngẫm; suy tư; sự suy ngẫm; thiền định",
+    "vietnamese": "suy ngẫm; suy tư; sự suy ngẫm; thiền định; suy ngẫm; suy tư; sự suy ngẫm; thiền định; Trầm tư",
     "hsk": 7,
     "audio": "sounds/hsk7/沉思.mp3",
     "strokes": 16
@@ -67274,7 +67274,7 @@
     "hanzi": "导航",
     "pinyin": "dǎo háng",
     "english": "navigation",
-    "vietnamese": "(nghĩa đen và bóng) điều hướng; Điều hướng / GPS",
+    "vietnamese": "(nghĩa đen và bóng) điều hướng; Điều hướng / GPS; Dẫn đường / Nav",
     "hsk": 7,
     "audio": "sounds/hsk7/导航.mp3",
     "strokes": 16
@@ -67694,7 +67694,7 @@
     "hanzi": "瞪",
     "pinyin": "dèng",
     "english": "to open (one's eyes) wide; to stare at; to glare at",
-    "vietnamese": "mở to mắt; nhìn chằm chằm; lườm; mở to mắt; nhìn chằm chằm; lườm",
+    "vietnamese": "mở to mắt; nhìn chằm chằm; lườm; mở to mắt; nhìn chằm chằm; lườm; Trợn mắt",
     "hsk": 7,
     "audio": "sounds/hsk7/瞪.mp3",
     "strokes": 17
@@ -68334,7 +68334,7 @@
     "hanzi": "调试",
     "pinyin": "tiáo shì",
     "english": "to debug; to adjust components during testing; debugging",
-    "vietnamese": "gỡ lỗi; điều chỉnh linh kiện trong quá trình thử nghiệm; Gỡ lỗi / Debug",
+    "vietnamese": "gỡ lỗi; điều chỉnh linh kiện trong quá trình thử nghiệm; Gỡ lỗi / Debug; Debug / Hiệu chỉnh",
     "hsk": 7,
     "audio": "sounds/hsk7/调试.mp3",
     "strokes": 18
@@ -69834,7 +69834,7 @@
     "hanzi": "发射",
     "pinyin": "fā shè",
     "english": "to shoot (a projectile); to fire (a rocket); to launch; to emit (a particle); to discharge; emanation; emission",
-    "vietnamese": "bắn (một vật thể); phóng (tên lửa); phóng ra; phát ra (hạt); phóng thích; phát xạ; phát thải",
+    "vietnamese": "bắn (một vật thể); phóng (tên lửa); phóng ra; phát ra (hạt); phóng thích; phát xạ; phát thải; Phóng / Phát (tín hiệu)",
     "hsk": 7,
     "audio": "sounds/hsk7/发射.mp3",
     "strokes": 15
@@ -70184,7 +70184,7 @@
     "hanzi": "反省",
     "pinyin": "fǎn xǐng",
     "english": "to reflect upon oneself; to examine one's conscience; to question oneself; to search one's soul",
-    "vietnamese": "tự phản tỉnh; kiểm điểm lương tâm; tự vấn bản thân; tìm kiếm trong tâm hồn; tự phản tỉnh; kiểm điểm lương tâm; tự vấn bản thân; tìm kiếm trong tâm hồn",
+    "vietnamese": "tự phản tỉnh; kiểm điểm lương tâm; tự vấn bản thân; tìm kiếm trong tâm hồn; tự phản tỉnh; kiểm điểm lương tâm; tự vấn bản thân; tìm kiếm trong tâm hồn; Tự kiểm điểm",
     "hsk": 7,
     "audio": "sounds/hsk7/反省.mp3",
     "strokes": 13
@@ -72024,7 +72024,7 @@
     "hanzi": "改良",
     "pinyin": "gǎi liáng",
     "english": "to improve (sth); to reform (a system)",
-    "vietnamese": "cải thiện (cái gì đó); cải cách (một hệ thống); cải thiện (cái gì đó); cải cách (một hệ thống)",
+    "vietnamese": "cải thiện (cái gì đó); cải cách (một hệ thống); cải thiện (cái gì đó); cải cách (một hệ thống); Cải tiến",
     "hsk": 7,
     "audio": "sounds/hsk7/改良.mp3",
     "strokes": 14
@@ -72224,7 +72224,7 @@
     "hanzi": "感叹",
     "pinyin": "gǎn tàn",
     "english": "to sigh (with feeling); to lament",
-    "vietnamese": "thở dài (vì cảm xúc); than thở",
+    "vietnamese": "thở dài (vì cảm xúc); than thở; Cảm thán",
     "hsk": 7,
     "audio": "sounds/hsk7/感叹.mp3",
     "strokes": 18
@@ -72754,7 +72754,7 @@
     "hanzi": "革新",
     "pinyin": "gé xīn",
     "english": "to innovate; innovation",
-    "vietnamese": "đổi mới; sự đổi mới; đổi mới; sự đổi mới",
+    "vietnamese": "đổi mới; sự đổi mới; đổi mới; sự đổi mới; Cách tân",
     "hsk": 7,
     "audio": "sounds/hsk7/革新.mp3",
     "strokes": 22
@@ -74914,7 +74914,7 @@
     "hanzi": "过滤",
     "pinyin": "guò lǜ",
     "english": "to filter; filter",
-    "vietnamese": "lọc; bộ lọc",
+    "vietnamese": "lọc; bộ lọc; Lọc (nội dung/dữ liệu)",
     "hsk": 7,
     "audio": "sounds/hsk7/过滤.mp3",
     "strokes": 19
@@ -75774,7 +75774,7 @@
     "hanzi": "核对",
     "pinyin": "hé duì",
     "english": "to check; to verify; to audit; to examine",
-    "vietnamese": "kiểm tra; xác minh; kiểm toán; kiểm xét",
+    "vietnamese": "kiểm tra; xác minh; kiểm toán; kiểm xét; Đối chiếu; Đối soát / Kiểm tra",
     "hsk": 7,
     "audio": "sounds/hsk7/核对.mp3",
     "strokes": 15
@@ -78284,7 +78284,7 @@
     "hanzi": "嫉妒",
     "pinyin": "jí dù",
     "english": "to be jealous of; to envy",
-    "vietnamese": "ghen tị với; đố kỵ; ghen tị với; đố kỵ",
+    "vietnamese": "ghen tị với; đố kỵ; ghen tị với; đố kỵ; Ghen tị",
     "hsk": 7,
     "audio": "sounds/hsk7/嫉妒.mp3",
     "strokes": 20
@@ -87304,7 +87304,7 @@
     "hanzi": "密封",
     "pinyin": "mì fēng",
     "english": "to seal up",
-    "vietnamese": "niêm phong; niêm phong",
+    "vietnamese": "niêm phong; niêm phong; Niêm phong / Làm kín",
     "hsk": 7,
     "audio": "sounds/hsk7/密封.mp3",
     "strokes": 20
@@ -91204,7 +91204,7 @@
     "hanzi": "签约",
     "pinyin": "qiān yuē",
     "english": "to sign a contract or agreement",
-    "vietnamese": "ký hợp đồng hoặc thỏa thuận",
+    "vietnamese": "ký hợp đồng hoặc thỏa thuận; Ký kết hợp đồng",
     "hsk": 7,
     "audio": "sounds/hsk7/签约.mp3",
     "strokes": 19
@@ -92354,7 +92354,7 @@
     "hanzi": "驱动",
     "pinyin": "qū dòng",
     "english": "to drive; to propel; drive (vehicle wheel); drive mechanism (tape or disk); device driver (computing software)",
-    "vietnamese": "điều khiển; đẩy; phương tiện truyền động; cơ chế truyền động (băng hoặc đĩa); trình điều khiển thiết bị (phần mềm máy tính)",
+    "vietnamese": "điều khiển; đẩy; phương tiện truyền động; cơ chế truyền động (băng hoặc đĩa); trình điều khiển thiết bị (phần mềm máy tính); Điều khiển / Driver",
     "hsk": 7,
     "audio": "sounds/hsk7/驱动.mp3",
     "strokes": 13
@@ -94804,7 +94804,7 @@
     "hanzi": "审查",
     "pinyin": "shěn chá",
     "english": "to examine; to investigate; to censor out; censorship",
-    "vietnamese": "kiểm tra; điều tra; kiểm duyệt",
+    "vietnamese": "kiểm tra; điều tra; kiểm duyệt; Thẩm định / Xem xét",
     "hsk": 7,
     "audio": "sounds/hsk7/审查.mp3",
     "strokes": 17
@@ -94824,7 +94824,7 @@
     "hanzi": "审核",
     "pinyin": "shěn hé",
     "english": "to audit; to investigate thoroughly",
-    "vietnamese": "kiểm toán; điều tra kỹ lưỡng; Kiểm duyệt nội dung",
+    "vietnamese": "kiểm toán; điều tra kỹ lưỡng; Kiểm duyệt nội dung; Phê duyệt / Kiểm duyệt",
     "hsk": 7,
     "audio": "sounds/hsk7/审核.mp3",
     "strokes": 18
@@ -96374,7 +96374,7 @@
     "hanzi": "授权",
     "pinyin": "shòu quán",
     "english": "to authorize",
-    "vietnamese": "ủy quyền",
+    "vietnamese": "ủy quyền; Ủy quyền / Cấp phép",
     "hsk": 7,
     "audio": "sounds/hsk7/授权.mp3",
     "strokes": 17
@@ -96434,7 +96434,7 @@
     "hanzi": "梳",
     "pinyin": "shū",
     "english": "a comb; to comb",
-    "vietnamese": "chải; (dạng kết hợp) cái lược; chải; (dạng kết hợp) cái lược",
+    "vietnamese": "chải; (dạng kết hợp) cái lược; chải; (dạng kết hợp) cái lược; Chải (đầu)",
     "hsk": 7,
     "audio": "sounds/hsk7/梳.mp3",
     "strokes": 11
@@ -96684,7 +96684,7 @@
     "hanzi": "衰减",
     "pinyin": "shuāi jiǎn",
     "english": "to weaken; to attenuate",
-    "vietnamese": "suy yếu; suy giảm",
+    "vietnamese": "suy yếu; suy giảm; Suy hao / Giảm yếu",
     "hsk": 7,
     "audio": "sounds/hsk7/衰减.mp3",
     "strokes": 21
@@ -98874,7 +98874,7 @@
     "hanzi": "剃",
     "pinyin": "tì",
     "english": "to shave",
-    "vietnamese": "cạo; cạo; cạo; làm cỏ; biến thể của 剃[ti4]",
+    "vietnamese": "cạo; cạo; cạo; làm cỏ; biến thể của 剃[ti4]; Cạo (râu)",
     "hsk": 7,
     "audio": "sounds/hsk7/剃.mp3",
     "strokes": 9
@@ -103884,7 +103884,7 @@
     "hanzi": "协商",
     "pinyin": "xié shāng",
     "english": "to consult with; to talk things over; agreement",
-    "vietnamese": "tham vấn; thảo luận; thỏa thuận",
+    "vietnamese": "tham vấn; thảo luận; thỏa thuận; Thỏa thuận / Thương lượng",
     "hsk": 7,
     "audio": "sounds/hsk7/协商.mp3",
     "strokes": 17
@@ -103904,7 +103904,7 @@
     "hanzi": "协作",
     "pinyin": "xié zuò",
     "english": "cooperation; coordination",
-    "vietnamese": "hợp tác; phối hợp",
+    "vietnamese": "hợp tác; phối hợp; Cộng tác",
     "hsk": 7,
     "audio": "sounds/hsk7/协作.mp3",
     "strokes": 13
@@ -107964,7 +107964,7 @@
     "hanzi": "隐瞒",
     "pinyin": "yǐn mán",
     "english": "to conceal; to hide (a taboo subject); to cover up the truth",
-    "vietnamese": "che giấu; giấu (một chủ đề cấm kỵ); che đậy sự thật",
+    "vietnamese": "che giấu; giấu (một chủ đề cấm kỵ); che đậy sự thật; Che giấu / Giấu giếm",
     "hsk": 7,
     "audio": "sounds/hsk7/隐瞒.mp3",
     "strokes": 26
@@ -108194,7 +108194,7 @@
     "hanzi": "盈利",
     "pinyin": "yíng lì",
     "english": "profit; gain; to make profits",
-    "vietnamese": "lợi nhuận; lợi ích; kiếm lời; lợi nhuận; lợi ích; kiếm lời",
+    "vietnamese": "lợi nhuận; lợi ích; kiếm lời; lợi nhuận; lợi ích; kiếm lời; Sinh lời / Có lãi",
     "hsk": 7,
     "audio": "sounds/hsk7/盈利.mp3",
     "strokes": 16
@@ -109814,7 +109814,7 @@
     "hanzi": "赞美",
     "pinyin": "zàn měi",
     "english": "to admire; to praise; to eulogize",
-    "vietnamese": "ngưỡng mộ; khen ngợi; ca tụng",
+    "vietnamese": "ngưỡng mộ; khen ngợi; ca tụng; Ca ngợi",
     "hsk": 7,
     "audio": "sounds/hsk7/赞美.mp3",
     "strokes": 25
@@ -115210,7 +115210,7 @@
     "hanzi": "滤波",
     "pinyin": "lǜbō",
     "english": "",
-    "vietnamese": "Lọc nhiễu",
+    "vietnamese": "Lọc nhiễu; Lọc (nhiễu)",
     "hsk": 0,
     "audio": "",
     "strokes": 0,
@@ -115375,7 +115375,7 @@
     "hanzi": "耦合",
     "pinyin": "ǒuhé",
     "english": "",
-    "vietnamese": "Ghép tầng (Coupling)",
+    "vietnamese": "Ghép tầng (Coupling); Ghép tầng / Coupling",
     "hsk": 0,
     "audio": "",
     "strokes": 0,
@@ -117113,7 +117113,7 @@
     "hanzi": "编译",
     "pinyin": "biānyì",
     "english": "",
-    "vietnamese": "Biên dịch",
+    "vietnamese": "Biên dịch; Biên dịch (code)",
     "hsk": 0,
     "audio": "",
     "strokes": 0,
@@ -117333,7 +117333,7 @@
     "hanzi": "加密",
     "pinyin": "jiāmì",
     "english": "",
-    "vietnamese": "Mã hóa",
+    "vietnamese": "Mã hóa; Mã hóa bảo mật",
     "hsk": 0,
     "audio": "",
     "strokes": 0,
@@ -117344,7 +117344,7 @@
     "hanzi": "解密",
     "pinyin": "jiěmì",
     "english": "",
-    "vietnamese": "Giải mã",
+    "vietnamese": "Giải mã; Giải mã bảo mật",
     "hsk": 0,
     "audio": "",
     "strokes": 0,
@@ -126056,7 +126056,7 @@
     "hanzi": "屏蔽",
     "pinyin": "píngbì",
     "english": "",
-    "vietnamese": "Chặn / Block",
+    "vietnamese": "Chặn / Block; Che chắn / Chống nhiễu",
     "hsk": 0,
     "audio": "",
     "strokes": 0,
@@ -126904,6 +126904,281 @@
     "pinyin": "tónglǐ xīn",
     "english": "",
     "vietnamese": "Lòng trắc ẩn",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12581,
+    "hanzi": "教导",
+    "pinyin": "jiàodǎo",
+    "english": "",
+    "vietnamese": "Giáo huấn",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12582,
+    "hanzi": "游说",
+    "pinyin": "yóushuì",
+    "english": "",
+    "vietnamese": "Thuyết phục (vận động hành lang)",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12583,
+    "hanzi": "诅咒",
+    "pinyin": "zǔzhòu",
+    "english": "",
+    "vietnamese": "Nguyền rủa",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12584,
+    "hanzi": "卸载",
+    "pinyin": "xièzài",
+    "english": "",
+    "vietnamese": "Gỡ cài đặt",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12585,
+    "hanzi": "上传",
+    "pinyin": "shàngchuán",
+    "english": "",
+    "vietnamese": "Tải lên",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12586,
+    "hanzi": "焊接",
+    "pinyin": "hànjiē",
+    "english": "",
+    "vietnamese": "Hàn (xì)",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12587,
+    "hanzi": "拆卸",
+    "pinyin": "chāixiè",
+    "english": "",
+    "vietnamese": "Tháo dỡ",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12588,
+    "hanzi": "润滑",
+    "pinyin": "rùnhuá",
+    "english": "",
+    "vietnamese": "Bôi trơn",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12589,
+    "hanzi": "供电",
+    "pinyin": "gōngdiàn",
+    "english": "",
+    "vietnamese": "Cấp điện",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12590,
+    "hanzi": "断电",
+    "pinyin": "duàndiàn",
+    "english": "",
+    "vietnamese": "Ngắt điện",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12591,
+    "hanzi": "放电",
+    "pinyin": "fàngdiàn",
+    "english": "",
+    "vietnamese": "Phóng điện",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12592,
+    "hanzi": "断开",
+    "pinyin": "duànkāi",
+    "english": "",
+    "vietnamese": "Ngắt kết nối",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12593,
+    "hanzi": "调制",
+    "pinyin": "tiáozhì",
+    "english": "",
+    "vietnamese": "Điều chế",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12594,
+    "hanzi": "解调",
+    "pinyin": "jiětiao",
+    "english": "",
+    "vietnamese": "Giải điều chế",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12595,
+    "hanzi": "编码",
+    "pinyin": "biānmǎ",
+    "english": "",
+    "vietnamese": "Mã hóa",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12596,
+    "hanzi": "解码",
+    "pinyin": "jiěmǎ",
+    "english": "",
+    "vietnamese": "Giải mã",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12597,
+    "hanzi": "仿真",
+    "pinyin": "fǎngzhēn",
+    "english": "",
+    "vietnamese": "Mô phỏng (Simulation)",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12598,
+    "hanzi": "标定",
+    "pinyin": "biāodìng",
+    "english": "",
+    "vietnamese": "Hiệu chuẩn (Calibration)",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12599,
+    "hanzi": "触发",
+    "pinyin": "chùfā",
+    "english": "",
+    "vietnamese": "Kích hoạt / Trigger",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12600,
+    "hanzi": "限幅",
+    "pinyin": "xiànfú",
+    "english": "",
+    "vietnamese": "Giới hạn biên độ (Limiting)",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12601,
+    "hanzi": "分发",
+    "pinyin": "fēnfā",
+    "english": "",
+    "vietnamese": "Phát hành / Dispatch",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12602,
+    "hanzi": "存储",
+    "pinyin": "cúnchǔ",
+    "english": "",
+    "vietnamese": "Lưu trữ",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12603,
+    "hanzi": "解压",
+    "pinyin": "jiěyā",
+    "english": "",
+    "vietnamese": "Giải nén",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12604,
+    "hanzi": "格式化",
+    "pinyin": "géshìhuà",
+    "english": "",
+    "vietnamese": "Định dạng (Format)",
+    "hsk": 0,
+    "audio": "",
+    "strokes": 0,
+    "source": "user_topic"
+  },
+  {
+    "id": 12605,
+    "hanzi": "拦截",
+    "pinyin": "lánjié",
+    "english": "",
+    "vietnamese": "Chặn / Đánh chặn",
     "hsk": 0,
     "audio": "",
     "strokes": 0,

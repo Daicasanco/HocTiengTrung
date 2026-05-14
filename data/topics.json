@@ -187,5 +187,32 @@
     "color": "#dc2626",
     "count": 95,
     "order": 20
+  },
+  {
+    "id": "verbs_daily_actions",
+    "name_vi": "Động từ Hành động & Sinh hoạt hàng ngày",
+    "name_zh": "",
+    "icon": "🏙️",
+    "color": "#ea580c",
+    "count": 148,
+    "order": 21
+  },
+  {
+    "id": "verbs_thinking_comm",
+    "name_vi": "Động từ Tư duy, Cảm xúc & Giao tiếp",
+    "name_zh": "",
+    "icon": "🍜",
+    "color": "#d97706",
+    "count": 139,
+    "order": 22
+  },
+  {
+    "id": "verbs_pro_tech",
+    "name_vi": "Động từ Công việc, Kỹ thuật & Chuyên ngành",
+    "name_zh": "",
+    "icon": "👕",
+    "color": "#ca8a04",
+    "count": 140,
+    "order": 23
   }
 ]
