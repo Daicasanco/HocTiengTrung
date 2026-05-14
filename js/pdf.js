@@ -335,4 +335,263 @@
       $('#pdf-status').innerHTML = `❌ Lỗi: ${err.message}`;
     }
   };
+
+  // ============================================================
+  // WORD (.docx) EXPORT
+  // ============================================================
+  async function loadDocxLib() {
+    if (window.docx) return window.docx;
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      // Dùng file local trước, fallback CDN nếu không có
+      s.src = 'docx.umd.min.js';
+      s.onload = () => {
+        if (window.docx) { resolve(window.docx); return; }
+        reject(new Error('docx.js loaded nhưng window.docx không tồn tại'));
+      };
+      s.onerror = () => {
+        // Fallback: thử CDN
+        const s2 = document.createElement('script');
+        s2.src = 'https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js';
+        s2.onload = () => window.docx ? resolve(window.docx) : reject(new Error('Không thể tải docx.js từ CDN'));
+        s2.onerror = () => reject(new Error('Không thể tải docx.js (local lẫn CDN đều thất bại)'));
+        document.head.appendChild(s2);
+      };
+      document.head.appendChild(s);
+    });
+  }
+
+  window.generateDocx = async function () {
+    await CW.ensureCharacters();
+    const statusEl = $('#pdf-status');
+    try {
+      const words = getPdfWords();
+      if (!words.length) {
+        statusEl.classList.remove('hidden');
+        statusEl.className = 'mt-4 p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700';
+        statusEl.textContent = '⚠️ Chưa chọn từ nào!';
+        return;
+      }
+
+      statusEl.classList.remove('hidden');
+      statusEl.className = 'mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-xl text-sm text-yellow-700';
+      statusEl.innerHTML = '⏳ Đang tạo file Word...';
+
+      const docxLib = await loadDocxLib();
+      const {
+        Document, Packer, Paragraph, Table, TableRow, TableCell,
+        TextRun, WidthType, BorderStyle, AlignmentType,
+        TableLayoutType, ShadingType, HeightRule, convertInchesToTwip
+      } = docxLib;
+
+      const guideCount = parseInt($('#pdf-repeat').value) || 4;
+      const practiceRows = parseInt($('#pdf-practice-rows').value) || 1;
+      const showPinyin = $('#pdf-show-pinyin').checked;
+      const showGuide = $('#pdf-show-guide').checked;
+      const showMeaning = $('#pdf-show-meaning').checked;
+      const cellSizeMM = parseInt($('#pdf-cell-size').value) || 18;
+      // Convert mm → twips (1 inch = 1440 twips, 1 inch ≈ 25.4 mm)
+      const cellTwips = Math.round(cellSizeMM / 25.4 * 1440);
+
+      // Build char list
+      const charList = [];
+      const seen = new Set();
+      const wordMap = {};
+      for (const w of words) {
+        const chars = [...w.hanzi];
+        const pinyinParts = w.pinyin ? w.pinyin.trim().split(/\s+/) : [];
+        for (let i = 0; i < chars.length; i++) {
+          const ch = chars[i];
+          if (!wordMap[ch]) wordMap[ch] = w;
+          if (seen.has(ch)) continue;
+          seen.add(ch);
+          charList.push({ char: ch, pinyin: pinyinParts[i] || '' });
+        }
+      }
+
+      // -------------------------------------------------------
+      // Helper: build a single Tian Zi Ge cell (田字格)
+      // -------------------------------------------------------
+      const DASHED = BorderStyle.DASHED;
+      const SINGLE = BorderStyle.SINGLE;
+      const NONE = BorderStyle.NONE;
+      const BW = 6; // border width (8ths of a point)
+
+      function tzmBorder(style, color) {
+        return { style, size: BW, color: color || '999999' };
+      }
+
+      function makeGridCell(charText, opacity) {
+        // opacity 0..1 → hex color for the Chinese character
+        const grayVal = Math.round(255 - (255 - 180) * opacity); // 180→255 range
+        const hex = grayVal.toString(16).padStart(2, '0').toUpperCase();
+        const color = hex + hex + hex;
+
+        const paragraphs = [];
+
+        // Chinese character (large)
+        paragraphs.push(new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { before: 0, after: 0, line: 240, lineRule: 'auto' },
+          children: [new TextRun({
+            text: charText || ' ',
+            font: { name: 'STKaiti', hint: 'eastAsia' },
+            size: Math.round(cellSizeMM * 3.6), // pt: ~0.9 of cell
+            color: charText ? color : 'FFFFFF',
+          })],
+        }));
+
+        return new TableCell({
+          width: { size: cellTwips, type: WidthType.DXA },
+          borders: {
+            top: tzmBorder(SINGLE, '999999'),
+            bottom: tzmBorder(SINGLE, '999999'),
+            left: tzmBorder(SINGLE, '999999'),
+            right: tzmBorder(SINGLE, '999999'),
+            insideH: tzmBorder(DASHED, 'BBBBBB'),
+            insideV: tzmBorder(DASHED, 'BBBBBB'),
+          },
+          shading: { type: ShadingType.CLEAR, fill: 'FFFFFF' },
+          margins: { top: 0, bottom: 0, left: 0, right: 0 },
+          children: paragraphs,
+        });
+      }
+
+      function makeEmptyCell() {
+        return new TableCell({
+          width: { size: cellTwips, type: WidthType.DXA },
+          borders: {
+            top: tzmBorder(SINGLE, '999999'),
+            bottom: tzmBorder(SINGLE, '999999'),
+            left: tzmBorder(SINGLE, '999999'),
+            right: tzmBorder(SINGLE, '999999'),
+          },
+          shading: { type: ShadingType.CLEAR, fill: 'FFFFFF' },
+          margins: { top: 0, bottom: 0, left: 0, right: 0 },
+          children: [new Paragraph({ children: [new TextRun({ text: ' ', size: 2 })] })],
+        });
+      }
+
+      // Page width: A4 = 11906 twips, margins 720 each side → 10466
+      const pageUsable = 10466;
+      const colsPerRow = Math.floor(pageUsable / cellTwips);
+
+      const docChildren = [];
+
+      // Title paragraph
+      docChildren.push(new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 120 },
+        children: [new TextRun({
+          text: 'ChineseWriter – Tập Viết Chữ Hán',
+          bold: true,
+          size: 28,
+          font: { name: 'Times New Roman' },
+        })],
+      }));
+
+      // -------------------------------------------------------
+      // For each character: info row + practice row(s)
+      // -------------------------------------------------------
+      for (const item of charList) {
+        const w = wordMap[item.char];
+
+        // --- Info line (pinyin + meaning as plain text paragraph) ---
+        const infoParts = [];
+        infoParts.push(new TextRun({
+          text: item.char,
+          font: { name: 'STKaiti', hint: 'eastAsia' },
+          size: 28,
+          bold: true,
+          color: 'CC0000',
+        }));
+        if (showPinyin && item.pinyin) {
+          infoParts.push(new TextRun({ text: '  /' + item.pinyin + '/', size: 22, color: '444444' }));
+        }
+        if (showMeaning && w) {
+          const viDef = (w.vietnamese || '').split(/[;；]/)[0].trim();
+          const enDef = (w.english || '').split(/[;；]/)[0].trim();
+          let mt = viDef && enDef ? viDef + ' | ' + enDef : (viDef || enDef);
+          if (mt) {
+            if (mt.length > 60) mt = mt.substring(0, 57) + '...';
+            infoParts.push(new TextRun({ text: '  — ' + mt, size: 20, color: '555555' }));
+          }
+        }
+        docChildren.push(new Paragraph({
+          spacing: { before: 120, after: 40 },
+          children: infoParts,
+        }));
+
+        // --- Guide row (fading copies of the character) ---
+        if (showGuide && guideCount > 0) {
+          const guideCells = [];
+          for (let g = 0; g < guideCount; g++) {
+            const alpha = Math.max(0.08, 0.65 - g * (0.57 / Math.max(guideCount - 1, 1)));
+            guideCells.push(makeGridCell(item.char, alpha));
+          }
+          // Fill rest of row with empty cells
+          while (guideCells.length % colsPerRow !== 0) guideCells.push(makeEmptyCell());
+          // Split into rows of colsPerRow
+          for (let r = 0; r < guideCells.length / colsPerRow; r++) {
+            const rowCells = guideCells.slice(r * colsPerRow, (r + 1) * colsPerRow);
+            docChildren.push(new Table({
+              layout: TableLayoutType.FIXED,
+              width: { size: pageUsable, type: WidthType.DXA },
+              rows: [new TableRow({
+                height: { value: cellTwips, rule: HeightRule.EXACT },
+                children: rowCells,
+              })],
+            }));
+          }
+        }
+
+        // --- Practice rows (blank grid) ---
+        for (let row = 0; row < practiceRows; row++) {
+          const emptyCells = [];
+          for (let col = 0; col < colsPerRow; col++) emptyCells.push(makeEmptyCell());
+          docChildren.push(new Table({
+            layout: TableLayoutType.FIXED,
+            width: { size: pageUsable, type: WidthType.DXA },
+            rows: [new TableRow({
+              height: { value: cellTwips, rule: HeightRule.EXACT },
+              children: emptyCells,
+            })],
+          }));
+        }
+
+        // Spacer
+        docChildren.push(new Paragraph({ spacing: { after: 80 }, children: [] }));
+      }
+
+      // Build document
+      const doc = new Document({
+        sections: [{
+          properties: {
+            page: {
+              margin: { top: 720, bottom: 720, left: 720, right: 720 },
+            },
+          },
+          children: docChildren,
+        }],
+      });
+
+      const blob = await Packer.toBlob(doc);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const hskLabels = [...$$('.pdf-hsk-check input:checked')].map(c => c.value).join('-');
+      a.download = pdfMode === 'hsk'
+        ? `ChineseWriter_HSK${hskLabels}_TapViet.docx`
+        : 'ChineseWriter_TapViet_Custom.docx';
+      a.href = url;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+
+      statusEl.className = 'mt-4 p-4 bg-green-50 border border-green-200 rounded-xl text-sm text-green-700';
+      statusEl.innerHTML = `✅ Đã tạo Word! File <strong>${a.download}</strong> – ${charList.length} chữ Hán. Mở bằng Word/LibreOffice, font chữ sắc nét.`;
+    } catch (err) {
+      console.error('DOCX error:', err);
+      statusEl.className = 'mt-4 p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700';
+      statusEl.innerHTML = `❌ Lỗi: ${err.message}`;
+    }
+  };
 })();

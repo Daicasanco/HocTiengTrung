@@ -17,9 +17,10 @@
   async function loadData() {
     if (topics.length) return;
     try {
+      const _v = Date.now();
       const [topicsData, vtData] = await Promise.all([
-        fetch('data/topics.json').then(r => r.json()),
-        fetch('data/vocab_topics.json').then(r => r.json())
+        fetch(`data/topics.json?v=${_v}`).then(r => r.json()),
+        fetch(`data/vocab_topics.json?v=${_v}`).then(r => r.json())
       ]);
       topics = (topicsData || []).slice().sort((a, b) => (a.order || 0) - (b.order || 0));
       vocabTopics = vtData || {};
