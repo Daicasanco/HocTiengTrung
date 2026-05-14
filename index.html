@@ -122,6 +122,16 @@
       /* Skeleton loading */
       @keyframes shimmer { 0% { background-position: -200px 0; } 100% { background-position: 200px 0; } }
       .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 400px 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+
+      /* Chiettu radical highlight */
+      .ct-radical-hl {
+        color: #dc2626;
+        font-family: 'STKaiti', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+        font-weight: 900;
+        font-size: 1.6em;
+        vertical-align: -0.2em;
+        text-shadow: 0 1px 4px rgba(220,38,38,0.15);
+      }
     </style>
 </head>
 <body class="font-sans bg-white text-slate-900 min-h-screen">
@@ -149,6 +159,7 @@
           <li><a href="javascript:void(0)" onclick="showPage('reader')" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">📖 <span>Reader đọc hiểu</span></a></li>
           <li><a href="javascript:void(0)" onclick="showPage('grammar')" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">📐 <span>Ngữ pháp HSK</span></a></li>
           <li><a href="javascript:void(0)" onclick="showPage('topics')" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">🗂️ <span>Từ vựng theo chủ đề</span></a></li>
+          <li><a href="javascript:void(0)" onclick="showPage('chiettu')" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">🔬 <span>Chiết tự</span></a></li>
           <li class="border-t my-1 mx-3"></li>
           <li class="px-4 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Theo cấp HSK</li>
           <li><a href="javascript:void(0)" onclick="showPage('library');filterHsk(1)" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-blue-50 hover:text-primary transition-colors rounded-lg mx-1">🌱 HSK 1-2 Sơ cấp</a></li>
@@ -229,6 +240,10 @@
     <a href="javascript:void(0)" onclick="showPage('topics');closeMobile()" class="mobile-nav-item">
       <div class="nav-icon bg-pink-50">🗂️</div>
       <div><div class="text-slate-800">Từ vựng theo chủ đề</div><div class="text-[11px] text-slate-400">21 chủ đề thực tế</div></div>
+    </a>
+    <a href="javascript:void(0)" onclick="showPage('chiettu');closeMobile()" class="mobile-nav-item">
+      <div class="nav-icon bg-red-50">🔬</div>
+      <div><div class="text-slate-800">Chiết tự</div><div class="text-[11px] text-slate-400">Phân tích cấu trúc chữ Hán</div></div>
     </a>
 
     <div class="mobile-nav-divider"></div>
@@ -1369,6 +1384,126 @@
   </div>
 </div>
 
+<!-- ===== PAGE: CHIETTU (Chiết tự - danh sách) ===== -->
+<div id="page-chiettu" class="page">
+  <div class="container mx-auto max-w-4xl px-4 py-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h2 class="text-2xl font-bold">🔬 Chiết tự</h2>
+        <p class="text-sm text-slate-500 mt-1">Phân tích cấu trúc, bộ thủ và gợi nhớ cho từng chữ Hán</p>
+      </div>
+      <span class="text-sm text-slate-400" id="ct-count"></span>
+    </div>
+
+    <!-- Search bar -->
+    <div class="relative mb-5">
+      <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="ct-search-input"
+        placeholder="Tìm theo chữ Hán, pinyin, nghĩa Việt, bộ thủ..."
+        class="w-full pl-12 pr-10 py-3 border-2 border-slate-200 rounded-xl focus:border-primary focus:ring-2 focus:ring-blue-100 outline-none text-sm transition-all"
+        autocomplete="off" oninput="ctSearch()">
+      <button onclick="ctClearSearch()" id="ct-clear-btn"
+        class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-hanzi text-xl hidden">&#215;</button>
+    </div>
+
+    <!-- Loading -->
+    <div id="ct-loading" class="flex flex-col items-center py-16 text-slate-400">
+      <div class="w-8 h-8 border-3 border-slate-200 border-t-primary rounded-full spinner mb-3" style="border-width:3px"></div>
+      <p>Đang tải dữ liệu chiết tự...</p>
+    </div>
+    <!-- List -->
+    <div id="ct-list" class="space-y-1"></div>
+    <!-- Empty -->
+    <div id="ct-empty" class="hidden text-center py-16 text-slate-400">
+      <div class="text-5xl mb-3">🔬</div>
+      <p>Không tìm thấy kết quả</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: CHIETTU-DETAIL (Chi tiết chiết tự) ===== -->
+<div id="page-chiettu-detail" class="page">
+  <div class="container mx-auto max-w-5xl px-4 py-6">
+
+    <!-- Back button -->
+    <button onclick="showPage('chiettu')" class="flex items-center gap-2 text-sm text-slate-500 hover:text-primary mb-6 transition-colors group">
+      <svg class="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      Quay lại danh sách chiết tự
+    </button>
+
+    <!-- Hero section -->
+    <div id="ctd-hero" class="bg-gradient-to-br from-red-50 via-amber-50 to-blue-50 border-2 border-red-100 rounded-3xl p-8 mb-8 shadow-sm">
+      <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
+        <!-- Big hanzi -->
+        <div class="flex-shrink-0 w-36 h-36 md:w-44 md:h-44 bg-white border-2 border-red-100 rounded-3xl flex items-center justify-center shadow-lg">
+          <span id="ctd-hanzi" class="font-cn font-bold text-hanzi" style="font-size:6rem;line-height:1"></span>
+        </div>
+        <!-- Meta -->
+        <div class="flex-1 text-center md:text-left">
+          <div id="ctd-pinyin" class="text-3xl font-bold text-primary mb-2"></div>
+          <div id="ctd-meaning" class="text-xl text-slate-700 mb-4"></div>
+          <div id="ctd-badges" class="flex flex-wrap gap-2 justify-center md:justify-start mb-5"></div>
+          <!-- Action buttons -->
+          <div id="ctd-actions" class="flex flex-wrap gap-3 justify-center md:justify-start"></div>
+        </div>
+
+        <!-- Image placeholder (right side, expandable future) -->
+        <div id="ctd-image-zone" class="hidden md:flex flex-col items-center gap-2">
+          <div class="w-32 h-32 rounded-2xl border-2 border-dashed border-slate-200 bg-white/60 flex flex-col items-center justify-center text-slate-300">
+            <svg class="w-8 h-8 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="18" height="18" x="3" y="3" rx="3"/><path d="m3 16 5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+            <span class="text-xs">Hình ảnh</span>
+          </div>
+          <span class="text-[10px] text-slate-300">Sớm có</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content grid -->
+    <div class="grid md:grid-cols-2 gap-6 mb-8">
+
+      <!-- Left: Breakdown / Components -->
+      <div class="space-y-5">
+        <div id="ctd-breakdown"
+          class="bg-white border-2 border-slate-100 rounded-2xl p-6 shadow-sm">
+          <div id="ctd-breakdown-content"></div>
+        </div>
+      </div>
+
+      <!-- Right: Mnemonic + Compounds -->
+      <div class="space-y-5">
+        <!-- Mnemonic box -->
+        <div id="ctd-mnemonic-box" class="hidden bg-gradient-to-br from-amber-50 to-yellow-50 border-2 border-amber-200 rounded-2xl p-6 shadow-sm">
+          <div class="text-xs font-bold text-amber-700 uppercase tracking-wider mb-3 flex items-center gap-2">
+            💡 Gợi nhớ (Mnemonic)
+          </div>
+          <p id="ctd-mnemonic-text" class="text-lg text-slate-700 leading-loose"></p>
+        </div>
+
+        <!-- Compounds -->
+        <div id="ctd-compounds-box" class="hidden bg-white border-2 border-slate-100 rounded-2xl p-6 shadow-sm">
+          <div class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center gap-2">
+            📚 Từ ghép liên quan
+          </div>
+          <div id="ctd-compounds-list" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigate prev/next -->
+    <div id="ctd-nav" class="flex items-center justify-between border-t pt-6 text-sm text-slate-400">
+      <button id="ctd-prev-btn" onclick="ctNavDetail(-1)" class="flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-slate-100 hover:border-primary hover:text-primary transition-colors">
+        ← Từ trước
+      </button>
+      <span id="ctd-position" class="text-xs"></span>
+      <button id="ctd-next-btn" onclick="ctNavDetail(1)" class="flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-slate-100 hover:border-primary hover:text-primary transition-colors">
+        Từ sau →
+      </button>
+    </div>
+
+  </div>
+</div>
+
 <script src="js/core.js"></script>
 <script src="js/library.js"></script>
 <script src="js/stroke.js"></script>
@@ -1381,6 +1516,7 @@
 <script src="js/grammar.js"></script>
 <script src="js/wotd.js"></script>
 <script src="js/topics.js"></script>
+<script src="js/chiettu.js"></script>
 <script>window.CW.start();</script>
 </body>
 </html>
