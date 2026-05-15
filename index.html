@@ -17,9 +17,24 @@
         font-style: normal;
         font-display: swap;
       }
+      @font-face {
+        font-family: 'LXGWWenKai';
+        src: url('LXGWWenKai-Medium.ttf') format('truetype');
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'DFKai-SB-Dotted';
+        src: url('文鼎標楷虛線國字.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/opentype.js@1.3.4/dist/opentype.min.js"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -30,7 +45,7 @@
             },
             fontFamily: {
               sans: ['Inter', 'system-ui', 'sans-serif'],
-              cn: ['STKaiti', 'Noto Sans SC', 'Microsoft YaHei', 'KaiTi', 'sans-serif'],
+              cn: ['LXGWWenKai', 'STKaiti', 'Noto Sans SC', 'Microsoft YaHei', 'KaiTi', 'sans-serif'],
             }
           }
         }
@@ -1034,6 +1049,10 @@
         <div class="flex items-center gap-2">
           <input type="checkbox" id="pdf-show-guide" checked class="accent-primary w-4 h-4">
           <label for="pdf-show-guide" class="text-sm text-slate-600">Hiển thị chữ mờ trong ô</label>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="pdf-fade-opacity" checked class="accent-primary w-4 h-4">
+          <label for="pdf-fade-opacity" class="text-sm text-slate-600">Opacity giảm dần (chữ mờ)</label>
         </div>
         <div class="flex items-center gap-2">
           <input type="checkbox" id="pdf-show-meaning" checked class="accent-primary w-4 h-4">
